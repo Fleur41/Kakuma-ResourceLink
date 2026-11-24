@@ -1,7 +1,5 @@
 @import 'tailwindcss';
-@import '@fontsource/poppins/500.css';
-@import '@fontsource/poppins/600.css';
-@import '@fontsource/poppins/700.css';
+@import '@fontsource/inter/300.css';
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
@@ -9,38 +7,50 @@
 /* Dark mode is driven by data-theme on <html> (set from Profile → Appearance, default follows the OS). */
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/*
+ * Visual language: monochrome and flat. Neutral greys carry the layout, brand green is the only accent,
+ * hairline borders instead of shadows, near-square corners, light large headings and generous space.
+ */
 :root {
   --kk-primary: #075b4b;
   --kk-primary-strong: #05483b;
-  --kk-accent: #12a681;
+  --kk-accent: #0e8a6b;
   --kk-gold: #f5a623;
-  --kk-bg: #f6f7f4;
+  --kk-bg: #f4f4f4;
   --kk-surface: #ffffff;
-  --kk-text: #202b29;
-  --kk-muted: #66736f;
-  --kk-border: #e3e9e5;
-  --kk-error: #c62828;
-  --kk-primary-container: #e3f2ee;
-  --kk-gold-container: #fff3dc;
+  --kk-hover: #e8e8e8;
+  --kk-text: #161616;
+  --kk-muted: #525252;
+  --kk-border: #e0e0e0;
+  --kk-error: #da1e28;
+  --kk-primary-container: #e5f2ee;
+  --kk-gold-container: #fcf4d6;
   --kk-on-primary: #ffffff;
   --kk-gold-text: #8a5a00;
+  /* The shell (top bar, footer, heroes) is always dark, in both themes. */
+  --kk-shell: #161616;
+  --kk-shell-raised: #262626;
+  --kk-shell-accent: #4fc3a1;
   color-scheme: light;
 }
 
 [data-theme='dark'] {
   --kk-primary: #4fc3a1;
   --kk-primary-strong: #6fd3b5;
-  --kk-accent: #12a681;
-  --kk-bg: #0f1a18;
-  --kk-surface: #17241f;
-  --kk-text: #e7eeeb;
-  --kk-muted: #a3b3ae;
-  --kk-border: #2a3a35;
-  --kk-error: #ef7b7b;
-  --kk-primary-container: #1e3a33;
+  --kk-accent: #4fc3a1;
+  --kk-bg: #161616;
+  --kk-surface: #262626;
+  --kk-hover: #333333;
+  --kk-text: #f4f4f4;
+  --kk-muted: #c6c6c6;
+  --kk-border: #393939;
+  --kk-error: #ff8389;
+  --kk-primary-container: #1d3a33;
   --kk-gold-container: #3a2f17;
-  --kk-on-primary: #0f1a18;
+  --kk-on-primary: #161616;
   --kk-gold-text: #f5c26b;
+  --kk-shell: #0b0b0b;
+  --kk-shell-raised: #1f1f1f;
   color-scheme: dark;
 }
 
@@ -52,6 +62,7 @@
   --color-gold-text: var(--kk-gold-text);
   --color-bg: var(--kk-bg);
   --color-surface: var(--kk-surface);
+  --color-hover: var(--kk-hover);
   --color-text: var(--kk-text);
   --color-muted: var(--kk-muted);
   --color-border: var(--kk-border);
@@ -59,13 +70,24 @@
   --color-primary-container: var(--kk-primary-container);
   --color-gold-container: var(--kk-gold-container);
   --color-on-primary: var(--kk-on-primary);
-  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --color-shell: var(--kk-shell);
+  --color-shell-raised: var(--kk-shell-raised);
+  --color-shell-accent: var(--kk-shell-accent);
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --shadow-card: 0 2px 8px rgba(7, 91, 75, 0.06);
+  /* Corners stay nearly square everywhere; rounded-full (avatars, tags) is unaffected. */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+  --radius-3xl: 4px;
+  /* Lighter weights read calmer and more precise. */
+  --font-weight-bold: 600;
+  --font-weight-semibold: 500;
+  --shadow-card: none;
+  --shadow-md: none;
+  --shadow-lift: none;
 }
 
 @layer base {
@@ -84,6 +106,13 @@
     @apply font-display text-text;
     overflow-wrap: anywhere;
   }
+  h1,
+  h2 {
+    letter-spacing: -0.015em;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--kk-accent) 30%, transparent);
+  }
   :focus-visible {
     outline: 2px solid var(--kk-accent);
     outline-offset: 2px;
@@ -100,13 +129,49 @@
 
 @layer components {
   .card {
-    @apply bg-surface border border-border rounded-lg shadow-card;
+    @apply bg-surface border border-border rounded-none;
   }
+  /* Clickable tiles: flat hover fill and an accent rule along the bottom edge. */
+  .card-interactive {
+    @apply transition-colors duration-150;
+    box-shadow: inset 0 -2px 0 transparent;
+  }
+  .card-interactive:hover,
+  .card-interactive:focus-within {
+    @apply bg-hover;
+    box-shadow: inset 0 -2px 0 var(--kk-primary);
+  }
+  /* Dark, flat feature panel (also the placeholder for stories without a cover photo). */
   .hero-gradient {
-    background: linear-gradient(135deg, #075b4b 0%, #12a681 100%);
+    background-color: var(--kk-shell);
+    background-image: linear-gradient(180deg, transparent 55%, rgba(79, 195, 161, 0.14) 100%);
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium tracking-[0.16em] uppercase;
+  }
+  .icon-tile {
+    @apply flex size-11 shrink-0 items-center justify-center text-primary;
+  }
+  .animate-in {
+    animation: kk-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .stagger > * {
+    animation: kk-fade-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .stagger > *:nth-child(2) {
+    animation-delay: 50ms;
+  }
+  .stagger > *:nth-child(3) {
+    animation-delay: 100ms;
+  }
+  .stagger > *:nth-child(4) {
+    animation-delay: 150ms;
+  }
+  .stagger > *:nth-child(n + 5) {
+    animation-delay: 200ms;
   }
   .skeleton {
-    @apply rounded-md bg-border;
+    @apply bg-border;
     animation: kk-pulse 1.4s ease-in-out infinite;
   }
   .prose-story {
@@ -136,13 +201,13 @@
     @apply my-4 list-decimal ps-6;
   }
   .prose-story blockquote {
-    @apply my-6 border-s-4 border-accent ps-4 italic text-muted;
+    @apply my-6 border-s-2 border-primary ps-4 text-muted;
   }
   .prose-story a {
     @apply text-primary underline underline-offset-2;
   }
   .prose-story code {
-    @apply rounded bg-primary-container px-1 py-0.5 text-sm;
+    @apply bg-hover px-1 py-0.5 text-sm;
   }
   .sr-only-focusable:not(:focus) {
     @apply sr-only;
@@ -156,6 +221,17 @@
   }
   50% {
     opacity: 0.45;
+  }
+}
+
+@keyframes kk-fade-up {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
   }
 }
 

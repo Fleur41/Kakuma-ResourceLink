@@ -7,22 +7,22 @@ export type ButtonVariant = 'primary' | 'secondary' | 'tonal' | 'text' | 'danger
 type Size = 'sm' | 'md' | 'lg'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-colors select-none text-center ' +
+  'inline-flex items-center justify-center gap-2 rounded-[4px] font-medium tracking-[0.01em] transition-colors duration-150 select-none text-center ' +
   'disabled:opacity-40 disabled:cursor-not-allowed aria-disabled:opacity-40 aria-disabled:pointer-events-none'
 
 const variants: Record<ButtonVariant, string> = {
   primary: 'bg-primary text-on-primary hover:bg-primary-strong',
-  secondary: 'border border-primary text-primary bg-surface hover:bg-primary-container',
-  tonal: 'bg-primary-container text-primary hover:brightness-95',
+  secondary: 'border border-text/70 text-text bg-transparent hover:bg-text hover:text-surface',
+  tonal: 'bg-hover text-text hover:bg-border',
   text: 'text-primary hover:bg-primary-container',
   danger: 'bg-error text-white hover:brightness-110',
-  inverse: 'bg-white text-[#075B4B] hover:bg-[#E3F2EE]',
+  inverse: 'bg-white text-[#161616] hover:bg-[#e0e0e0]',
 }
 
 const sizes: Record<Size, string> = {
   sm: 'min-h-9 px-3 text-sm',
   md: 'min-h-11 px-5 text-[15px]',
-  lg: 'min-h-12 px-6 text-base',
+  lg: 'min-h-12 min-w-[200px] px-8 text-[15px]',
 }
 
 export function buttonClass(variant: ButtonVariant = 'primary', size: Size = 'md', extra?: string) {
