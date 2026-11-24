@@ -45,7 +45,7 @@ def _user_turn(task: str, message: str, sources, language: str, target_language:
     if task == "translate":
         return (
             f"{TASK_INSTRUCTIONS['translate']}\nTarget language: {lang_name}\n"
-            f"<text_to_translate>\n{message}\n</text_to_translate>"
+            f"<text_to_translate>\n{grounding.neutralize(message)}\n</text_to_translate>"
         )
     return (
         f"{grounding.render(sources)}\n\nTask: {TASK_INSTRUCTIONS[task]}\n"

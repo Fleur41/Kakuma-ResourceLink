@@ -11,6 +11,15 @@ from apps.opportunities.models import Opportunity, OpportunityCategory, Opportun
 from apps.services.models import Service, ServiceCategory
 from apps.stories.models import Story, StoryStatus
 
+# Tags we use to fence data in the prompt. User-written text must not be able to close or open them.
+_FENCE_TAG = re.compile(r"<\s*/?\s*(platform_content|record|text_to_translate)\b[^>]*>", re.IGNORECASE)
+
+
+def neutralize(text: str) -> str:
+    """Remove prompt fence tags from untrusted text so it stays inside its data block."""
+    return _FENCE_TAG.sub("", text)
+
+
 _WORD = re.compile(r"[^\W\d_]{4,}", re.UNICODE)
 STOPWORDS = {
     "what", "where", "when", "which", "with", "from", "that", "this", "have", "there", "about", "would", "could",
@@ -126,5 +135,5 @@ def retrieve(query: str, limit_each: int = 4) -> list[Source]:
 def render(sources: list[Source]) -> str:
     if not sources:
         return "<platform_content>\nNo matching platform records were found.\n</platform_content>"
-    parts = [f'<record index="{i}">\n{s.text}\n</record>' for i, s in enumerate(sources, 1)]
+    parts = [f'<record index="{i}">\n{neutralize(s.text)}\n</record>' for i, s in enumerate(sources, 1)]
     return "<platform_content>\n" + "\n".join(parts) + "\n</platform_content>"
