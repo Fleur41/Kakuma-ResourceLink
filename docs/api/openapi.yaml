@@ -1,0 +1,4636 @@
+openapi: 3.0.3
+info:
+  title: Kakuma ResourceLink API
+  version: 1.0.0
+  description: Connecting Opportunities, Inspiring Generations, Transforming Kakuma.
+paths:
+  /api/v1/ai/chat/:
+    post:
+      operationId: ai_chat_create
+      tags:
+      - ai
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatRequestRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+          description: ''
+  /api/v1/ai/conversations/:
+    get:
+      operationId: ai_conversations_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - ai
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConversationList'
+          description: ''
+  /api/v1/ai/conversations/{id}/:
+    get:
+      operationId: ai_conversations_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this ai conversation.
+        required: true
+      tags:
+      - ai
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetail'
+          description: ''
+    delete:
+      operationId: ai_conversations_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this ai conversation.
+        required: true
+      tags:
+      - ai
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/alumni/:
+    get:
+      operationId: alumni_list
+      parameters:
+      - in: query
+        name: country
+        schema:
+          type: string
+      - in: query
+        name: is_mentor
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: skill
+        schema:
+          type: string
+      - in: query
+        name: willing_to_contribute
+        schema:
+          type: boolean
+      tags:
+      - alumni
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAlumniPublicList'
+          description: ''
+  /api/v1/alumni/{id}/:
+    get:
+      operationId: alumni_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F-]{36}$
+        required: true
+      tags:
+      - alumni
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniPublic'
+          description: ''
+  /api/v1/alumni/profile/:
+    get:
+      operationId: alumni_profile_retrieve
+      tags:
+      - alumni
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniOwn'
+          description: ''
+    put:
+      operationId: alumni_profile_update
+      tags:
+      - alumni
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumniOwnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AlumniOwnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AlumniOwnRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniOwn'
+          description: ''
+    patch:
+      operationId: alumni_profile_partial_update
+      tags:
+      - alumni
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumniOwnRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumniOwnRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlumniOwnRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumniOwn'
+          description: ''
+    delete:
+      operationId: alumni_profile_destroy
+      description: 'Withdraw from the diaspora directory: the profile is deleted.'
+      tags:
+      - alumni
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/change-password/:
+    post:
+      operationId: auth_change_password_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: Unauthenticated endpoint that still answers 401 (not 403) on bad
+        credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+          description: ''
+  /api/v1/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/me/:
+    get:
+      operationId: auth_me_retrieve
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: auth_me_partial_update
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/auth/me/avatar/:
+    post:
+      operationId: auth_me_avatar_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AvatarRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/auth/password-reset/:
+    post:
+      operationId: auth_password_reset_create
+      description: Unauthenticated endpoint that still answers 401 (not 403) on bad
+        credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequestRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '202':
+          description: No response body
+  /api/v1/auth/password-reset/confirm/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: Unauthenticated endpoint that still answers 401 (not 403) on bad
+        credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordResetConfirmRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/register/:
+    post:
+      operationId: auth_register_create
+      description: Unauthenticated endpoint that still answers 401 (not 403) on bad
+        credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+          description: ''
+  /api/v1/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: Rotates the refresh token; the previous one is blacklisted.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/comments/{id}/:
+    delete:
+      operationId: comments_destroy
+      description: Delete own comment (moderators can delete any).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this comment.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/mentorship/requests/:
+    get:
+      operationId: mentorship_requests_list
+      parameters:
+      - in: query
+        name: box
+        schema:
+          type: string
+          enum:
+          - received
+          - sent
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - accepted
+          - cancelled
+          - completed
+          - declined
+          - pending
+        description: |-
+          * `pending` - Pending
+          * `accepted` - Accepted
+          * `declined` - Declined
+          * `cancelled` - Cancelled
+          * `completed` - Completed
+      tags:
+      - mentorship
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMentorshipRequestList'
+          description: ''
+    post:
+      operationId: mentorship_requests_create
+      tags:
+      - mentorship
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentorshipRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MentorshipRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MentorshipRequestRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentorshipRequest'
+          description: ''
+  /api/v1/mentorship/requests/{id}/:
+    get:
+      operationId: mentorship_requests_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this mentorship request.
+        required: true
+      tags:
+      - mentorship
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentorshipRequest'
+          description: ''
+    patch:
+      operationId: mentorship_requests_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this mentorship request.
+        required: true
+      tags:
+      - mentorship
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMentorshipStatusUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMentorshipStatusUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMentorshipStatusUpdateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentorshipRequest'
+          description: ''
+  /api/v1/moderation/comments/{id}/hide/:
+    post:
+      operationId: moderation_comments_hide_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this comment.
+        required: true
+      tags:
+      - moderation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+  /api/v1/moderation/projects/:
+    get:
+      operationId: moderation_projects_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - moderation
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommunityProjectList'
+          description: ''
+  /api/v1/moderation/projects/{id}/approve/:
+    post:
+      operationId: moderation_projects_approve_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - moderation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityProject'
+          description: ''
+  /api/v1/moderation/projects/{id}/reject/:
+    post:
+      operationId: moderation_projects_reject_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - moderation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityProject'
+          description: ''
+  /api/v1/moderation/reports/:
+    get:
+      operationId: moderation_reports_list
+      description: Anyone signed in can report; only moderators can list and decide.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - dismissed
+          - open
+          - resolved
+        description: |-
+          * `open` - Open
+          * `resolved` - Resolved
+          * `dismissed` - Dismissed
+      - in: query
+        name: target_type
+        schema:
+          type: string
+          enum:
+          - comment
+          - project
+          - story
+        description: |-
+          * `story` - Story
+          * `comment` - Comment
+          * `project` - Community project
+      tags:
+      - moderation
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReportList'
+          description: ''
+    post:
+      operationId: moderation_reports_create
+      description: Anyone signed in can report; only moderators can list and decide.
+      tags:
+      - moderation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/moderation/reports/{id}/decide/:
+    post:
+      operationId: moderation_reports_decide_create
+      description: Anyone signed in can report; only moderators can list and decide.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this report.
+        required: true
+      tags:
+      - moderation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportDecisionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReportDecisionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReportDecisionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/moderation/stories/:
+    get:
+      operationId: moderation_stories_list
+      description: 'Review queue: stories waiting for approval (oldest first).'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - moderation
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStoryDetailList'
+          description: ''
+  /api/v1/moderation/stories/{id}/:
+    get:
+      operationId: moderation_stories_retrieve
+      description: 'Review queue: stories waiting for approval (oldest first).'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - moderation
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+  /api/v1/moderation/stories/{id}/approve/:
+    post:
+      operationId: moderation_stories_approve_create
+      description: 'Review queue: stories waiting for approval (oldest first).'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - moderation
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+  /api/v1/moderation/stories/{id}/reject/:
+    post:
+      operationId: moderation_stories_reject_create
+      description: 'Review queue: stories waiting for approval (oldest first).'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - moderation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RejectRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RejectRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+  /api/v1/notifications/:
+    get:
+      operationId: notifications_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: unread
+        schema:
+          type: boolean
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/v1/notifications/{id}/:
+    get:
+      operationId: notifications_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification.
+        required: true
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/{id}/read/:
+    post:
+      operationId: notifications_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this notification.
+        required: true
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/read-all/:
+    post:
+      operationId: notifications_read_all_create
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Updated'
+          description: ''
+  /api/v1/notifications/unread-count/:
+    get:
+      operationId: notifications_unread_count_retrieve
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+          description: ''
+  /api/v1/opportunities/:
+    get:
+      operationId: opportunities_list
+      parameters:
+      - in: query
+        name: bookmarked
+        schema:
+          type: boolean
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - education
+          - entrepreneurship
+          - internship
+          - job
+          - scholarship
+          - vocational
+        description: |-
+          * `scholarship` - Scholarship
+          * `education` - Education
+          * `vocational` - Vocational training
+          * `job` - Job
+          * `internship` - Internship
+          * `entrepreneurship` - Entrepreneurship
+      - in: query
+        name: deadline_after
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: deadline_before
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: is_remote
+        schema:
+          type: boolean
+      - in: query
+        name: is_verified
+        schema:
+          type: boolean
+      - in: query
+        name: language
+        schema:
+          type: string
+          enum:
+          - de
+          - en
+          - es
+          - it
+          - sw
+        description: |-
+          * `en` - English
+          * `sw` - Kiswahili
+          * `es` - Español
+          * `it` - Italiano
+          * `de` - Deutsch
+      - in: query
+        name: open
+        schema:
+          type: boolean
+        description: Only open (deadline today or later, or none)
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - opportunities
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOpportunityList'
+          description: ''
+    post:
+      operationId: opportunities_create
+      tags:
+      - opportunities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+          description: ''
+  /api/v1/opportunities/{id}/:
+    get:
+      operationId: opportunities_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this opportunity.
+        required: true
+      tags:
+      - opportunities
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+          description: ''
+    put:
+      operationId: opportunities_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this opportunity.
+        required: true
+      tags:
+      - opportunities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+          description: ''
+    patch:
+      operationId: opportunities_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this opportunity.
+        required: true
+      tags:
+      - opportunities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOpportunityRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOpportunityRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOpportunityRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+          description: ''
+    delete:
+      operationId: opportunities_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this opportunity.
+        required: true
+      tags:
+      - opportunities
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/opportunities/{id}/bookmark/:
+    post:
+      operationId: opportunities_bookmark_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this opportunity.
+        required: true
+      tags:
+      - opportunities
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkState'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkState'
+          description: ''
+    delete:
+      operationId: opportunities_bookmark_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this opportunity.
+        required: true
+      tags:
+      - opportunities
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkState'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkState'
+          description: ''
+  /api/v1/projects/:
+    get:
+      operationId: projects_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - education
+          - environment
+          - health
+          - livelihood
+          - other
+          - technology
+          - youth
+        description: |-
+          * `education` - Education
+          * `health` - Health
+          * `livelihood` - Livelihood
+          * `technology` - Technology
+          * `environment` - Environment
+          * `youth` - Youth & sports
+          * `other` - Other
+      - in: query
+        name: mine
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - completed
+          - pending_review
+          - rejected
+        description: |-
+          * `pending_review` - In review
+          * `active` - Active
+          * `completed` - Completed
+          * `rejected` - Not approved
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommunityProjectList'
+          description: ''
+    post:
+      operationId: projects_create
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommunityProjectRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommunityProjectRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CommunityProjectRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityProject'
+          description: ''
+  /api/v1/projects/{id}/:
+    get:
+      operationId: projects_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityProject'
+          description: ''
+    put:
+      operationId: projects_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommunityProjectRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommunityProjectRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CommunityProjectRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityProject'
+          description: ''
+    patch:
+      operationId: projects_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCommunityProjectRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCommunityProjectRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCommunityProjectRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommunityProject'
+          description: ''
+    delete:
+      operationId: projects_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/projects/{id}/contributions/:
+    get:
+      operationId: projects_contributions_list
+      description: |-
+        Pledge support. Listing shows everything to the owner/moderators and only your own pledges to others;
+        the public sees aggregate totals via `contribution_summary`.
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - education
+          - environment
+          - health
+          - livelihood
+          - other
+          - technology
+          - youth
+        description: |-
+          * `education` - Education
+          * `health` - Health
+          * `livelihood` - Livelihood
+          * `technology` - Technology
+          * `environment` - Environment
+          * `youth` - Youth & sports
+          * `other` - Other
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - active
+          - completed
+          - pending_review
+          - rejected
+        description: |-
+          * `pending_review` - In review
+          * `active` - Active
+          * `completed` - Completed
+          * `rejected` - Not approved
+      tags:
+      - projects
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContributionList'
+          description: ''
+    post:
+      operationId: projects_contributions_create
+      description: |-
+        Pledge support. Listing shows everything to the owner/moderators and only your own pledges to others;
+        the public sees aggregate totals via `contribution_summary`.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this community project.
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContributionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContributionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContributionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+          description: ''
+  /api/v1/services/:
+    get:
+      operationId: services_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - community
+          - education
+          - healthcare
+          - humanitarian
+          - legal
+          - livelihood
+          - protection
+        description: |-
+          * `healthcare` - Healthcare
+          * `humanitarian` - Humanitarian organization
+          * `education` - Education
+          * `legal` - Legal aid
+          * `protection` - Protection
+          * `livelihood` - Livelihood
+          * `community` - Community service
+      - in: query
+        name: is_verified
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - services
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceList'
+          description: ''
+    post:
+      operationId: services_create
+      tags:
+      - services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+  /api/v1/services/{id}/:
+    get:
+      operationId: services_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    put:
+      operationId: services_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    patch:
+      operationId: services_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: ''
+    delete:
+      operationId: services_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this service.
+        required: true
+      tags:
+      - services
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/stories/:
+    get:
+      operationId: stories_list
+      parameters:
+      - in: query
+        name: author
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: bookmarked
+        schema:
+          type: boolean
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - advice
+          - career
+          - community
+          - education
+          - entrepreneurship
+          - inspiration
+          - resettlement
+        description: |-
+          * `education` - Education
+          * `career` - Career
+          * `resettlement` - Resettlement
+          * `entrepreneurship` - Entrepreneurship
+          * `inspiration` - Inspiration
+          * `advice` - Advice
+          * `community` - Community
+      - in: query
+        name: language
+        schema:
+          type: string
+          enum:
+          - de
+          - en
+          - es
+          - it
+          - sw
+        description: |-
+          * `en` - English
+          * `sw` - Kiswahili
+          * `es` - Español
+          * `it` - Italiano
+          * `de` - Deutsch
+      - in: query
+        name: mine
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStoryListList'
+          description: ''
+    post:
+      operationId: stories_create
+      tags:
+      - stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoryDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StoryDetailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StoryDetailRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+  /api/v1/stories/{id}/:
+    get:
+      operationId: stories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+    put:
+      operationId: stories_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoryDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StoryDetailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StoryDetailRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+    patch:
+      operationId: stories_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedStoryDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedStoryDetailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedStoryDetailRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+    delete:
+      operationId: stories_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/stories/{id}/bookmark/:
+    post:
+      operationId: stories_bookmark_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryBookmarkState'
+          description: ''
+    delete:
+      operationId: stories_bookmark_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/stories/{id}/comments/:
+    get:
+      operationId: stories_comments_list
+      parameters:
+      - in: query
+        name: author
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - advice
+          - career
+          - community
+          - education
+          - entrepreneurship
+          - inspiration
+          - resettlement
+        description: |-
+          * `education` - Education
+          * `career` - Career
+          * `resettlement` - Resettlement
+          * `entrepreneurship` - Entrepreneurship
+          * `inspiration` - Inspiration
+          * `advice` - Advice
+          * `community` - Community
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      - in: query
+        name: language
+        schema:
+          type: string
+          enum:
+          - de
+          - en
+          - es
+          - it
+          - sw
+        description: |-
+          * `en` - English
+          * `sw` - Kiswahili
+          * `es` - Español
+          * `it` - Italiano
+          * `de` - Deutsch
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentList'
+          description: ''
+    post:
+      operationId: stories_comments_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+  /api/v1/stories/{id}/like/:
+    post:
+      operationId: stories_like_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LikeState'
+          description: ''
+    delete:
+      operationId: stories_like_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/stories/{id}/publish/:
+    post:
+      operationId: stories_publish_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this story.
+        required: true
+      tags:
+      - stories
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoryDetail'
+          description: ''
+components:
+  schemas:
+    AIMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        role:
+          $ref: '#/components/schemas/AIMessageRoleEnum'
+        content:
+          type: string
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content
+      - created_at
+      - id
+      - role
+      - sources
+    AIMessageRoleEnum:
+      enum:
+      - user
+      - assistant
+      type: string
+      description: |-
+        * `user` - User
+        * `assistant` - Assistant
+    AlumniOwn:
+      type: object
+      description: The owner's full view/edit form, including privacy controls.
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        country:
+          type: string
+          maxLength: 80
+        city:
+          type: string
+          maxLength: 80
+        profession:
+          type: string
+          maxLength: 120
+        organization:
+          type: string
+          maxLength: 150
+        skills:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+          maxItems: 20
+        bio:
+          type: string
+          maxLength: 2000
+        is_mentor:
+          type: boolean
+          description: Willing to mentor
+        mentorship_areas:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+          maxItems: 20
+        willing_to_contribute:
+          type: boolean
+        contribution_interests:
+          type: array
+          items:
+            type: string
+            maxLength: 50
+          maxItems: 20
+        visibility:
+          $ref: '#/components/schemas/AlumniVisibilityEnum'
+        show_contact_email:
+          type: boolean
+        show_city:
+          type: boolean
+        consent_given_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - consent_given_at
+      - country
+      - created_at
+      - full_name
+      - id
+      - profession
+      - updated_at
+    AlumniOwnRequest:
+      type: object
+      description: The owner's full view/edit form, including privacy controls.
+      properties:
+        country:
+          type: string
+          minLength: 1
+          maxLength: 80
+        city:
+          type: string
+          maxLength: 80
+        profession:
+          type: string
+          minLength: 1
+          maxLength: 120
+        organization:
+          type: string
+          maxLength: 150
+        skills:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          maxItems: 20
+        bio:
+          type: string
+          maxLength: 2000
+        is_mentor:
+          type: boolean
+          description: Willing to mentor
+        mentorship_areas:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          maxItems: 20
+        willing_to_contribute:
+          type: boolean
+        contribution_interests:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          maxItems: 20
+        visibility:
+          $ref: '#/components/schemas/AlumniVisibilityEnum'
+        show_contact_email:
+          type: boolean
+        show_city:
+          type: boolean
+        consent:
+          type: boolean
+          writeOnly: true
+      required:
+      - country
+      - profession
+    AlumniPublic:
+      type: object
+      description: What other people can see — respects the alumnus's own privacy
+        choices.
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        avatar:
+          type: string
+          format: uri
+          readOnly: true
+        country:
+          type: string
+          maxLength: 80
+        city:
+          type: string
+          nullable: true
+          readOnly: true
+        profession:
+          type: string
+          maxLength: 120
+        organization:
+          type: string
+          maxLength: 150
+        skills: {}
+        bio:
+          type: string
+          maxLength: 2000
+        is_mentor:
+          type: boolean
+          description: Willing to mentor
+        mentorship_areas: {}
+        willing_to_contribute:
+          type: boolean
+        contribution_interests: {}
+        contact_email:
+          type: string
+          nullable: true
+          readOnly: true
+      required:
+      - avatar
+      - city
+      - contact_email
+      - country
+      - full_name
+      - id
+      - profession
+      - user_id
+    AlumniVisibilityEnum:
+      enum:
+      - public
+      - members
+      - private
+      type: string
+      description: |-
+        * `public` - Everyone
+        * `members` - Signed-in members only
+        * `private` - Only me
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        tokens:
+          $ref: '#/components/schemas/TokenPair'
+      required:
+      - tokens
+      - user
+    AvatarRequest:
+      type: object
+      properties:
+        avatar:
+          type: string
+          format: binary
+          pattern: (?:jpg|jpeg|png|webp)$
+      required:
+      - avatar
+    BookmarkState:
+      type: object
+      properties:
+        bookmarked:
+          type: boolean
+      required:
+      - bookmarked
+    ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+          maxLength: 128
+      required:
+      - new_password
+      - old_password
+    ChatRequestRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          minLength: 1
+          maxLength: 4000
+        conversation_id:
+          type: string
+          format: uuid
+          nullable: true
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        task:
+          allOf:
+          - $ref: '#/components/schemas/TaskEnum'
+          default: chat
+        target_id:
+          type: string
+          format: uuid
+          nullable: true
+        target_language:
+          $ref: '#/components/schemas/LanguageEnum'
+      required:
+      - message
+    ChatResponse:
+      type: object
+      properties:
+        conversation_id:
+          type: string
+          format: uuid
+        message:
+          $ref: '#/components/schemas/AIMessage'
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+      required:
+      - conversation_id
+      - message
+      - sources
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        story:
+          type: string
+          format: uuid
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        body:
+          type: string
+          maxLength: 2000
+          minLength: 1
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - body
+      - created_at
+      - id
+      - story
+    CommentRequest:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - body
+    CommunityProject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        summary:
+          type: string
+          maxLength: 300
+        description:
+          type: string
+          maxLength: 10000
+        category:
+          $ref: '#/components/schemas/ProjectCategoryEnum'
+        location:
+          type: string
+          maxLength: 150
+        cover_image:
+          type: string
+          format: uri
+          pattern: (?:jpg|jpeg|png|webp)$
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ProjectStatusEnum'
+          readOnly: true
+        accepted_contribution_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionTypeEnum'
+        funding_goal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        currency:
+          type: string
+          maxLength: 3
+        contribution_summary:
+          allOf:
+          - $ref: '#/components/schemas/ContributionSummary'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contribution_summary
+      - created_at
+      - description
+      - id
+      - owner
+      - status
+      - summary
+      - title
+      - updated_at
+    CommunityProjectRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 300
+        description:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        category:
+          $ref: '#/components/schemas/ProjectCategoryEnum'
+        location:
+          type: string
+          minLength: 1
+          maxLength: 150
+        cover_image:
+          type: string
+          format: binary
+          pattern: (?:jpg|jpeg|png|webp)$
+        accepted_contribution_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionTypeEnum'
+        funding_goal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+      required:
+      - description
+      - summary
+      - title
+    Contribution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project:
+          type: string
+          format: uuid
+          readOnly: true
+        contributor:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/ContributionTypeEnum'
+        description:
+          type: string
+          maxLength: 1000
+          minLength: 3
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        currency:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ContributionStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contributor
+      - created_at
+      - currency
+      - description
+      - id
+      - project
+      - status
+      - type
+    ContributionRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ContributionTypeEnum'
+        description:
+          type: string
+          minLength: 3
+          maxLength: 1000
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+      required:
+      - description
+      - type
+    ContributionStatusEnum:
+      enum:
+      - pledged
+      - confirmed
+      - fulfilled
+      - cancelled
+      type: string
+      description: |-
+        * `pledged` - Pledged
+        * `confirmed` - Confirmed by project
+        * `fulfilled` - Fulfilled
+        * `cancelled` - Cancelled
+    ContributionSummary:
+      type: object
+      properties:
+        total_contributions:
+          type: integer
+        pledged_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,12}(?:\.\d{0,2})?$
+        currency:
+          type: string
+        by_type:
+          type: object
+          additionalProperties:
+            type: integer
+        note:
+          type: string
+      required:
+      - by_type
+      - currency
+      - note
+      - pledged_amount
+      - total_contributions
+    ContributionTypeEnum:
+      enum:
+      - mentoring
+      - volunteering
+      - equipment
+      - skills
+      - financial_pledge
+      type: string
+      description: |-
+        * `mentoring` - Mentoring
+        * `volunteering` - Volunteering
+        * `equipment` - Equipment
+        * `skills` - Professional skills
+        * `financial_pledge` - Financial pledge
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 120
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - updated_at
+    ConversationDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 120
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/AIMessage'
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - messages
+      - updated_at
+    Count:
+      type: object
+      properties:
+        count:
+          type: integer
+      required:
+      - count
+    HelpAreaEnum:
+      enum:
+      - career
+      - technical
+      - scholarships
+      - entrepreneurship
+      - other
+      type: string
+      description: |-
+        * `career` - Career guidance
+        * `technical` - Technical skills
+        * `scholarships` - Scholarship applications
+        * `entrepreneurship` - Entrepreneurship
+        * `other` - Other
+    LanguageEnum:
+      enum:
+      - en
+      - sw
+      - es
+      - it
+      - de
+      type: string
+      description: |-
+        * `en` - English
+        * `sw` - Kiswahili
+        * `es` - Español
+        * `it` - Italiano
+        * `de` - Deutsch
+    LikeState:
+      type: object
+      properties:
+        liked:
+          type: boolean
+        likes_count:
+          type: integer
+      required:
+      - liked
+      - likes_count
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    LogoutRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    MentorshipRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        mentee:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        mentor:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        goal:
+          type: string
+          maxLength: 200
+          minLength: 3
+        help_areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelpAreaEnum'
+          maxItems: 5
+          minItems: 1
+        message:
+          type: string
+          maxLength: 2000
+          minLength: 10
+        status:
+          allOf:
+          - $ref: '#/components/schemas/MentorshipStatusEnum'
+          readOnly: true
+          default: pending
+        response_message:
+          type: string
+          readOnly: true
+        responded_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - goal
+      - help_areas
+      - id
+      - mentee
+      - mentor
+      - message
+      - responded_at
+      - response_message
+      - status
+      - updated_at
+    MentorshipRequestRequest:
+      type: object
+      properties:
+        mentor_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: Alumni profile id of the mentor
+        goal:
+          type: string
+          minLength: 3
+          maxLength: 200
+        help_areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/HelpAreaEnum'
+          maxItems: 5
+          minItems: 1
+        message:
+          type: string
+          minLength: 10
+          maxLength: 2000
+      required:
+      - goal
+      - help_areas
+      - mentor_id
+      - message
+    MentorshipStatusEnum:
+      enum:
+      - pending
+      - accepted
+      - declined
+      - cancelled
+      - completed
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `accepted` - Accepted
+        * `declined` - Declined
+        * `cancelled` - Cancelled
+        * `completed` - Completed
+    MentorshipStatusUpdateStatusEnum:
+      enum:
+      - accepted
+      - declined
+      - cancelled
+      - completed
+      type: string
+      description: |-
+        * `accepted` - accepted
+        * `declined` - declined
+        * `cancelled` - cancelled
+        * `completed` - completed
+    NoteRequest:
+      type: object
+      properties:
+        note:
+          type: string
+          maxLength: 1000
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/NotificationTypeEnum'
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+        data:
+          readOnly: true
+        is_read:
+          type: boolean
+          readOnly: true
+        read_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - body
+      - created_at
+      - data
+      - id
+      - is_read
+      - read_at
+      - title
+      - type
+    NotificationTypeEnum:
+      enum:
+      - mentorship_request
+      - mentorship_update
+      - story_published
+      - story_rejected
+      - story_comment
+      - project_contribution
+      - project_status
+      - system
+      type: string
+      description: |-
+        * `mentorship_request` - New mentorship request
+        * `mentorship_update` - Mentorship request update
+        * `story_published` - Story published
+        * `story_rejected` - Story needs changes
+        * `story_comment` - New comment
+        * `project_contribution` - New contribution
+        * `project_status` - Project status update
+        * `system` - System
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        category:
+          $ref: '#/components/schemas/OpportunityCategoryEnum'
+        organization:
+          type: string
+          maxLength: 200
+        summary:
+          type: string
+          maxLength: 300
+        description:
+          type: string
+        requirements:
+          type: array
+          items:
+            type: string
+            maxLength: 300
+          maxItems: 30
+        location:
+          type: string
+          maxLength: 150
+        is_remote:
+          type: boolean
+        deadline:
+          type: string
+          format: date
+          nullable: true
+        application_url:
+          type: string
+          format: uri
+          maxLength: 200
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        status:
+          $ref: '#/components/schemas/OpportunityStatusEnum'
+        is_verified:
+          type: boolean
+        is_bookmarked:
+          type: boolean
+          readOnly: true
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - description
+      - id
+      - is_bookmarked
+      - organization
+      - summary
+      - title
+      - updated_at
+    OpportunityCategoryEnum:
+      enum:
+      - scholarship
+      - education
+      - vocational
+      - job
+      - internship
+      - entrepreneurship
+      type: string
+      description: |-
+        * `scholarship` - Scholarship
+        * `education` - Education
+        * `vocational` - Vocational training
+        * `job` - Job
+        * `internship` - Internship
+        * `entrepreneurship` - Entrepreneurship
+    OpportunityRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        category:
+          $ref: '#/components/schemas/OpportunityCategoryEnum'
+        organization:
+          type: string
+          minLength: 1
+          maxLength: 200
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 300
+        description:
+          type: string
+          minLength: 1
+        requirements:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 300
+          maxItems: 30
+        location:
+          type: string
+          maxLength: 150
+        is_remote:
+          type: boolean
+        deadline:
+          type: string
+          format: date
+          nullable: true
+        application_url:
+          type: string
+          format: uri
+          maxLength: 200
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        status:
+          $ref: '#/components/schemas/OpportunityStatusEnum'
+        is_verified:
+          type: boolean
+      required:
+      - category
+      - description
+      - organization
+      - summary
+      - title
+    OpportunityStatusEnum:
+      enum:
+      - draft
+      - published
+      - archived
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `published` - Published
+        * `archived` - Archived
+    PaginatedAlumniPublicList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlumniPublic'
+    PaginatedCommentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    PaginatedCommunityProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommunityProject'
+    PaginatedContributionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contribution'
+    PaginatedConversationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conversation'
+    PaginatedMentorshipRequestList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MentorshipRequest'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PaginatedOpportunityList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opportunity'
+    PaginatedReportList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+    PaginatedServiceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+    PaginatedStoryDetailList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoryDetail'
+    PaginatedStoryListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoryList'
+    PasswordResetConfirmRequest:
+      type: object
+      properties:
+        uid:
+          type: string
+          minLength: 1
+        token:
+          type: string
+          minLength: 1
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+          maxLength: 128
+      required:
+      - new_password
+      - token
+      - uid
+    PasswordResetRequestRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+      required:
+      - email
+    PatchedAlumniOwnRequest:
+      type: object
+      description: The owner's full view/edit form, including privacy controls.
+      properties:
+        country:
+          type: string
+          minLength: 1
+          maxLength: 80
+        city:
+          type: string
+          maxLength: 80
+        profession:
+          type: string
+          minLength: 1
+          maxLength: 120
+        organization:
+          type: string
+          maxLength: 150
+        skills:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          maxItems: 20
+        bio:
+          type: string
+          maxLength: 2000
+        is_mentor:
+          type: boolean
+          description: Willing to mentor
+        mentorship_areas:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          maxItems: 20
+        willing_to_contribute:
+          type: boolean
+        contribution_interests:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 50
+          maxItems: 20
+        visibility:
+          $ref: '#/components/schemas/AlumniVisibilityEnum'
+        show_contact_email:
+          type: boolean
+        show_city:
+          type: boolean
+        consent:
+          type: boolean
+          writeOnly: true
+    PatchedCommunityProjectRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 300
+        description:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        category:
+          $ref: '#/components/schemas/ProjectCategoryEnum'
+        location:
+          type: string
+          minLength: 1
+          maxLength: 150
+        cover_image:
+          type: string
+          format: binary
+          pattern: (?:jpg|jpeg|png|webp)$
+        accepted_contribution_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContributionTypeEnum'
+        funding_goal:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+          nullable: true
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+    PatchedMentorshipStatusUpdateRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/MentorshipStatusUpdateStatusEnum'
+        response_message:
+          type: string
+          maxLength: 2000
+    PatchedOpportunityRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        category:
+          $ref: '#/components/schemas/OpportunityCategoryEnum'
+        organization:
+          type: string
+          minLength: 1
+          maxLength: 200
+        summary:
+          type: string
+          minLength: 1
+          maxLength: 300
+        description:
+          type: string
+          minLength: 1
+        requirements:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 300
+          maxItems: 30
+        location:
+          type: string
+          maxLength: 150
+        is_remote:
+          type: boolean
+        deadline:
+          type: string
+          format: date
+          nullable: true
+        application_url:
+          type: string
+          format: uri
+          maxLength: 200
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        status:
+          $ref: '#/components/schemas/OpportunityStatusEnum'
+        is_verified:
+          type: boolean
+    PatchedServiceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        category:
+          $ref: '#/components/schemas/ServiceCategoryEnum'
+        organization:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+        phone:
+          type: string
+          maxLength: 40
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        website:
+          type: string
+          format: uri
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 255
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        opening_hours:
+          type: string
+          maxLength: 200
+        is_verified:
+          type: boolean
+        last_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_active:
+          type: boolean
+    PatchedStoryDetailRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        excerpt:
+          type: string
+          maxLength: 300
+        cover_image:
+          type: string
+          format: binary
+          pattern: (?:jpg|jpeg|png|webp)$
+        category:
+          $ref: '#/components/schemas/StoryCategoryEnum'
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        body:
+          type: string
+          minLength: 1
+          maxLength: 50000
+        consent_to_publish:
+          type: boolean
+    PatchedUserRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        preferred_language:
+          $ref: '#/components/schemas/LanguageEnum'
+        profile:
+          $ref: '#/components/schemas/ProfileRequest'
+    Profile:
+      type: object
+      properties:
+        bio:
+          type: string
+          maxLength: 1000
+        location:
+          type: string
+          maxLength: 120
+        avatar:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - avatar
+    ProfileRequest:
+      type: object
+      properties:
+        bio:
+          type: string
+          maxLength: 1000
+        location:
+          type: string
+          maxLength: 120
+    ProjectCategoryEnum:
+      enum:
+      - education
+      - health
+      - livelihood
+      - technology
+      - environment
+      - youth
+      - other
+      type: string
+      description: |-
+        * `education` - Education
+        * `health` - Health
+        * `livelihood` - Livelihood
+        * `technology` - Technology
+        * `environment` - Environment
+        * `youth` - Youth & sports
+        * `other` - Other
+    ProjectStatusEnum:
+      enum:
+      - pending_review
+      - active
+      - completed
+      - rejected
+      type: string
+      description: |-
+        * `pending_review` - In review
+        * `active` - Active
+        * `completed` - Completed
+        * `rejected` - Not approved
+    PublicUser:
+      type: object
+      description: Minimal author card. Never includes email or private profile fields.
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        avatar:
+          type: string
+          format: uri
+          readOnly: true
+        country:
+          type: string
+          nullable: true
+          readOnly: true
+      required:
+      - avatar
+      - country
+      - full_name
+      - id
+    PublicUserRequest:
+      type: object
+      description: Minimal author card. Never includes email or private profile fields.
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+      required:
+      - full_name
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+          maxLength: 128
+        full_name:
+          type: string
+          minLength: 2
+          maxLength: 150
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RegisterRoleEnum'
+          default: member
+        preferred_language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          default: en
+      required:
+      - email
+      - full_name
+      - password
+    RegisterRoleEnum:
+      enum:
+      - alumni
+      - mentor
+      - member
+      type: string
+      description: |-
+        * `alumni` - Alumni
+        * `mentor` - Mentor
+        * `member` - Community member
+    RejectRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          minLength: 3
+          maxLength: 1000
+      required:
+      - reason
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        target_type:
+          $ref: '#/components/schemas/ReportTargetTypeEnum'
+        target_id:
+          type: string
+          format: uuid
+        reason:
+          $ref: '#/components/schemas/ReportReasonEnum'
+        details:
+          type: string
+          maxLength: 1000
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ReportStatusEnum'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - reason
+      - status
+      - target_id
+      - target_type
+    ReportDecisionRequest:
+      type: object
+      properties:
+        note:
+          type: string
+          maxLength: 1000
+        resolved:
+          type: boolean
+      required:
+      - resolved
+    ReportReasonEnum:
+      enum:
+      - spam
+      - harassment
+      - privacy
+      - misinformation
+      - scam
+      - other
+      type: string
+      description: |-
+        * `spam` - Spam
+        * `harassment` - Harassment or hate
+        * `privacy` - Shares private information
+        * `misinformation` - False or misleading
+        * `scam` - Scam or fraud
+        * `other` - Other
+    ReportRequest:
+      type: object
+      properties:
+        target_type:
+          $ref: '#/components/schemas/ReportTargetTypeEnum'
+        target_id:
+          type: string
+          format: uuid
+        reason:
+          $ref: '#/components/schemas/ReportReasonEnum'
+        details:
+          type: string
+          maxLength: 1000
+      required:
+      - reason
+      - target_id
+      - target_type
+    ReportStatusEnum:
+      enum:
+      - open
+      - resolved
+      - dismissed
+      type: string
+      description: |-
+        * `open` - Open
+        * `resolved` - Resolved
+        * `dismissed` - Dismissed
+    ReportTargetTypeEnum:
+      enum:
+      - story
+      - comment
+      - project
+      type: string
+      description: |-
+        * `story` - Story
+        * `comment` - Comment
+        * `project` - Community project
+    Service:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        category:
+          $ref: '#/components/schemas/ServiceCategoryEnum'
+        organization:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        phone:
+          type: string
+          maxLength: 40
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        website:
+          type: string
+          format: uri
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 255
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        opening_hours:
+          type: string
+          maxLength: 200
+        is_verified:
+          type: boolean
+        last_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - created_at
+      - description
+      - id
+      - name
+      - updated_at
+    ServiceCategoryEnum:
+      enum:
+      - healthcare
+      - humanitarian
+      - education
+      - legal
+      - protection
+      - livelihood
+      - community
+      type: string
+      description: |-
+        * `healthcare` - Healthcare
+        * `humanitarian` - Humanitarian organization
+        * `education` - Education
+        * `legal` - Legal aid
+        * `protection` - Protection
+        * `livelihood` - Livelihood
+        * `community` - Community service
+    ServiceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        category:
+          $ref: '#/components/schemas/ServiceCategoryEnum'
+        organization:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+        phone:
+          type: string
+          maxLength: 40
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        website:
+          type: string
+          format: uri
+          maxLength: 200
+        address:
+          type: string
+          maxLength: 255
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        opening_hours:
+          type: string
+          maxLength: 200
+        is_verified:
+          type: boolean
+        last_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - category
+      - description
+      - name
+    Source:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+      required:
+      - id
+      - title
+      - type
+    StoryBookmarkState:
+      type: object
+      properties:
+        bookmarked:
+          type: boolean
+      required:
+      - bookmarked
+    StoryCategoryEnum:
+      enum:
+      - education
+      - career
+      - resettlement
+      - entrepreneurship
+      - inspiration
+      - advice
+      - community
+      type: string
+      description: |-
+        * `education` - Education
+        * `career` - Career
+        * `resettlement` - Resettlement
+        * `entrepreneurship` - Entrepreneurship
+        * `inspiration` - Inspiration
+        * `advice` - Advice
+        * `community` - Community
+    StoryDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        excerpt:
+          type: string
+          maxLength: 300
+        cover_image:
+          type: string
+          format: uri
+          pattern: (?:jpg|jpeg|png|webp)$
+        category:
+          $ref: '#/components/schemas/StoryCategoryEnum'
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StoryStatusEnum'
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        reading_time:
+          type: integer
+          readOnly: true
+        likes_count:
+          type: integer
+          readOnly: true
+          default: 0
+        comments_count:
+          type: integer
+          readOnly: true
+          default: 0
+        is_liked:
+          type: boolean
+          readOnly: true
+          default: false
+        is_bookmarked:
+          type: boolean
+          readOnly: true
+          default: false
+        published_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        body:
+          type: string
+          maxLength: 50000
+        consent_to_publish:
+          type: boolean
+        rejection_reason:
+          type: string
+          readOnly: true
+      required:
+      - author
+      - body
+      - comments_count
+      - created_at
+      - id
+      - is_bookmarked
+      - is_liked
+      - likes_count
+      - published_at
+      - reading_time
+      - rejection_reason
+      - slug
+      - status
+      - title
+      - updated_at
+    StoryDetailRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        excerpt:
+          type: string
+          maxLength: 300
+        cover_image:
+          type: string
+          format: binary
+          pattern: (?:jpg|jpeg|png|webp)$
+        category:
+          $ref: '#/components/schemas/StoryCategoryEnum'
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        body:
+          type: string
+          minLength: 1
+          maxLength: 50000
+        consent_to_publish:
+          type: boolean
+      required:
+      - body
+      - title
+    StoryList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        excerpt:
+          type: string
+          readOnly: true
+        cover_image:
+          type: string
+          format: uri
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/StoryCategoryEnum'
+          readOnly: true
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StoryStatusEnum'
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/PublicUser'
+          readOnly: true
+        reading_time:
+          type: integer
+          readOnly: true
+        likes_count:
+          type: integer
+          readOnly: true
+          default: 0
+        comments_count:
+          type: integer
+          readOnly: true
+          default: 0
+        is_liked:
+          type: boolean
+          readOnly: true
+          default: false
+        is_bookmarked:
+          type: boolean
+          readOnly: true
+          default: false
+        published_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - category
+      - comments_count
+      - cover_image
+      - created_at
+      - excerpt
+      - id
+      - is_bookmarked
+      - is_liked
+      - language
+      - likes_count
+      - published_at
+      - reading_time
+      - slug
+      - status
+      - title
+      - updated_at
+    StoryStatusEnum:
+      enum:
+      - draft
+      - pending_review
+      - published
+      - rejected
+      - archived
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `pending_review` - In review
+        * `published` - Published
+        * `rejected` - Needs changes
+        * `archived` - Archived
+    TaskEnum:
+      enum:
+      - chat
+      - explain_opportunity
+      - summarize_story
+      - translate
+      type: string
+      description: |-
+        * `chat` - chat
+        * `explain_opportunity` - explain_opportunity
+        * `summarize_story` - summarize_story
+        * `translate` - translate
+    TokenPair:
+      type: object
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    Updated:
+      type: object
+      properties:
+        updated:
+          type: integer
+      required:
+      - updated
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        full_name:
+          type: string
+          maxLength: 150
+        role:
+          allOf:
+          - $ref: '#/components/schemas/UserRoleEnum'
+          readOnly: true
+        preferred_language:
+          $ref: '#/components/schemas/LanguageEnum'
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        profile:
+          $ref: '#/components/schemas/Profile'
+        has_alumni_profile:
+          type: boolean
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - full_name
+      - has_alumni_profile
+      - id
+      - role
+    UserRoleEnum:
+      enum:
+      - member
+      - alumni
+      - mentor
+      - moderator
+      - admin
+      type: string
+      description: |-
+        * `member` - Community member
+        * `alumni` - Alumni
+        * `mentor` - Mentor
+        * `moderator` - Moderator
+        * `admin` - Administrator
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
