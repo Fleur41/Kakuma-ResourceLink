@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Kakuma ResourceLink</string>
+    <string name="tagline">Connecting Opportunities, Inspiring Generations, Transforming Kakuma.</string>
+
+    <!-- Common actions -->
+    <string name="action_retry">Retry</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_get_started">Get started</string>
+    <string name="action_have_account">I already have an account</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_create_account">Create account</string>
+    <string name="action_forgot_password">Forgot password?</string>
+    <string name="action_send_reset_link">Send reset link</string>
+    <string name="action_back_to_sign_in">Back to sign in</string>
+    <string name="action_apply_now">Apply now</string>
+    <string name="action_explain_with_ai">Explain with AI</string>
+    <string name="filter_all">All</string>
+
+    <!-- Accessibility -->
+    <string name="cd_loading">Loading</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+    <string name="cd_bookmark">Save</string>
+    <string name="cd_remove_bookmark">Remove from saved</string>
+    <string name="cd_page_indicator">Page %1$d of %2$d</string>
+
+    <!-- Errors -->
+    <string name="error_network">No internet connection. Check your connection and try again.</string>
+    <string name="error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="error_forbidden">You don\'t have permission to do that.</string>
+    <string name="error_not_found">We couldn\'t find that.</string>
+    <string name="error_rate_limited">Too many attempts. Please wait a moment.</string>
+    <string name="error_unavailable">This service is temporarily unavailable.</string>
+    <string name="error_validation">Please check the highlighted fields.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_server">The server had a problem. Please try again later.</string>
+    <string name="error_bad_credentials">Incorrect email or password.</string>
+    <string name="offline_banner">You\'re offline. Showing saved content.</string>
+
+    <!-- Validation -->
+    <string name="validation_required">This field is required</string>
+    <string name="validation_email">Enter a valid email address</string>
+    <string name="validation_password_length">Use at least %1$d characters</string>
+    <string name="validation_name_length">Enter your full name</string>
+
+    <!-- Toasts (keep short) -->
+    <string name="toast_signed_in">Welcome back, %1$s</string>
+    <string name="toast_account_created">Account created</string>
+    <string name="toast_bookmarked">Saved</string>
+    <string name="toast_bookmark_removed">Removed from saved</string>
+    <string name="toast_saved_offline_sync_later">Saved offline. Will sync later</string>
+
+    <!-- Onboarding / language -->
+    <string name="onboarding_title_1">Find opportunities</string>
+    <string name="onboarding_body_1">Scholarships, training, jobs and internships in one place.</string>
+    <string name="onboarding_title_2">Get inspired</string>
+    <string name="onboarding_body_2">Read and share stories from Kakuma and alumni around the world.</string>
+    <string name="onboarding_title_3">Grow together</string>
+    <string name="onboarding_body_3">Connect with mentors and support community projects.</string>
+    <string name="language_title">Choose your language</string>
+    <string name="language_subtitle">You can change this anytime in Settings.</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="login_new_here">New here?</string>
+    <string name="register_title">Create your account</string>
+    <string name="register_subtitle">Join the Kakuma community</string>
+    <string name="register_have_account">Already have an account?</string>
+    <string name="register_joining_as">I am joining as</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Password</string>
+    <string name="field_full_name">Full name</string>
+    <string name="field_preferred_language">Preferred language</string>
+    <string name="placeholder_email">name@example.com</string>
+    <string name="placeholder_full_name">e.g. Amina Yusuf</string>
+    <string name="placeholder_password_rules">At least 8 characters</string>
+    <string name="forgot_title">Reset password</string>
+    <string name="forgot_body">Enter your email and we\'ll send you a link to reset your password.</string>
+    <string name="forgot_sent_title">Check your email</string>
+    <string name="forgot_sent_body">If an account exists for that email, a reset link is on its way.</string>
+    <string name="role_member">Member</string>
+    <string name="role_alumni">Alumni</string>
+    <string name="role_mentor">Mentor</string>
+    <string name="role_moderator">Moderator</string>
+    <string name="role_admin">Admin</string>
+
+    <!-- Opportunities -->
+    <string name="opp_title">Opportunities</string>
+    <string name="opp_saved_title">Saved opportunities</string>
+    <string name="opp_detail_title">Opportunity</string>
+    <string name="opp_search_hint">Search opportunities</string>
+    <string name="opp_deadline">Deadline: %1$s</string>
+    <string name="opp_remote">Remote</string>
+    <string name="opp_requirements">Requirements</string>
+    <string name="opp_empty_title">No opportunities found</string>
+    <string name="opp_empty_body">Try another category or search term.</string>
+    <string name="opp_saved_empty_title">Nothing saved yet</string>
+    <string name="opp_saved_empty_body">Tap the bookmark on any opportunity to keep it here, even offline.</string>
+    <string name="opp_bookmark_hint">Saved items are available offline.</string>
+    <string name="opp_unverified_note">Sample listing, not yet verified. Always confirm details with the organisation.</string>
+    <string name="opp_cat_scholarship">Scholarship</string>
+    <string name="opp_cat_education">Education</string>
+    <string name="opp_cat_vocational">Vocational</string>
+    <string name="opp_cat_job">Job</string>
+    <string name="opp_cat_internship">Internship</string>
+    <string name="opp_cat_entrepreneurship">Entrepreneurship</string>
+    <string name="badge_verified">Verified</string>
+    <string name="badge_unverified">Unverified</string>
+    <string name="ai_requires_internet">AI answers need an internet connection.</string>
+
+    <!-- Notification channels -->
+    <string name="channel_opportunities">Opportunities</string>
+    <string name="channel_opportunities_desc">New scholarships, jobs and deadlines</string>
+    <string name="channel_stories">Stories</string>
+    <string name="channel_stories_desc">Story reviews, likes and comments</string>
+    <string name="channel_mentorship">Mentorship</string>
+    <string name="channel_mentorship_desc">Mentorship requests and replies</string>
+    <string name="channel_community">Community projects</string>
+    <string name="channel_community_desc">Project updates and pledges</string>
+    <string name="channel_general">General</string>
+    <string name="channel_general_desc">Other updates from Kakuma ResourceLink</string>
+
+    <!-- Stories -->
+    <string name="stories_title">Kakuma Stories</string>
+    <string name="story_feed_latest">Latest</string>
+    <string name="story_feed_popular">Popular</string>
+    <string name="story_feed_saved">Saved</string>
+    <string name="story_feed_mine">Mine</string>
+    <string name="story_cat_education">Education</string>
+    <string name="story_cat_career">Career</string>
+    <string name="story_cat_resettlement">Resettlement</string>
+    <string name="story_cat_entrepreneurship">Entrepreneurship</string>
+    <string name="story_cat_inspiration">Inspiration</string>
+    <string name="story_cat_advice">Advice</string>
+    <string name="story_cat_community">Community</string>
+    <string name="story_status_draft">Draft</string>
+    <string name="story_status_pending">In review</string>
+    <string name="story_status_published">Published</string>
+    <string name="story_status_rejected">Needs changes</string>
+    <string name="story_status_archived">Archived</string>
+    <string name="stories_empty_title">No stories yet</string>
+    <string name="stories_empty_body">Be the first to share your journey.</string>
+    <string name="stories_saved_empty_title">No saved stories</string>
+    <string name="stories_saved_empty_body">Bookmark stories to read them later, even offline.</string>
+    <string name="stories_mine_empty_title">You haven\'t written a story yet</string>
+    <string name="stories_mine_empty_body">Your experience can inspire someone. Drafts are saved on your phone.</string>
+    <string name="stories_on_device">On this device</string>
+    <string name="stories_submitted">Submitted</string>
+    <string name="story_untitled">Untitled story</string>
+    <string name="draft_on_device">Draft</string>
+    <string name="draft_waiting_upload">Waiting to upload</string>
+    <string name="action_share_story">Share your story</string>
+    <string name="action_write_story">Write a story</string>
+    <string name="action_summarize_ai">Summarize with AI</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save_draft">Save draft</string>
+    <string name="action_submit_review">Submit for review</string>
+    <string name="action_discard_draft">Delete draft</string>
+    <string name="action_add_cover">Add cover photo</string>
+    <string name="action_remove_cover">Remove cover photo</string>
+    <string name="badge_offline_copy">Offline copy</string>
+    <string name="story_saved_offline">Available offline</string>
+    <string name="story_pending_note">A moderator is reviewing this story. You\'ll be notified when it\'s published.</string>
+    <string name="story_rejection_reason">Moderator feedback: %1$s</string>
+    <string name="share_story_chooser">Share story</string>
+    <string name="comments_title">Comments (%1$d)</string>
+    <string name="comments_empty">No comments yet. Start the conversation.</string>
+    <string name="comments_add">Add a comment</string>
+    <string name="comments_placeholder">Write something kind and helpful</string>
+    <string name="comments_sign_in">Sign in to comment</string>
+    <string name="dialog_delete_story_title">Delete this story?</string>
+    <string name="dialog_delete_story_body">This removes the story for everyone. This can\'t be undone.</string>
+    <string name="dialog_discard_title">Delete this draft?</string>
+    <string name="dialog_discard_body">The draft will be removed from this device.</string>
+    <string name="editor_title">Your story</string>
+    <string name="editor_offline_hint">Drafts are saved on your phone automatically, even without internet.</string>
+    <plurals name="editor_word_count">
+        <item quantity="one">%1$d word</item>
+        <item quantity="other">%1$d words</item>
+    </plurals>
+    <string name="editor_consent">I agree to publish this story on Kakuma ResourceLink. I have removed private details about other people.</string>
+    <string name="editor_review_note">Stories are reviewed by a moderator before they are published.</string>
+    <string name="field_story_title">Title</string>
+    <string name="field_story_body">Your story</string>
+    <string name="field_category">Category</string>
+    <string name="placeholder_story_title">e.g. From Kakuma to university</string>
+    <string name="placeholder_story_body">Tell your story. You can use **bold**, *italic*, # headings and - lists.</string>
+    <string name="validation_title_length">Use at least %1$d characters</string>
+    <string name="validation_body_length">Write at least %1$d characters</string>
+    <string name="validation_consent">Please confirm you agree to publish</string>
+    <string name="error_image_invalid">Choose an image smaller than 5 MB</string>
+    <string name="cd_like">Like</string>
+    <string name="cd_unlike">Unlike</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_send">Send</string>
+    <string name="toast_draft_saved">Draft saved</string>
+    <string name="toast_draft_deleted">Draft deleted</string>
+    <string name="toast_story_submitted">Story sent for review</string>
+    <string name="toast_story_queued">Saved. It will upload when you\'re online</string>
+    <string name="toast_story_deleted">Story deleted</string>
+    <string name="toast_comment_posted">Comment posted</string>
+    <plurals name="reading_minutes">
+        <item quantity="one">%1$d min read</item>
+        <item quantity="other">%1$d min read</item>
+    </plurals>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_stories">Stories</string>
+    <string name="nav_community">Community</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_opportunities">Opportunities</string>
+    <string name="nav_services">Services</string>
+    <string name="nav_mentorship">Mentorship</string>
+    <string name="nav_alumni">Alumni</string>
+    <string name="nav_projects">Projects</string>
+    <string name="nav_assistant">AI Assistant</string>
+
+    <!-- Common -->
+    <string name="action_browse_guest">Browse as guest</string>
+    <string name="action_close">Close</string>
+    <string name="action_see_all">See all</string>
+    <string name="action_save_changes">Save changes</string>
+    <string name="action_call">Call</string>
+    <string name="action_email">Email</string>
+    <string name="action_website">Website</string>
+    <string name="action_map">Map</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="field_country">Country</string>
+    <string name="field_city">City</string>
+    <string name="field_location">Location</string>
+    <string name="field_bio">About you</string>
+    <string name="field_profession">Profession</string>
+    <string name="field_organization">Organisation</string>
+    <string name="field_skills">Skills</string>
+    <string name="placeholder_tags">Separate with commas</string>
+    <string name="cd_unread">Unread</string>
+    <plurals name="cd_notifications_unread">
+        <item quantity="one">%1$d unread notification</item>
+        <item quantity="other">%1$d unread notifications</item>
+    </plurals>
+
+    <!-- Home & community -->
+    <string name="home_greeting">Hello, %1$s 👋</string>
+    <string name="home_greeting_guest">Hello 👋</string>
+    <string name="home_subtitle">What would you like to do today?</string>
+    <string name="home_search_hint">Search scholarships, jobs, training…</string>
+    <string name="home_hero_eyebrow">Opportunities</string>
+    <string name="home_hero_title">Build a better future together</string>
+    <string name="home_hero_action">Explore now</string>
+    <string name="home_quick_access">Quick access</string>
+    <string name="home_featured_opportunities">Featured opportunities</string>
+    <string name="home_latest_stories">Latest stories</string>
+    <string name="community_title">Community</string>
+    <string name="community_subtitle">Connect with alumni, find a mentor and support local projects.</string>
+    <string name="community_alumni_body">Former Kakuma residents around the world</string>
+    <string name="community_mentorship_body">Your mentorship requests and replies</string>
+    <string name="community_projects_body">Pledge time, skills or support</string>
+    <string name="community_services_body">Health, legal, education and more</string>
+
+    <!-- Services -->
+    <string name="services_title">Essential services</string>
+    <string name="services_search_hint">Search services</string>
+    <string name="services_empty_title">No services found</string>
+    <string name="services_empty_body">Try another category or search term.</string>
+    <string name="services_emergency_note">In an emergency, contact camp security or the nearest health post immediately.</string>
+    <string name="service_cat_healthcare">Healthcare</string>
+    <string name="service_cat_humanitarian">Humanitarian</string>
+    <string name="service_cat_education">Education</string>
+    <string name="service_cat_legal">Legal aid</string>
+    <string name="service_cat_protection">Protection</string>
+    <string name="service_cat_livelihood">Livelihood</string>
+    <string name="service_cat_community">Community</string>
+
+    <!-- Alumni -->
+    <string name="alumni_title">Alumni network</string>
+    <string name="alumni_subtitle">People who lived in Kakuma, now around the world.</string>
+    <string name="alumni_search_hint">Search by name, skill or country</string>
+    <string name="alumni_mentors_only">Mentors only</string>
+    <string name="alumni_empty_title">No alumni found</string>
+    <string name="alumni_empty_body">Try a different search.</string>
+    <string name="alumni_my_profile">My alumni profile</string>
+    <string name="alumni_profile_title">Alumni profile</string>
+    <string name="alumni_about">About</string>
+    <string name="alumni_skills">Skills</string>
+    <string name="alumni_mentors_in">Mentors in</string>
+    <string name="alumni_contributes">Can help with</string>
+    <string name="alumni_editor_intro">Share your journey so others can learn from you. You choose who can see it.</string>
+    <string name="alumni_is_mentor">I want to mentor</string>
+    <string name="alumni_willing_contribute">I can support community projects</string>
+    <string name="alumni_privacy">Who can see my profile</string>
+    <string name="alumni_show_city">Show my city</string>
+    <string name="alumni_show_email">Show my email to members</string>
+    <string name="alumni_consent">I agree to share this profile with the Kakuma ResourceLink community.</string>
+    <string name="badge_mentor">Mentor</string>
+    <string name="visibility_public">Everyone</string>
+    <string name="visibility_members">Signed-in members only</string>
+    <string name="visibility_private">Only me</string>
+    <string name="field_mentorship_areas">Mentorship areas</string>
+    <string name="field_contribution_interests">How you can help</string>
+    <string name="action_create_alumni">Create profile</string>
+    <string name="action_remove_alumni">Remove profile</string>
+    <string name="action_request_mentorship">Request mentorship</string>
+    <string name="dialog_remove_alumni_title">Remove your alumni profile?</string>
+    <string name="dialog_remove_alumni_body">It will no longer appear in the directory.</string>
+    <string name="validation_alumni_consent">Please agree to share your profile</string>
+
+    <!-- Mentorship -->
+    <string name="mentorship_title">Mentorship</string>
+    <string name="mentorship_sent">Sent</string>
+    <string name="mentorship_received">Received</string>
+    <string name="mentorship_request_title">Request mentorship</string>
+    <string name="mentorship_request_to">To %1$s</string>
+    <string name="mentorship_privacy_note">Your mentor will see your name and this message.</string>
+    <string name="mentorship_reply">Reply: %1$s</string>
+    <string name="mentorship_sent_empty_title">No requests yet</string>
+    <string name="mentorship_sent_empty_body">Find a mentor in the alumni network.</string>
+    <string name="mentorship_received_empty_title">No requests received</string>
+    <string name="mentorship_received_empty_body">Requests from mentees will appear here.</string>
+    <string name="mentorship_status_pending">Pending</string>
+    <string name="mentorship_status_accepted">Accepted</string>
+    <string name="mentorship_status_declined">Declined</string>
+    <string name="mentorship_status_cancelled">Cancelled</string>
+    <string name="mentorship_status_completed">Completed</string>
+    <string name="field_goal">Your goal</string>
+    <string name="placeholder_goal">e.g. Apply to university abroad</string>
+    <string name="field_help_areas">I need help with</string>
+    <string name="field_message">Message</string>
+    <string name="placeholder_mentorship_message">Introduce yourself and explain how they could help.</string>
+    <string name="help_career">Career</string>
+    <string name="help_technical">Technical skills</string>
+    <string name="help_scholarships">Scholarships</string>
+    <string name="help_entrepreneurship">Entrepreneurship</string>
+    <string name="help_other">Other</string>
+    <string name="action_send_request">Send request</string>
+    <string name="action_find_mentor">Find a mentor</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_decline">Decline</string>
+    <string name="action_cancel_request">Cancel request</string>
+    <string name="action_mark_completed">Mark completed</string>
+    <string name="dialog_cancel_request_title">Cancel this request?</string>
+    <string name="dialog_cancel_request_body">The mentor will no longer see it.</string>
+    <string name="dialog_decline_request_title">Decline this request?</string>
+    <string name="dialog_decline_request_body">The mentee will be notified.</string>
+    <string name="validation_help_area">Choose at least one area</string>
+    <string name="validation_message_length">Write at least %1$d characters</string>
+
+    <!-- Projects -->
+    <string name="projects_title">Community projects</string>
+    <string name="projects_subtitle">Local initiatives you can support with time, skills or pledges.</string>
+    <string name="projects_empty_title">No projects yet</string>
+    <string name="projects_empty_body">Check back soon.</string>
+    <string name="project_detail_title">Project</string>
+    <string name="project_by">By %1$s</string>
+    <string name="project_ways_to_help">Ways to help</string>
+    <string name="project_your_pledges">Your pledges</string>
+    <string name="project_pledged_of_goal">%1$s pledged of %2$s</string>
+    <string name="project_pledge_note">Pledges are commitments, not payments. The project team will contact you.</string>
+    <plurals name="project_supporters">
+        <item quantity="one">%1$d supporter</item>
+        <item quantity="other">%1$d supporters</item>
+    </plurals>
+    <string name="project_cat_education">Education</string>
+    <string name="project_cat_health">Health</string>
+    <string name="project_cat_livelihood">Livelihood</string>
+    <string name="project_cat_technology">Technology</string>
+    <string name="project_cat_environment">Environment</string>
+    <string name="project_cat_youth">Youth &amp; sports</string>
+    <string name="project_cat_other">Other</string>
+    <string name="contribution_mentoring">Mentoring</string>
+    <string name="contribution_volunteering">Volunteering</string>
+    <string name="contribution_equipment">Equipment</string>
+    <string name="contribution_skills">Professional skills</string>
+    <string name="contribution_financial">Financial pledge</string>
+    <string name="pledge_title">Pledge support</string>
+    <string name="field_pledge_description">What will you offer?</string>
+    <string name="placeholder_pledge">e.g. Two hours a week of maths tutoring</string>
+    <string name="field_amount">Amount (%1$s)</string>
+    <string name="action_pledge_support">Pledge support</string>
+    <string name="action_confirm_pledge">Confirm pledge</string>
+    <string name="validation_amount">Enter an amount greater than 0</string>
+
+    <!-- Assistant -->
+    <string name="assistant_title">AI Assistant</string>
+    <string name="assistant_history">History</string>
+    <string name="assistant_welcome_title">How can I help?</string>
+    <string name="assistant_welcome_body">I answer using information published on Kakuma ResourceLink.</string>
+    <string name="assistant_input_hint">Ask a question</string>
+    <string name="assistant_thinking">Thinking…</string>
+    <string name="assistant_sources">Sources</string>
+    <string name="assistant_disclaimer">AI can make mistakes. Check important details with the organisation.</string>
+    <string name="assistant_untitled">Conversation</string>
+    <string name="assistant_history_empty_title">No conversations yet</string>
+    <string name="assistant_history_empty_body">Your chats with the assistant will appear here.</string>
+    <string name="ai_prompt_scholarships">Which scholarships are open now?</string>
+    <string name="ai_prompt_cv">How do I write a good CV?</string>
+    <string name="ai_prompt_health">Where can I find health services?</string>
+    <string name="ai_prompt_mentor">How do I find a mentor?</string>
+    <string name="ai_task_explain">Explain this opportunity to me</string>
+    <string name="ai_task_summarize">Summarize this story</string>
+    <string name="ai_unavailable">The assistant is not available right now. Please try again later.</string>
+    <string name="cd_new_chat">New conversation</string>
+    <string name="dialog_delete_chat_title">Delete this conversation?</string>
+    <string name="dialog_delete_chat_body">This can\'t be undone.</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_empty_title">You\'re all caught up</string>
+    <string name="notifications_empty_body">Updates about your stories, mentorship and projects appear here.</string>
+    <string name="action_mark_all_read">Mark all read</string>
+
+    <!-- Profile & settings -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_guest_title">Join the community</string>
+    <string name="profile_guest_body">Sign in to save opportunities, share stories and connect with mentors.</string>
+    <string name="profile_my_activity">My activity</string>
+    <string name="profile_settings">Settings</string>
+    <string name="profile_edit">Edit profile</string>
+    <string name="profile_my_stories">My stories</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_theme">Appearance</string>
+    <string name="settings_offline_library">Offline library</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_about">About</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="cd_change_photo">Change photo</string>
+    <string name="dialog_sign_out_title">Sign out?</string>
+    <string name="dialog_sign_out_body">Saved drafts and offline content will be removed from this device.</string>
+    <string name="offline_empty_title">Nothing saved offline</string>
+    <string name="offline_empty_body">Stories you open are saved here so you can read them without internet.</string>
+    <string name="offline_library_note">These stories are stored on this device.</string>
+    <string name="action_remove_offline">Remove from device</string>
+
+    <!-- More toasts (keep short) -->
+    <string name="toast_profile_updated">Profile updated</string>
+    <string name="toast_photo_updated">Photo updated</string>
+    <string name="toast_signed_out">Signed out</string>
+    <string name="toast_mentorship_sent">Request sent</string>
+    <string name="toast_mentorship_accepted">Request accepted</string>
+    <string name="toast_mentorship_declined">Request declined</string>
+    <string name="toast_mentorship_cancelled">Request cancelled</string>
+    <string name="toast_mentorship_completed">Marked as completed</string>
+    <string name="toast_pledge_recorded">Pledge recorded. Thank you!</string>
+    <string name="toast_conversation_deleted">Conversation deleted</string>
+    <string name="toast_all_read">All marked as read</string>
+    <string name="toast_alumni_removed">Profile removed</string>
+    <string name="toast_removed_offline">Removed from device</string>
+</resources>
