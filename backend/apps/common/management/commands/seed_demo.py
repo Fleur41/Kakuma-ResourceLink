@@ -6,7 +6,8 @@ and people are fictional. Replace with verified content before any real launch.
 from datetime import timedelta
 from decimal import Decimal
 
-from django.core.management.base import BaseCommand
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils import timezone
 
@@ -17,7 +18,7 @@ from apps.opportunities.models import Opportunity
 from apps.services.models import Service
 from apps.stories.models import Story, StoryStatus
 
-DEMO_PASSWORD = "Kakuma-demo-2026"  # demo-only accounts on a local database
+DEMO_PASSWORD = "Admin@123"  # test-only accounts on a local database; never seed production
 
 
 class Command(BaseCommand):
@@ -25,6 +26,8 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        if not settings.DEBUG:
+            raise CommandError("seed_demo only runs with DEBUG=True (local development databases).")
         today = timezone.localdate()
         users = {}
         for key, email, name, role in [
