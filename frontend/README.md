@@ -36,6 +36,18 @@ To point the app at another API host, copy `.env.example` to `.env` and set `VIT
 | `npm run typecheck` / `npm run lint` | TypeScript / ESLint |
 | `npm run gen:api` | Regenerate `src/api/schema.d.ts` from `docs/api/openapi.yaml` |
 
+## Background photos
+
+The landing page hero, the dashboard banner and the "Join the community" section can show a photo. Until a photo is added they show a plain dark panel.
+
+```bash
+scripts/optimize-photos.sh ~/Pictures/kakuma-market.jpg hero   # slots: hero, dashboard, community
+```
+
+The script needs `cwebp` (`brew install webp`). It resizes the photo to 1920px, compresses it to WebP (usually 150–300 KB) and strips all metadata, including GPS location. It writes `public/images/<slot>.webp`. Then put the photographer's name in `credit` in `src/lib/photos.ts`, and adjust `position` if faces get cropped.
+
+Only use photos you have the right to publish, of people who agreed to be photographed and to appear on the platform. Prefer everyday life (markets, schools, sport, work) over hardship. Photos are not part of the offline precache; they download only when a page shows them.
+
 ## How it is put together
 
 ```
