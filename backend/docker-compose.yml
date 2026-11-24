@@ -32,6 +32,16 @@ services:
       db:
         condition: service_healthy
 
+  web:
+    build: ../frontend
+    profiles: ["full"]
+    environment:
+      API_UPSTREAM: http://api:8000
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
 volumes:
   pgdata:
   media:
