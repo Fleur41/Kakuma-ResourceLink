@@ -4,8 +4,8 @@ import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/format'
 
 const control =
-  'w-full rounded-md border bg-surface px-4 py-3 text-[15px] text-text placeholder:text-muted/80 transition-colors ' +
-  'focus:border-primary focus:outline-none focus:ring-2 focus:ring-accent/30 disabled:opacity-60'
+  'w-full rounded-none border bg-surface px-4 py-3 text-[15px] text-text placeholder:text-muted/80 transition-colors ' +
+  'hover:border-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-60'
 
 interface FieldShellProps {
   id: string

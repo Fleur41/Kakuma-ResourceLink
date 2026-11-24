@@ -28,14 +28,16 @@ export function StoryCard({ story, showStatus, horizontal }: { story: StoryList;
   const { t } = useTranslation()
   const href = `/stories/${story.id}`
   return (
-    <article className={cn('card relative flex overflow-hidden hover:shadow-md', horizontal ? 'flex-row gap-4 p-4' : 'flex-col')}>
-      <StoryCover story={story} className={horizontal ? 'size-24 shrink-0 rounded-md sm:size-28' : 'aspect-[16/9] w-full'} />
+    <article className={cn('card card-interactive group relative flex overflow-hidden', horizontal ? 'flex-row gap-4 p-4' : 'flex-col')}>
+      <div className={cn('overflow-hidden', horizontal ? 'size-24 shrink-0 sm:size-28' : 'aspect-[16/9] w-full')}>
+        <StoryCover story={story} className="size-full transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100" />
+      </div>
       <div className={cn('flex flex-1 flex-col gap-2', horizontal ? '' : 'p-5')}>
         <div className="flex flex-wrap gap-2">
           <Badge tone="gold">{t(`categories.story.${story.category}`)}</Badge>
           {showStatus && <StatusBadge status={story.status} />}
         </div>
-        <h3 className="text-lg leading-snug font-semibold">
+        <h3 className="text-lg leading-snug font-normal">
           <Link to={href} className="after:absolute after:inset-0">
             {story.title}
           </Link>

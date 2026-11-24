@@ -28,15 +28,15 @@ interface Props {
 export function OpportunityCard({ item, onToggleBookmark }: Props) {
   const { t } = useTranslation()
   return (
-    <article className="card relative flex gap-4 p-5 transition-shadow focus-within:ring-2 focus-within:ring-accent/40 hover:shadow-md sm:p-6">
+    <article className="card card-interactive relative flex gap-4 p-5 focus-within:ring-2 focus-within:ring-accent/40 sm:p-6">
       <div className="min-w-0 flex-1 space-y-2">
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{t(`categories.opportunity.${item.category}`)}</Badge>
           <DeadlineChip deadline={item.deadline} />
         </div>
-        <h3 className="text-lg font-semibold sm:text-xl">
+        <h3 className="text-lg font-normal sm:text-xl">
           {/* Whole card is clickable via the stretched link; the bookmark button sits above it. */}
-          <Link to={`/opportunities/${item.id}`} className="after:absolute after:inset-0 after:rounded-lg focus:outline-none">
+          <Link to={`/opportunities/${item.id}`} className="after:absolute after:inset-0 focus:outline-none">
             {item.title}
           </Link>
         </h3>
