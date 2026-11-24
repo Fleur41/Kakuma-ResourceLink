@@ -7,8 +7,8 @@ A multilingual (English, Kiswahili, Español, Italiano, Deutsch), offline-first 
 | Part | Stack | Folder | Status |
 |---|---|---|---|
 | Backend API | Django 5.2 · DRF · PostgreSQL 16 · Simple JWT · Claude API | `backend/` | ✅ Implemented & tested |
-| Android app | Kotlin · Jetpack Compose · MVVM + Clean Architecture · Hilt · Room · Retrofit | `mobile/` | 🔜 Next |
-| Web app | React · TypeScript | `frontend/` | 🔜 Planned |
+| Android app | Kotlin · Jetpack Compose · MVVM + Clean Architecture · Hilt · Room · Retrofit | `mobile/` | ✅ Implemented & tested ([guide](mobile/README.md)) |
+| Web app | React · TypeScript | `frontend/` | 🔜 Next |
 
 Both clients share one backend, one PostgreSQL database and one authentication system. No Firebase. The Claude API key never leaves the server.
 
@@ -34,7 +34,7 @@ python manage.py seed_demo      # illustrative sample data + demo accounts
 python manage.py runserver 0.0.0.0:8000
 ```
 
-- API root: `http://localhost:8000/api/v1/` (Android emulator: `http://10.0.2.2:8000/api/v1/`)
+- API root: `http://localhost:8000/api/v1/`. For the Android app, run `adb reverse tcp:8000 tcp:8000` first ([why](mobile/README.md#run-it-locally)).
 - Swagger UI: `http://localhost:8000/api/v1/docs/`
 - Admin: `http://localhost:8000/admin/` (`python manage.py createsuperuser`)
 - Demo accounts (local only): `amina@demo.kakuma.test`, `daniel@demo.kakuma.test` (mentor), `moderator@demo.kakuma.test`. The password is printed by `seed_demo`.

@@ -27,13 +27,16 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [ ] Live Claude call verified with a real ANTHROPIC_API_KEY (needs key)
 - [ ] Translation catalogues (.po) for sw/es/it/de server messages (clients localize UI strings)
 
-## Phase 3 — Android
-- [ ] Gradle KTS + libs.versions.toml
-- [ ] Core: Hilt, network/auth refresh, Keystore token store, Room, DataStore, design system, UiEvent
-- [ ] Features: auth, home, opportunities, stories (+offline drafts), alumni, mentorship, assistant, profile, services, projects, notifications
-- [ ] WorkManager sync, notifications channels
-- [ ] Localization EN/SW/ES/IT/DE
-- [ ] Tests
+## Phase 3 — Android  ✅ (61 unit + 6 instrumented tests passing, lint 0 errors)
+- [x] Gradle KTS + libs.versions.toml (AGP 9.3, Kotlin 2.4, compileSdk 37.1, minSdk 26)
+- [x] Core: Hilt, network/auth refresh, Keystore token store, Room, DataStore, design system, UiEvent (short toasts)
+- [x] Features: auth, home, opportunities, stories (+offline drafts), alumni, mentorship, assistant, profile, services, projects, notifications
+- [x] WorkManager sync, notification channels, notification polling
+- [x] Localization EN/SW/ES/IT/DE (401 strings each, per-app language)
+- [x] Tests: use cases, ViewModels/Flows, DAO, repository, network, UI, navigation
+- [x] Smoke-tested on an API 37 emulator against the local backend (sign-in, all tabs, Kiswahili)
+- [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
+- [ ] Release signing config + R8 rules review before store upload
 
 ## Phase 4 — React
 - [ ] Vite + TS skeleton, API client w/ refresh, protected routes, i18n
