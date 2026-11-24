@@ -1,0 +1,171 @@
+@import 'tailwindcss';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+
+/* Dark mode is driven by data-theme on <html> (set from Profile → Appearance, default follows the OS). */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --kk-primary: #075b4b;
+  --kk-primary-strong: #05483b;
+  --kk-accent: #12a681;
+  --kk-gold: #f5a623;
+  --kk-bg: #f6f7f4;
+  --kk-surface: #ffffff;
+  --kk-text: #202b29;
+  --kk-muted: #66736f;
+  --kk-border: #e3e9e5;
+  --kk-error: #c62828;
+  --kk-primary-container: #e3f2ee;
+  --kk-gold-container: #fff3dc;
+  --kk-on-primary: #ffffff;
+  --kk-gold-text: #8a5a00;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --kk-primary: #4fc3a1;
+  --kk-primary-strong: #6fd3b5;
+  --kk-accent: #12a681;
+  --kk-bg: #0f1a18;
+  --kk-surface: #17241f;
+  --kk-text: #e7eeeb;
+  --kk-muted: #a3b3ae;
+  --kk-border: #2a3a35;
+  --kk-error: #ef7b7b;
+  --kk-primary-container: #1e3a33;
+  --kk-gold-container: #3a2f17;
+  --kk-on-primary: #0f1a18;
+  --kk-gold-text: #f5c26b;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-primary: var(--kk-primary);
+  --color-primary-strong: var(--kk-primary-strong);
+  --color-accent: var(--kk-accent);
+  --color-gold: var(--kk-gold);
+  --color-gold-text: var(--kk-gold-text);
+  --color-bg: var(--kk-bg);
+  --color-surface: var(--kk-surface);
+  --color-text: var(--kk-text);
+  --color-muted: var(--kk-muted);
+  --color-border: var(--kk-border);
+  --color-error: var(--kk-error);
+  --color-primary-container: var(--kk-primary-container);
+  --color-gold-container: var(--kk-gold-container);
+  --color-on-primary: var(--kk-on-primary);
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --shadow-card: 0 2px 8px rgba(7, 91, 75, 0.06);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg text-text font-sans antialiased;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-text;
+    overflow-wrap: anywhere;
+  }
+  :focus-visible {
+    outline: 2px solid var(--kk-accent);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-border rounded-lg shadow-card;
+  }
+  .hero-gradient {
+    background: linear-gradient(135deg, #075b4b 0%, #12a681 100%);
+  }
+  .skeleton {
+    @apply rounded-md bg-border;
+    animation: kk-pulse 1.4s ease-in-out infinite;
+  }
+  .prose-story {
+    @apply text-[16px] leading-7;
+  }
+  .prose-story h1,
+  .prose-story h2,
+  .prose-story h3 {
+    @apply mt-8 mb-3 font-semibold;
+  }
+  .prose-story h1 {
+    @apply text-2xl;
+  }
+  .prose-story h2 {
+    @apply text-xl;
+  }
+  .prose-story h3 {
+    @apply text-lg;
+  }
+  .prose-story p {
+    @apply my-4;
+  }
+  .prose-story ul {
+    @apply my-4 list-disc ps-6;
+  }
+  .prose-story ol {
+    @apply my-4 list-decimal ps-6;
+  }
+  .prose-story blockquote {
+    @apply my-6 border-s-4 border-accent ps-4 italic text-muted;
+  }
+  .prose-story a {
+    @apply text-primary underline underline-offset-2;
+  }
+  .prose-story code {
+    @apply rounded bg-primary-container px-1 py-0.5 text-sm;
+  }
+  .sr-only-focusable:not(:focus) {
+    @apply sr-only;
+  }
+}
+
+@keyframes kk-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes kk-toast-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
