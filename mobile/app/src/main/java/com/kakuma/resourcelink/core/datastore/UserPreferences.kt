@@ -30,6 +30,9 @@ interface PreferencesRepository {
     suspend fun setLanguage(tag: String)
     suspend fun setThemeMode(mode: ThemeMode)
     suspend fun setOnboardingDone()
+
+    /** After sign-out the app opens on the welcome screen again (language and theme are kept). */
+    suspend fun resetOnboarding()
 }
 
 @Singleton
@@ -52,6 +55,10 @@ class DataStorePreferencesRepository @Inject constructor(
 
     override suspend fun setThemeMode(mode: ThemeMode) {
         context.dataStore.edit { it[THEME] = mode.name }
+    }
+
+    override suspend fun resetOnboarding() {
+        context.dataStore.edit { it[ONBOARDING] = false }
     }
 
     override suspend fun setOnboardingDone() {

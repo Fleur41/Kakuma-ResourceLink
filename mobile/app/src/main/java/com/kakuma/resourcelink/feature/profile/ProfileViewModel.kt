@@ -13,6 +13,7 @@ import com.kakuma.resourcelink.core.datastore.PreferencesRepository
 import com.kakuma.resourcelink.core.datastore.ThemeMode
 import com.kakuma.resourcelink.core.di.IoDispatcher
 import com.kakuma.resourcelink.core.locale.LanguageManager
+import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEventChannel
 import com.kakuma.resourcelink.feature.auth.domain.AuthRepository
 import com.kakuma.resourcelink.feature.auth.domain.User
@@ -20,10 +21,12 @@ import com.kakuma.resourcelink.sync.SyncScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,11 +49,16 @@ class ProfileViewModel @Inject constructor(
     private val preferences: PreferencesRepository,
     private val languageManager: LanguageManager,
     private val syncScheduler: SyncScheduler,
+    private val appMessages: AppMessages,
     @IoDispatcher private val io: CoroutineDispatcher,
 ) : ViewModel() {
     private val busy = MutableStateFlow(Pair(false, false))
     private val uiEvents = UiEventChannel()
     val events = uiEvents.events
+
+    /** Fires once after sign-out so navigation can leave the signed-in screens. */
+    private val signedOutChannel = Channel<Unit>(Channel.BUFFERED)
+    val signedOut = signedOutChannel.receiveAsFlow()
 
     val state: StateFlow<ProfileUiState> = combine(auth.currentUser, auth.isLoggedIn, preferences.preferences, busy) { user, loggedIn, prefs, (uploading, out) ->
         ProfileUiState(user, loggedIn, prefs.themeMode, languageManager.current().nativeName, uploading, out)
@@ -85,10 +93,13 @@ class ProfileViewModel @Inject constructor(
         busy.update { it.copy(second = true) }
         viewModelScope.launch {
             auth.logout()
+            preferences.resetOnboarding()
             syncScheduler.cancelAll()
             syncScheduler.schedulePeriodicSync() // public content still refreshes for guests
-            uiEvents.toast(UiText.Res(R.string.toast_signed_out))
+            // App-wide toast: the profile screen is replaced by the welcome screen right after this.
+            appMessages.toast(UiText.Res(R.string.toast_signed_out))
             busy.update { it.copy(second = false) }
+            signedOutChannel.send(Unit)
         }
     }
 }

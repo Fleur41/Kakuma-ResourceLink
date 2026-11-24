@@ -58,6 +58,12 @@ fun NavHostController.finishAuth() = navigate(Routes.HOME) {
     launchSingleTop = true
 }
 
+/** After sign-out: back to the welcome screen with nothing signed-in left on the back stack. */
+fun NavHostController.toWelcome() = navigate(Routes.WELCOME) {
+    popUpTo(graph.id) { inclusive = true }
+    launchSingleTop = true
+}
+
 fun NavHostController.openTarget(target: NotificationTarget) {
     when (target) {
         is NotificationTarget.Story -> navigate(Routes.story(target.id))
@@ -162,6 +168,7 @@ fun AppNavHost(
                     myStories = { navController.navigateToTab(Routes.STORIES) },
                     mentorship = { navController.navigate(Routes.mentorship()) },
                     alumniProfile = { navController.navigate(Routes.MY_ALUMNI) },
+                    signedOut = { navController.toWelcome() },
                 ),
             )
         }

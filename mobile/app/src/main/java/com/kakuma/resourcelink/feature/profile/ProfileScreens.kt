@@ -76,6 +76,7 @@ import com.kakuma.resourcelink.core.designsystem.component.KrCard
 import com.kakuma.resourcelink.core.designsystem.component.KrPrimaryButton
 import com.kakuma.resourcelink.core.designsystem.component.KrTextField
 import com.kakuma.resourcelink.core.designsystem.component.KrTopBar
+import com.kakuma.resourcelink.core.ui.ObserveAsEvents
 import com.kakuma.resourcelink.core.ui.UiEventEffect
 import com.kakuma.resourcelink.feature.auth.presentation.roleLabel
 
@@ -88,6 +89,8 @@ data class ProfileActions(
     val myStories: () -> Unit,
     val mentorship: () -> Unit,
     val alumniProfile: () -> Unit,
+    /** Called once after the person signs out. */
+    val signedOut: () -> Unit,
 )
 
 @Composable
@@ -97,6 +100,7 @@ fun ProfileRoute(actions: ProfileActions, viewModel: ProfileViewModel = hiltView
     var confirmLogout by rememberSaveable { mutableStateOf(false) }
     var themeDialog by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)
+    ObserveAsEvents(viewModel.signedOut) { actions.signedOut() }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { viewModel.onAvatarPicked(it) }
     val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
