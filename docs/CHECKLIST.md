@@ -38,10 +38,13 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
 - [ ] Release signing config + R8 rules review before store upload
 
-## Phase 4 — React
-- [ ] Vite + TS skeleton, API client w/ refresh, protected routes, i18n
-- [ ] Pages per inventory
-- [ ] Tests
+## Phase 4 — React  ✅ (48 tests passing, typecheck + build clean, lint 0 errors)
+- [x] Vite + TS skeleton, API client w/ single-flight refresh, protected routes, i18n
+- [x] Pages per inventory: landing, dashboard, auth + password reset, opportunities, services, stories (editor with local autosave), alumni, mentorship, projects/pledges, assistant, notifications, profile, moderation
+- [x] Localization EN/SW/ES/IT/DE (578 strings each), light/dark theme, PWA app shell + persisted query cache
+- [x] Tests: API client, validation, cache, i18n parity, pages (login, opportunities, story, guards, language)
+- [x] Smoke-tested in Chrome against the local backend (sign-in, stories, like, Kiswahili)
+- [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
 
 ## Phase 6 — Wrap-up
 - [ ] Security review · README · Demo script
