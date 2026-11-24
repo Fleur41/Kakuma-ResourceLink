@@ -1514,12 +1514,12 @@ export interface components {
             preferred_language: components["schemas"]["LanguageEnum"];
         };
         /**
-         * @description * `alumni` - Alumni
+         * @description * `member` - Community member
+         *     * `alumni` - Alumni
          *     * `mentor` - Mentor
-         *     * `member` - Community member
          * @enum {string}
          */
-        RegisterRoleEnum: "alumni" | "mentor" | "member";
+        RegisterRoleEnum: "member" | "alumni" | "mentor";
         RejectRequest: {
             reason: string;
         };

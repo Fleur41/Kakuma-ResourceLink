@@ -4023,14 +4023,14 @@ components:
       - password
     RegisterRoleEnum:
       enum:
+      - member
       - alumni
       - mentor
-      - member
       type: string
       description: |-
+        * `member` - Community member
         * `alumni` - Alumni
         * `mentor` - Mentor
-        * `member` - Community member
     RejectRequest:
       type: object
       properties:

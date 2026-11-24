@@ -21,7 +21,7 @@ class Role(models.TextChoices):
     ADMIN = "admin", _("Administrator")
 
 
-SELF_ASSIGNABLE_ROLES = {Role.MEMBER, Role.ALUMNI, Role.MENTOR}
+SELF_ASSIGNABLE_ROLES = (Role.MEMBER, Role.ALUMNI, Role.MENTOR)  # ordered, so the OpenAPI schema is stable
 
 
 class Language(models.TextChoices):
