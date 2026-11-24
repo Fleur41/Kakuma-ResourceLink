@@ -18,7 +18,7 @@ export const photos = {
   /** Landing page hero: wide shot of Kakuma town or its people. */
   hero: { src: '/images/hero.webp', credit: 'Random Institute / Unsplash', position: 'center 30%' },
   /** Dashboard banner. */
-  dashboard: { src: '/images/dashboard.webp', credit: '', position: 'center' },
+  dashboard: { src: '/images/dashboard.webp', credit: 'RUT MIIT / Unsplash', position: 'center 30%' },
   /** "Join the community" section at the bottom of the landing page. */
   community: { src: '/images/community.webp', credit: 'Vitaly Gariev / Unsplash', position: 'center 35%' },
 } satisfies Record<string, Photo>

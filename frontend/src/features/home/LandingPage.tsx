@@ -35,7 +35,7 @@ export default function LandingPage() {
             <ButtonLink to="/opportunities" size="lg" variant="inverse">
               {t('landing.ctaExplore')}
             </ButtonLink>
-            <ButtonLink to="/login?next=%2Fstories%2Fnew" size="lg" className="border border-white/70 text-white hover:bg-white hover:text-[#161616]">
+            <ButtonLink to="/login?next=%2Fstories%2Fnew" size="lg" variant="outlineInverse">
               {t('stories.shareYourStory')}
             </ButtonLink>
           </div>
@@ -134,7 +134,7 @@ export default function LandingPage() {
           <ButtonLink to="/register" size="lg" variant="inverse">
             {t('auth.joinUs')}
           </ButtonLink>
-          <ButtonLink to="/login" size="lg" className="border border-white/70 text-white hover:bg-white hover:text-[#161616]">
+          <ButtonLink to="/login" size="lg" variant="outlineInverse">
             {t('auth.signIn')}
           </ButtonLink>
         </div>

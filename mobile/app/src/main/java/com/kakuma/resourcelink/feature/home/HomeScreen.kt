@@ -46,6 +46,7 @@ import com.kakuma.resourcelink.core.designsystem.KrColors
 import com.kakuma.resourcelink.core.designsystem.Spacing
 import com.kakuma.resourcelink.core.designsystem.component.ErrorState
 import com.kakuma.resourcelink.core.designsystem.component.HeroBanner
+import com.kakuma.resourcelink.core.designsystem.component.BrandPhotos
 import com.kakuma.resourcelink.core.designsystem.component.KrTextButton
 import com.kakuma.resourcelink.core.designsystem.component.OfflineBanner
 import com.kakuma.resourcelink.core.designsystem.component.QuickAccessTile
@@ -113,6 +114,7 @@ fun HomeRoute(actions: HomeActions, viewModel: HomeViewModel = hiltViewModel()) 
                     actionLabel = stringResource(R.string.home_hero_action),
                     onAction = actions.openOpportunities,
                     icon = Icons.Outlined.School,
+                    photo = BrandPhotos.Graduates,
                     modifier = Modifier.padding(horizontal = Spacing.gutter),
                 )
             }

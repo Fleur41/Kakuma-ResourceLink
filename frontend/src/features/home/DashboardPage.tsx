@@ -58,7 +58,7 @@ export default function DashboardPage() {
             <ButtonLink to="/opportunities" variant="inverse">
               {t('dashboard.exploreNow')}
             </ButtonLink>
-            <ButtonLink to="/assistant" className="border border-white/70 text-white hover:bg-white hover:text-[#161616]" icon={<Bot size={18} aria-hidden />}>
+            <ButtonLink to="/assistant" variant="outlineInverse" icon={<Bot size={18} aria-hidden />}>
               {t('dashboard.askAssistant')}
             </ButtonLink>
           </div>
