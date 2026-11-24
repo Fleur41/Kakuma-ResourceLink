@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Link, NavLink, Outlet, useLocation } from 'react-router'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { Bell, LogOut, Menu, X } from 'lucide-react'
 import { notificationsApi } from '@/api/endpoints'
 import { buttonClass, IconButton } from '@/components/ui/Button'
@@ -141,6 +141,7 @@ function MemberLayout() {
   const { t } = useTranslation()
   const { user, logout, isModerator } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const [openOn, setOpenOn] = useState<string | null>(null)
   const open = openOn === pathname
@@ -201,6 +202,7 @@ function MemberLayout() {
             onClick={async () => {
               await logout()
               toast.success(t('auth.signedOut'))
+              navigate('/', { replace: true }) // public home, not a member page that would ask to sign in again
             }}
           >
             <LogOut size={18} aria-hidden />
