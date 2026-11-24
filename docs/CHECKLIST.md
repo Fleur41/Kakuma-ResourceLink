@@ -8,7 +8,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] API contract — `docs/api/API_CONTRACT.md`
 - [x] Design system spec — `docs/designs/DESIGN_SYSTEM.md`
 
-## Phase 2 — Backend  ✅ (93 tests passing on PostgreSQL 16, 97% coverage)
+## Phase 2 — Backend  ✅ (94 tests passing on PostgreSQL 16, 97% coverage)
 - [x] Project skeleton, split settings (base/development/test/production), Docker + Postgres, .env.example
 - [x] common: UUID base model, pagination, error envelope, upload validators, throttles
 - [x] accounts: custom user, profile, register/login/refresh(rotation+blacklist)/logout/me/avatar/password reset/change
@@ -46,5 +46,9 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] Smoke-tested in Chrome against the local backend (sign-in, stories, like, Kiswahili)
 - [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
 
-## Phase 6 — Wrap-up
-- [ ] Security review · README · Demo script
+## Phase 6 — Wrap-up  ✅
+- [x] Security review — `docs/SECURITY.md` (deploy check, bandit, pip-audit, npm audit, manual authz review)
+- [x] Fixes: Pillow 13.0.0 + DRF 3.18.3 (64 advisories), AI prompt-fence escaping, HTTPS-only Android release, stable OpenAPI enum order
+- [x] README: docs index, test overview, web quick start
+- [x] Demo script — `docs/DEMO_SCRIPT.md`
+- [ ] Before launch: CSP headers for web hosting, media via proxy/object storage, Android release signing (see SECURITY.md)

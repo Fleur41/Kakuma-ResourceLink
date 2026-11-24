@@ -17,6 +17,8 @@ Both clients share one backend, one PostgreSQL database and one authentication s
 - Architecture, ERD & roadmap: [`docs/architecture/ARCHITECTURE.md`](docs/architecture/ARCHITECTURE.md)
 - API contract: [`docs/api/API_CONTRACT.md`](docs/api/API_CONTRACT.md) · OpenAPI schema: [`docs/api/openapi.yaml`](docs/api/openapi.yaml)
 - Design system & screen inventory: [`docs/designs/DESIGN_SYSTEM.md`](docs/designs/DESIGN_SYSTEM.md)
+- Security review: [`docs/SECURITY.md`](docs/SECURITY.md)
+- Demo script: [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md)
 - Progress checklist: [`docs/CHECKLIST.md`](docs/CHECKLIST.md)
 
 ## Backend quick start
@@ -67,6 +69,14 @@ npm test                                     # Vitest suite
 ```
 
 See [`frontend/README.md`](frontend/README.md) for details.
+
+## Tests at a glance
+
+| Part | Command | Tests |
+|---|---|---|
+| Backend | `cd backend && pytest` | 94 (97% coverage, PostgreSQL) |
+| Android | `cd mobile && ./gradlew testDebugUnitTest` (+ `connectedDebugAndroidTest` on an emulator) | 61 unit + 6 instrumented |
+| Web | `cd frontend && npm test` | 48 |
 
 ## Content policy
 
