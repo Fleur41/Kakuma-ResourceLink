@@ -10,7 +10,7 @@ Native Android client: Kotlin, Jetpack Compose (Material 3), MVVM + Clean Archit
 
 ## Run it locally
 
-1. Start the backend (see the root README) on port 8000 with `python manage.py seed_demo` data.
+1. Start the backend (see the root README) on port 8000 with `python manage.py seed_testdata` data (all test accounts use the password `Admin@123`).
 2. Forward the backend port to the device or emulator:
 
    ```bash

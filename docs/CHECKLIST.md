@@ -8,7 +8,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] API contract — `docs/api/API_CONTRACT.md`
 - [x] Design system spec — `docs/designs/DESIGN_SYSTEM.md`
 
-## Phase 2 — Backend  ✅ (96 tests passing on PostgreSQL 16, 97% coverage)
+## Phase 2 — Backend  ✅ (98 tests passing on PostgreSQL 16, 97% coverage)
 - [x] Project skeleton, split settings (base/development/test/production), Docker + Postgres, .env.example
 - [x] common: UUID base model, pagination, error envelope, upload validators, throttles
 - [x] accounts: custom user, profile, register/login/refresh(rotation+blacklist)/logout/me/avatar/password reset/change
@@ -22,7 +22,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] community projects + contributions (pledges, privacy of contributor list)
 - [x] Claude AI assistant (grounded, mocked tests, 503 without key)
 - [x] OpenAPI export to docs/api/openapi.yaml (0 warnings)
-- [x] Demo seed command (`seed_demo`)
+- [x] Demo seed commands: `seed_demo` (small) and `seed_testdata` (18 accounts, every state; password Admin@123; DEBUG only)
 - [x] Docker image builds
 - [ ] Live Claude call verified with a real ANTHROPIC_API_KEY (needs key)
 - [x] Translation catalogues (.po/.mo) for sw/es/it/de server messages: emails, API errors, notifications (129 strings each)

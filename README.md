@@ -32,14 +32,24 @@ docker compose up -d db         # PostgreSQL 16 on localhost:5432
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
 python manage.py migrate
-python manage.py seed_demo      # illustrative sample data + demo accounts
+python manage.py seed_testdata  # full fictional test dataset + 18 test accounts (password Admin@123)
 python manage.py runserver 0.0.0.0:8000
 ```
 
 - API root: `http://localhost:8000/api/v1/`. For the Android app, run `adb reverse tcp:8000 tcp:8000` first ([why](mobile/README.md#run-it-locally)).
 - Swagger UI: `http://localhost:8000/api/v1/docs/`
 - Admin: `http://localhost:8000/admin/` (`python manage.py createsuperuser`)
-- Demo accounts (local only): `amina@demo.kakuma.test`, `daniel@demo.kakuma.test` (mentor), `moderator@demo.kakuma.test`. The password is printed by `seed_demo`.
+- Test accounts (local only, all with the password `Admin@123`). The command prints the full list.
+
+  | Role | Accounts |
+  |---|---|
+  | Admin (also Django `/admin/`) | `admin@kakuma.test` |
+  | Moderator | `esther.wanjiru@kakuma.test` (Kiswahili), `moderator@demo.kakuma.test` |
+  | Member | `amina@demo.kakuma.test`, `deng.majok@kakuma.test`, `halima.abdi@kakuma.test` (Kiswahili), `ahmed.yusuf@kakuma.test`, `sara.tesfaye@kakuma.test`, `nyabol.gatluak@kakuma.test`, `jean.habimana@kakuma.test` |
+  | Mentor (alumni) | `achol.deng@kakuma.test` (Italiano), `abdirahman.hassan@kakuma.test` (Deutsch), `daniel@demo.kakuma.test`, `peter@demo.kakuma.test` |
+  | Alumni | `joseph.lokwang@kakuma.test` (Español), `mary.nyandeng@kakuma.test`, `ibrahim.omar@kakuma.test` (hidden profile), `grace@demo.kakuma.test` |
+
+  The data covers every state: stories in review, draft and needing changes, mentorship requests in all five states, projects awaiting approval, pledges, and closed or rolling deadlines. `seed_demo` alone creates only the small original demo set. Both commands are safe to re-run and refuse to run when `DEBUG` is off.
 
 Run the whole stack in Docker instead: `docker compose --profile full up --build` (API on :8000, production web build with security headers on http://localhost:8080).
 
@@ -85,7 +95,7 @@ See [`frontend/README.md`](frontend/README.md) for details.
 
 | Part | Command | Tests |
 |---|---|---|
-| Backend | `cd backend && pytest` | 96 (97% coverage, PostgreSQL) |
+| Backend | `cd backend && pytest` | 98 (97% coverage, PostgreSQL) |
 | Android | `cd mobile && ./gradlew testDebugUnitTest` (+ `connectedDebugAndroidTest` on an emulator) | 61 unit + 6 instrumented |
 | Web | `cd frontend && npm test` | 48 |
 

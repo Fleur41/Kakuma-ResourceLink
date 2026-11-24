@@ -7,7 +7,7 @@ One story to tell: **Amina, a young woman in Kakuma, finds an opportunity, gets 
 ```bash
 # 1. Backend + database + demo data
 cd backend && docker compose up -d db && source .venv/bin/activate
-python manage.py migrate && python manage.py seed_demo      # prints the demo password
+python manage.py migrate && python manage.py seed_testdata  # all accounts: Admin@123
 python manage.py runserver 0.0.0.0:8000
 
 # 2. Web app (new terminal)
@@ -77,4 +77,4 @@ Information in Kakuma is scattered across notice boards, WhatsApp groups and wor
 | Android shows "No connection" | Run `adb reverse tcp:8000 tcp:8000` again (it resets when the emulator restarts) |
 | Web shows "Session expired" | Sign in again; refresh tokens rotate, and an old tab may hold a used one |
 | Assistant says unavailable | `ANTHROPIC_API_KEY` is not set, or the AI throttle (20/hour) was hit |
-| Demo data looks changed | `seed_demo` is idempotent: it won't reset edits. For a clean slate: `python manage.py flush` then `seed_demo` (local database only) |
+| Demo data looks changed | `seed_testdata` is idempotent: it won't reset edits. For a clean slate: `python manage.py flush` then `seed_testdata` (local database only) |

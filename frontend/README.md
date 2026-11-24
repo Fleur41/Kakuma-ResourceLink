@@ -21,7 +21,7 @@ npm install
 npm run dev          # http://localhost:5173 — /api and /media are proxied to the backend
 ```
 
-Sign in with a demo account from `python manage.py seed_demo` (e.g. `amina@demo.kakuma.test`; the password is printed by the command).
+Sign in with a test account from `python manage.py seed_testdata` (e.g. `amina@demo.kakuma.test`, password `Admin@123`; see the [root README](../README.md#backend-quick-start) for all accounts).
 
 To point the app at another API host, copy `.env.example` to `.env` and set `VITE_API_URL` (e.g. `https://api.example.org/api/v1`). That host must allow the web origin in `CORS_ALLOWED_ORIGINS`.
 
