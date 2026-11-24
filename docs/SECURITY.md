@@ -60,11 +60,11 @@ It covers what is protected, what the review changed, and what still has to happ
 
 These are deliberate hackathon-scope decisions or tasks that need infrastructure:
 
-- **Web hosting headers.** Serve the web app with a strict `Content-Security-Policy` (`default-src 'self'`; `img-src` allowing the API media host; `connect-src` the API origin) plus the same HSTS/nosniff headers. This is the main mitigation for the refresh token being in `localStorage`. Alternatively, move the web refresh token to an `HttpOnly; Secure; SameSite=Strict` cookie on the API domain.
+- **Web hosting headers — done for the Docker image.** `frontend/Dockerfile` serves the app through nginx with a strict CSP (`script-src 'self'`, no inline scripts), `frame-ancestors 'none'`, `nosniff`, `Referrer-Policy` and `Permissions-Policy`, and proxies `/api` on the same origin. This is the main mitigation for the refresh token being in `localStorage`. Remaining: enable HSTS once TLS is in front (commented line in `frontend/security-headers.conf`). A stronger option is to move the web refresh token to an `HttpOnly; Secure; SameSite=Strict` cookie.
 - **Media serving.** Django serves `/media/` only in DEBUG. In production, serve uploads from a reverse proxy or object storage with `Content-Disposition`/`nosniff` and no script execution.
 - **Secrets.** Set `DJANGO_SECRET_KEY`, the database password and `ANTHROPIC_API_KEY` from a secret manager. Never reuse `.env.example` values.
 - **Demo data.** `seed_demo` creates accounts with a shared demo password. Never run it against a production database.
 - **Email.** Configure a real SMTP backend for password reset (the dev backend prints to the console).
-- **Android release.** Add a release signing config, review R8 keep rules, and set `kakuma.apiUrl` to the real HTTPS API.
+- **Android release — signing config done.** Keys come from `keystore.properties` or environment variables (see `mobile/README.md`). Remaining: create and back up the real upload key, and build with `-Pkakuma.apiUrl` set to the real HTTPS API.
 - **Content verification.** All seed content is illustrative and marked unverified. Real listings need a verification workflow before being shown as "Verified".
 - **Monitoring.** Add error tracking and alerting for repeated auth failures and moderation reports.

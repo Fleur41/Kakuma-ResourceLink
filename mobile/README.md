@@ -64,3 +64,24 @@ app/src/main/java/com/kakuma/resourcelink/
 | Repository | `OpportunityRepositoryImplTest` (Room + Retrofit + MockWebServer: synced, queued offline, reverted) |
 | UI | `ScreenStatesTest` (error/empty states, login errors and loading, welcome) |
 | Navigation | `AppNavigationTest` (instrumented: auth flow, guest guards for mentorship and the assistant) |
+
+## Release build
+
+Release builds are minified (R8), HTTPS-only and point at `https://api.kakuma-resourcelink.example/api/v1/` unless you pass `-Pkakuma.apiUrl=https://your-api/api/v1/`.
+
+Signing keys never go in the repo. Provide them in **one** of two ways:
+
+- a git-ignored `mobile/keystore.properties`:
+  ```properties
+  storeFile=/absolute/path/to/release.jks
+  storePassword=…
+  keyAlias=…
+  keyPassword=…
+  ```
+- or environment variables (for CI): `KAKUMA_KEYSTORE_FILE`, `KAKUMA_KEYSTORE_PASSWORD`, `KAKUMA_KEY_ALIAS`, `KAKUMA_KEY_PASSWORD`.
+
+```bash
+./gradlew :app:bundleRelease -Pkakuma.apiUrl=https://your-api/api/v1/   # .aab for Google Play
+```
+
+Without a key, `assembleRelease` still works for demos but is signed with the debug key, and Google Play rejects it. Create a key once with `keytool -genkeypair -keystore release.jks -alias kakuma -keyalg RSA -keysize 4096 -validity 10000`, and back it up: losing it means you can't ship updates.

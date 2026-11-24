@@ -41,7 +41,7 @@ python manage.py runserver 0.0.0.0:8000
 - Admin: `http://localhost:8000/admin/` (`python manage.py createsuperuser`)
 - Demo accounts (local only): `amina@demo.kakuma.test`, `daniel@demo.kakuma.test` (mentor), `moderator@demo.kakuma.test`. The password is printed by `seed_demo`.
 
-Run the whole stack in Docker instead: `docker compose --profile full up --build`.
+Run the whole stack in Docker instead: `docker compose --profile full up --build` (API on :8000, production web build with security headers on http://localhost:8080).
 
 ### Tests
 
@@ -61,6 +61,17 @@ pytest --cov=apps               # coverage report
 - The default model is `claude-opus-5-5`, configurable with `AI_MODEL` and `AI_EFFORT`. Server-side refusal fallback is enabled (`AI_ENABLE_FALLBACKS`).
 - Without `ANTHROPIC_API_KEY` the endpoint returns `503 ai_unavailable`. It never returns a fabricated answer.
 
+### Server translations
+
+Emails, API error messages and notifications are translated on the server (`backend/locale/`, sw/es/it/de). Notifications use each recipient's preferred language; API errors follow the `Accept-Language` header that both clients send. After changing a translatable string:
+
+```bash
+cd backend
+python manage.py makemessages -l sw -l es -l it -l de --ignore=.venv
+# translate the new entries in locale/<lang>/LC_MESSAGES/django.po, then
+python manage.py compilemessages --ignore=.venv   # commit both .po and .mo
+```
+
 ## Web app quick start
 
 ```bash
@@ -74,7 +85,7 @@ See [`frontend/README.md`](frontend/README.md) for details.
 
 | Part | Command | Tests |
 |---|---|---|
-| Backend | `cd backend && pytest` | 94 (97% coverage, PostgreSQL) |
+| Backend | `cd backend && pytest` | 96 (97% coverage, PostgreSQL) |
 | Android | `cd mobile && ./gradlew testDebugUnitTest` (+ `connectedDebugAndroidTest` on an emulator) | 61 unit + 6 instrumented |
 | Web | `cd frontend && npm test` | 48 |
 

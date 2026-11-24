@@ -8,7 +8,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] API contract — `docs/api/API_CONTRACT.md`
 - [x] Design system spec — `docs/designs/DESIGN_SYSTEM.md`
 
-## Phase 2 — Backend  ✅ (94 tests passing on PostgreSQL 16, 97% coverage)
+## Phase 2 — Backend  ✅ (96 tests passing on PostgreSQL 16, 97% coverage)
 - [x] Project skeleton, split settings (base/development/test/production), Docker + Postgres, .env.example
 - [x] common: UUID base model, pagination, error envelope, upload validators, throttles
 - [x] accounts: custom user, profile, register/login/refresh(rotation+blacklist)/logout/me/avatar/password reset/change
@@ -25,7 +25,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] Demo seed command (`seed_demo`)
 - [x] Docker image builds
 - [ ] Live Claude call verified with a real ANTHROPIC_API_KEY (needs key)
-- [ ] Translation catalogues (.po) for sw/es/it/de server messages (clients localize UI strings)
+- [x] Translation catalogues (.po/.mo) for sw/es/it/de server messages: emails, API errors, notifications (129 strings each)
 
 ## Phase 3 — Android  ✅ (61 unit + 6 instrumented tests passing, lint 0 errors)
 - [x] Gradle KTS + libs.versions.toml (AGP 9.3, Kotlin 2.4, compileSdk 37.1, minSdk 26)
@@ -36,7 +36,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] Tests: use cases, ViewModels/Flows, DAO, repository, network, UI, navigation
 - [x] Smoke-tested on an API 37 emulator against the local backend (sign-in, all tabs, Kiswahili)
 - [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
-- [ ] Release signing config + R8 rules review before store upload
+- [x] Release signing config (keystore.properties or env vars) + R8 rules reviewed; minified signed build run on emulator
 
 ## Phase 4 — React  ✅ (48 tests passing, typecheck + build clean, lint 0 errors)
 - [x] Vite + TS skeleton, API client w/ single-flight refresh, protected routes, i18n
@@ -51,4 +51,5 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] Fixes: Pillow 13.0.0 + DRF 3.18.3 (64 advisories), AI prompt-fence escaping, HTTPS-only Android release, stable OpenAPI enum order
 - [x] README: docs index, test overview, web quick start
 - [x] Demo script — `docs/DEMO_SCRIPT.md`
-- [ ] Before launch: CSP headers for web hosting, media via proxy/object storage, Android release signing (see SECURITY.md)
+- [x] Web production image: nginx with CSP + security headers, same-origin API proxy (`docker compose --profile full up`, port 8080), verified in Chrome with no CSP violations
+- [ ] Before launch: real domain + TLS (then enable HSTS in `frontend/security-headers.conf`), media via object storage, upload signing key, live AI check (see SECURITY.md)
