@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     // AGP 9 compiles Kotlin itself (built-in Kotlin); only the Compose compiler plugin is added.
@@ -10,6 +12,19 @@ plugins {
 // Override the API host without editing code: ./gradlew assembleDebug -Pkakuma.apiUrl=http://192.168.1.10:8000/api/v1/
 fun propertyOr(name: String, default: String): String =
     (project.findProperty(name) as String?)?.takeIf { it.isNotBlank() } ?: default
+
+// Release signing comes from keystore.properties (git-ignored) or environment variables, never from the repo.
+// Keys: storeFile, storePassword, keyAlias, keyPassword. See README "Release build".
+val releaseSigning: Map<String, String>? = run {
+    val file = rootProject.file("keystore.properties")
+    val props = Properties().apply { if (file.exists()) file.inputStream().use { load(it) } }
+    val keys = mapOf(
+        "storeFile" to "KAKUMA_KEYSTORE_FILE", "storePassword" to "KAKUMA_KEYSTORE_PASSWORD",
+        "keyAlias" to "KAKUMA_KEY_ALIAS", "keyPassword" to "KAKUMA_KEY_PASSWORD",
+    )
+    val values = keys.mapValues { (prop, env) -> props.getProperty(prop) ?: System.getenv(env) }
+    if (values.values.all { !it.isNullOrBlank() }) values.mapValues { it.value!! } else null
+}
 
 android {
     namespace = "com.kakuma.resourcelink"
@@ -28,6 +43,17 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    signingConfigs {
+        if (releaseSigning != null) {
+            create("release") {
+                storeFile = rootProject.file(releaseSigning.getValue("storeFile"))
+                storePassword = releaseSigning.getValue("storePassword")
+                keyAlias = releaseSigning.getValue("keyAlias")
+                keyPassword = releaseSigning.getValue("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             // Android 17 (API 37) blocks private-LAN addresses such as 10.0.2.2 unless the app holds
@@ -41,8 +67,9 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "API_BASE_URL", "\"${propertyOr("kakuma.apiUrl", "https://api.kakuma-resourcelink.example/api/v1/")}\"")
             buildConfigField("boolean", "HTTP_LOGGING", "false")
-            // Debug key so `assembleRelease` works for demos; replace with a real signing config before publishing.
-            signingConfig = signingConfigs.getByName("debug")
+            // Real key when configured; otherwise the debug key so `assembleRelease` still works for demos.
+            // A debug-signed APK cannot be uploaded to Google Play.
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
 
