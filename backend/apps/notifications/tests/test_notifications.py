@@ -27,9 +27,31 @@ def test_cannot_read_others(auth_client, make_user):
 def test_notification_rendered_in_recipient_language(make_user):
     from django.utils.translation import gettext_lazy as _
 
-    u = make_user(preferred_language="de")
-    n = notify(u, "system", _("Hello %(name)s"), params={"name": "Amina"})
-    assert n.title == "Hello Amina"  # no German catalogue yet; verifies params are applied safely
+    n = notify(make_user(preferred_language="de"), "story_published", _("Your story is live"),
+               _("“%(title)s” has been published."), params={"title": "Mein Weg"})
+    assert (n.title, n.body) == ("Deine Geschichte ist online", "„Mein Weg“ wurde veröffentlicht.")
+    n = notify(make_user(preferred_language="sw"), "story_published", _("Your story is live"))
+    assert n.title == "Hadithi yako imechapishwa"
+    n = notify(make_user(preferred_language="en"), "story_published", _("Your story is live"))
+    assert n.title == "Your story is live"
+
+
+def test_translated_status_label_inside_message(make_user):
+    from django.utils.translation import gettext_lazy as _
+
+    from apps.mentorship.models import MentorshipStatus
+
+    n = notify(make_user(preferred_language="es"), "mentorship_update", _("Mentorship request update"),
+               _("Your mentorship request “%(goal)s” is now %(status)s."),
+               params={"goal": "Becas", "status": MentorshipStatus.ACCEPTED.label})
+    assert n.body == "Tu solicitud de mentoría «Becas» ahora está: Aceptada."
+
+
+def test_api_errors_follow_accept_language(api_client):
+    res = api_client.post("/api/v1/auth/login/", {"email": "nobody@example.org", "password": "wrong-pass-1"},
+                          format="json", HTTP_ACCEPT_LANGUAGE="it")
+    assert res.status_code in (400, 401)
+    assert "Email o password non corretti." in str(res.data)
 
 
 def test_inactive_recipient_skipped(make_user):

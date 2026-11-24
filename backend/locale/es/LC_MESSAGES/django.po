@@ -1,0 +1,551 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Kakuma ResourceLink\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-24 19:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Kakuma ResourceLink team\n"
+"Language-Team: Kakuma ResourceLink team\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: apps/accounts/models.py:17
+msgid "Community member"
+msgstr "Miembro de la comunidad"
+
+#: apps/accounts/models.py:18
+msgid "Alumni"
+msgstr "Exalumno/a"
+
+#: apps/accounts/models.py:19
+msgid "Mentor"
+msgstr "Mentor/a"
+
+#: apps/accounts/models.py:20
+msgid "Moderator"
+msgstr "Moderador/a"
+
+#: apps/accounts/models.py:21
+msgid "Administrator"
+msgstr "Administrador/a"
+
+#: apps/accounts/models.py:59
+msgid "email address"
+msgstr "correo electrónico"
+
+#: apps/accounts/serializers.py:70
+msgid "An account with this email already exists."
+msgstr "Ya existe una cuenta con este correo."
+
+#: apps/accounts/serializers.py:93
+msgid "Incorrect email or password."
+msgstr "Correo o contraseña incorrectos."
+
+#: apps/accounts/serializers.py:124
+msgid "This reset link is invalid or has expired."
+msgstr "Este enlace no es válido o ha caducado."
+
+#: apps/accounts/serializers.py:136
+msgid "Current password is incorrect."
+msgstr "La contraseña actual es incorrecta."
+
+#: apps/accounts/services.py:46
+msgid "Reset your Kakuma ResourceLink password"
+msgstr "Restablece tu contraseña de Kakuma ResourceLink"
+
+#: apps/accounts/services.py:47
+#, python-format
+msgid ""
+"Use this link to choose a new password: %(link)s\n"
+"If you did not request this, ignore this email."
+msgstr ""
+"Usa este enlace para elegir una nueva contraseña: %(link)s\n"
+"Si no lo solicitaste, ignora este correo."
+
+#: apps/accounts/views.py:77 apps/accounts/views.py:79
+msgid "Invalid or expired refresh token."
+msgstr "Token de actualización no válido o caducado."
+
+#: apps/accounts/views.py:116
+msgid "If an account exists for this email, a reset link has been sent."
+msgstr ""
+"Si existe una cuenta con este correo, hemos enviado un enlace para "
+"restablecerla."
+
+#: apps/ai_assistant/claude_client.py:51
+msgid "The assistant is busy right now. Please try again in a minute."
+msgstr "El asistente está ocupado. Inténtalo de nuevo en un minuto."
+
+#: apps/ai_assistant/claude_client.py:63
+msgid "The assistant can't help with this request."
+msgstr "El asistente no puede ayudar con esta solicitud."
+
+#: apps/ai_assistant/exceptions.py:8
+msgid "The assistant is not available right now. Please try again later."
+msgstr "El asistente no está disponible ahora. Inténtalo más tarde."
+
+#: apps/ai_assistant/exceptions.py:14
+msgid "The assistant could not answer this request. Please try again."
+msgstr "El asistente no pudo responder. Inténtalo de nuevo."
+
+#: apps/ai_assistant/models.py:20
+msgid "User"
+msgstr "Usuario"
+
+#: apps/ai_assistant/models.py:21
+msgid "Assistant"
+msgstr "Asistente"
+
+#: apps/ai_assistant/services.py:30
+msgid "Choose an opportunity to explain."
+msgstr "Elige una oportunidad para explicar."
+
+#: apps/ai_assistant/services.py:35
+msgid "Choose a story to summarise."
+msgstr "Elige una historia para resumir."
+
+#: apps/common/exceptions.py:19
+msgid "The request conflicts with the current state of the resource."
+msgstr "La solicitud entra en conflicto con el estado actual."
+
+#: apps/common/exceptions.py:24
+msgid "This status change is not allowed."
+msgstr "Este cambio de estado no está permitido."
+
+#: apps/common/exceptions.py:30
+msgid "This service is temporarily unavailable."
+msgstr "Este servicio no está disponible temporalmente."
+
+#: apps/common/exceptions.py:54
+msgid "Something went wrong. Please try again."
+msgstr "Algo salió mal. Inténtalo de nuevo."
+
+#: apps/common/validators.py:16
+#, python-format
+msgid "Image is too large. Maximum size is %(mb)s MB."
+msgstr "La imagen es demasiado grande. El máximo es %(mb)s MB."
+
+#: apps/common/validators.py:24
+msgid "Unsupported image type. Use JPG, PNG or WEBP."
+msgstr "Tipo de imagen no admitido. Usa JPG, PNG o WEBP."
+
+#: apps/contributions/models.py:15 apps/stories/models.py:17
+msgid "In review"
+msgstr "En revisión"
+
+#: apps/contributions/models.py:16
+msgid "Active"
+msgstr "Activo"
+
+#: apps/contributions/models.py:17 apps/mentorship/models.py:14
+msgid "Completed"
+msgstr "Completado"
+
+#: apps/contributions/models.py:18
+msgid "Not approved"
+msgstr "No aprobado"
+
+#: apps/contributions/models.py:22 apps/opportunities/models.py:11
+#: apps/services/models.py:10 apps/stories/models.py:24
+msgid "Education"
+msgstr "Educación"
+
+#: apps/contributions/models.py:23
+msgid "Health"
+msgstr "Salud"
+
+#: apps/contributions/models.py:24 apps/services/models.py:13
+msgid "Livelihood"
+msgstr "Medios de vida"
+
+#: apps/contributions/models.py:25
+msgid "Technology"
+msgstr "Tecnología"
+
+#: apps/contributions/models.py:26
+msgid "Environment"
+msgstr "Medio ambiente"
+
+#: apps/contributions/models.py:27
+msgid "Youth & sports"
+msgstr "Juventud y deporte"
+
+#: apps/contributions/models.py:28 apps/mentorship/models.py:22
+#: apps/moderation/models.py:26
+msgid "Other"
+msgstr "Otro"
+
+#: apps/contributions/models.py:32
+msgid "Mentoring"
+msgstr "Mentoría"
+
+#: apps/contributions/models.py:33
+msgid "Volunteering"
+msgstr "Voluntariado"
+
+#: apps/contributions/models.py:34
+msgid "Equipment"
+msgstr "Equipamiento"
+
+#: apps/contributions/models.py:35
+msgid "Professional skills"
+msgstr "Habilidades profesionales"
+
+#: apps/contributions/models.py:36
+msgid "Financial pledge"
+msgstr "Compromiso económico"
+
+#: apps/contributions/models.py:41
+msgid "Pledged"
+msgstr "Comprometido"
+
+#: apps/contributions/models.py:42
+msgid "Confirmed by project"
+msgstr "Confirmado por el proyecto"
+
+#: apps/contributions/models.py:43
+msgid "Fulfilled"
+msgstr "Cumplido"
+
+#: apps/contributions/models.py:44 apps/mentorship/models.py:13
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#: apps/contributions/services.py:23
+msgid "This project is not accepting contributions right now."
+msgstr "Este proyecto no acepta aportes ahora."
+
+#: apps/contributions/services.py:25
+msgid "This project does not accept this type of contribution."
+msgstr "Este proyecto no acepta este tipo de aporte."
+
+#: apps/contributions/services.py:28
+msgid "Enter the amount you are pledging."
+msgstr "Indica el importe que te comprometes a aportar."
+
+#: apps/contributions/services.py:38
+msgid "New contribution pledged"
+msgstr "Nuevo aporte comprometido"
+
+#: apps/contributions/services.py:39
+#, python-format
+msgid "%(name)s pledged support to “%(title)s”."
+msgstr "%(name)s se comprometió a apoyar «%(title)s»."
+
+#: apps/diaspora/models.py:9
+msgid "Everyone"
+msgstr "Todos"
+
+#: apps/diaspora/models.py:10
+msgid "Signed-in members only"
+msgstr "Solo miembros con sesión iniciada"
+
+#: apps/diaspora/models.py:11
+msgid "Only me"
+msgstr "Solo yo"
+
+#: apps/diaspora/serializers.py:64
+msgid "Please confirm you agree to share this profile with the community."
+msgstr "Confirma que aceptas compartir este perfil con la comunidad."
+
+#: apps/diaspora/views.py:58
+msgid "You have not created an alumni profile yet."
+msgstr "Aún no has creado un perfil de exalumno/a."
+
+#: apps/mentorship/models.py:10
+msgid "Pending"
+msgstr "Pendiente"
+
+#: apps/mentorship/models.py:11
+msgid "Accepted"
+msgstr "Aceptada"
+
+#: apps/mentorship/models.py:12
+msgid "Declined"
+msgstr "Rechazada"
+
+#: apps/mentorship/models.py:18
+msgid "Career guidance"
+msgstr "Orientación profesional"
+
+#: apps/mentorship/models.py:19
+msgid "Technical skills"
+msgstr "Habilidades técnicas"
+
+#: apps/mentorship/models.py:20
+msgid "Scholarship applications"
+msgstr "Solicitudes de becas"
+
+#: apps/mentorship/models.py:21 apps/opportunities/models.py:15
+#: apps/stories/models.py:27
+msgid "Entrepreneurship"
+msgstr "Emprendimiento"
+
+#: apps/mentorship/services.py:24
+msgid "You cannot request mentorship from yourself."
+msgstr "No puedes pedirte mentoría a ti mismo/a."
+
+#: apps/mentorship/services.py:26
+msgid "This person is not accepting mentorship requests."
+msgstr "Esta persona no acepta solicitudes de mentoría."
+
+#: apps/mentorship/services.py:33
+msgid "You already have a pending request with this mentor."
+msgstr "Ya tienes una solicitud pendiente con esta persona."
+
+#: apps/mentorship/services.py:35 apps/notifications/models.py:9
+msgid "New mentorship request"
+msgstr "Nueva solicitud de mentoría"
+
+#: apps/mentorship/services.py:36
+#, python-format
+msgid "%(name)s would like your mentorship: %(goal)s"
+msgstr "%(name)s quiere tu mentoría: %(goal)s"
+
+#: apps/mentorship/services.py:60 apps/notifications/models.py:10
+msgid "Mentorship request update"
+msgstr "Novedades de tu solicitud de mentoría"
+
+#: apps/mentorship/services.py:61
+#, python-format
+msgid "Your mentorship request “%(goal)s” is now %(status)s."
+msgstr "Tu solicitud de mentoría «%(goal)s» ahora está: %(status)s."
+
+#: apps/moderation/models.py:9
+msgid "Story"
+msgstr "Historia"
+
+#: apps/moderation/models.py:10
+msgid "Comment"
+msgstr "Comentario"
+
+#: apps/moderation/models.py:11
+msgid "Community project"
+msgstr "Proyecto comunitario"
+
+#: apps/moderation/models.py:15
+msgid "Open"
+msgstr "Abierto"
+
+#: apps/moderation/models.py:16
+msgid "Resolved"
+msgstr "Resuelto"
+
+#: apps/moderation/models.py:17
+msgid "Dismissed"
+msgstr "Descartado"
+
+#: apps/moderation/models.py:21
+msgid "Spam"
+msgstr "Spam"
+
+#: apps/moderation/models.py:22
+msgid "Harassment or hate"
+msgstr "Acoso u odio"
+
+#: apps/moderation/models.py:23
+msgid "Shares private information"
+msgstr "Comparte información privada"
+
+#: apps/moderation/models.py:24
+msgid "False or misleading"
+msgstr "Falso o engañoso"
+
+#: apps/moderation/models.py:25
+msgid "Scam or fraud"
+msgstr "Estafa o fraude"
+
+#: apps/moderation/models.py:50
+msgid "Approve"
+msgstr "Aprobar"
+
+#: apps/moderation/models.py:51
+msgid "Reject"
+msgstr "Rechazar"
+
+#: apps/moderation/models.py:52
+msgid "Hide"
+msgstr "Ocultar"
+
+#: apps/moderation/models.py:53
+msgid "Resolve report"
+msgstr "Resolver denuncia"
+
+#: apps/moderation/models.py:54
+msgid "Dismiss report"
+msgstr "Descartar denuncia"
+
+#: apps/moderation/services.py:45
+msgid "Your project is now active"
+msgstr "Tu proyecto ya está activo"
+
+#: apps/moderation/services.py:45
+msgid "Your project was not approved"
+msgstr "Tu proyecto no fue aprobado"
+
+#: apps/moderation/services.py:61
+msgid "The reported content does not exist."
+msgstr "El contenido denunciado no existe."
+
+#: apps/notifications/models.py:11
+msgid "Story published"
+msgstr "Historia publicada"
+
+#: apps/notifications/models.py:12
+msgid "Story needs changes"
+msgstr "La historia necesita cambios"
+
+#: apps/notifications/models.py:13
+msgid "New comment"
+msgstr "Nuevo comentario"
+
+#: apps/notifications/models.py:14
+msgid "New contribution"
+msgstr "Nuevo aporte"
+
+#: apps/notifications/models.py:15
+msgid "Project status update"
+msgstr "Novedades del estado del proyecto"
+
+#: apps/notifications/models.py:16
+msgid "System"
+msgstr "Sistema"
+
+#: apps/opportunities/models.py:10
+msgid "Scholarship"
+msgstr "Beca"
+
+#: apps/opportunities/models.py:12
+msgid "Vocational training"
+msgstr "Formación profesional"
+
+#: apps/opportunities/models.py:13
+msgid "Job"
+msgstr "Empleo"
+
+#: apps/opportunities/models.py:14
+msgid "Internship"
+msgstr "Prácticas"
+
+#: apps/opportunities/models.py:19 apps/stories/models.py:16
+msgid "Draft"
+msgstr "Borrador"
+
+#: apps/opportunities/models.py:20 apps/stories/models.py:18
+msgid "Published"
+msgstr "Publicada"
+
+#: apps/opportunities/models.py:21 apps/stories/models.py:20
+msgid "Archived"
+msgstr "Archivada"
+
+#: apps/services/models.py:8
+msgid "Healthcare"
+msgstr "Atención sanitaria"
+
+#: apps/services/models.py:9
+msgid "Humanitarian organization"
+msgstr "Organización humanitaria"
+
+#: apps/services/models.py:11
+msgid "Legal aid"
+msgstr "Asistencia legal"
+
+#: apps/services/models.py:12
+msgid "Protection"
+msgstr "Protección"
+
+#: apps/services/models.py:14
+msgid "Community service"
+msgstr "Servicio comunitario"
+
+#: apps/stories/models.py:19
+msgid "Needs changes"
+msgstr "Necesita cambios"
+
+#: apps/stories/models.py:25
+msgid "Career"
+msgstr "Carrera"
+
+#: apps/stories/models.py:26
+msgid "Resettlement"
+msgstr "Reasentamiento"
+
+#: apps/stories/models.py:28
+msgid "Inspiration"
+msgstr "Inspiración"
+
+#: apps/stories/models.py:29
+msgid "Advice"
+msgstr "Consejos"
+
+#: apps/stories/models.py:30
+msgid "Community"
+msgstr "Comunidad"
+
+#: apps/stories/services.py:27
+msgid "This story is already published."
+msgstr "Esta historia ya está publicada."
+
+#: apps/stories/services.py:29
+msgid "This story is already waiting for review."
+msgstr "Esta historia ya está esperando revisión."
+
+#: apps/stories/services.py:31
+msgid "Please confirm you consent to publishing this story."
+msgstr "Confirma que aceptas publicar esta historia."
+
+#: apps/stories/services.py:62
+msgid "Your story is live"
+msgstr "Tu historia ya está publicada"
+
+#: apps/stories/services.py:63
+#, python-format
+msgid "“%(title)s” has been published."
+msgstr "«%(title)s» se ha publicado."
+
+#: apps/stories/services.py:77
+msgid "Your story needs changes"
+msgstr "Tu historia necesita cambios"
+
+#: apps/stories/services.py:85
+msgid "Comments are only available on published stories."
+msgstr "Solo se puede comentar en historias publicadas."
+
+#: apps/stories/services.py:89
+msgid "New comment on your story"
+msgstr "Nuevo comentario en tu historia"
+
+#: apps/stories/services.py:90
+#, python-format
+msgid "%(name)s commented on “%(title)s”."
+msgstr "%(name)s comentó en «%(title)s»."
+
+#: config/settings/base.py:93
+msgid "English"
+msgstr "Inglés"
+
+#: config/settings/base.py:94
+msgid "Swahili"
+msgstr "Suajili"
+
+#: config/settings/base.py:95
+msgid "Spanish"
+msgstr "Español"
+
+#: config/settings/base.py:96
+msgid "Italian"
+msgstr "Italiano"
+
+#: config/settings/base.py:97
+msgid "German"
+msgstr "Alemán"

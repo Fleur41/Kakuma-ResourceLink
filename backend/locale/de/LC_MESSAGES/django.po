@@ -1,0 +1,554 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Kakuma ResourceLink\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-24 19:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Kakuma ResourceLink team\n"
+"Language-Team: Kakuma ResourceLink team\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/accounts/models.py:17
+msgid "Community member"
+msgstr "Gemeinschaftsmitglied"
+
+#: apps/accounts/models.py:18
+msgid "Alumni"
+msgstr "Ehemalige*r"
+
+#: apps/accounts/models.py:19
+msgid "Mentor"
+msgstr "Mentor*in"
+
+#: apps/accounts/models.py:20
+msgid "Moderator"
+msgstr "Moderator*in"
+
+#: apps/accounts/models.py:21
+msgid "Administrator"
+msgstr "Administrator*in"
+
+#: apps/accounts/models.py:59
+msgid "email address"
+msgstr "E-Mail-Adresse"
+
+#: apps/accounts/serializers.py:70
+msgid "An account with this email already exists."
+msgstr "Für diese E-Mail gibt es bereits ein Konto."
+
+#: apps/accounts/serializers.py:93
+msgid "Incorrect email or password."
+msgstr "E-Mail oder Passwort ist falsch."
+
+#: apps/accounts/serializers.py:124
+msgid "This reset link is invalid or has expired."
+msgstr "Dieser Link ist ungültig oder abgelaufen."
+
+#: apps/accounts/serializers.py:136
+msgid "Current password is incorrect."
+msgstr "Das aktuelle Passwort ist falsch."
+
+#: apps/accounts/services.py:46
+msgid "Reset your Kakuma ResourceLink password"
+msgstr "Setze dein Kakuma-ResourceLink-Passwort zurück"
+
+#: apps/accounts/services.py:47
+#, python-format
+msgid ""
+"Use this link to choose a new password: %(link)s\n"
+"If you did not request this, ignore this email."
+msgstr ""
+"Nutze diesen Link, um ein neues Passwort festzulegen: %(link)s\n"
+"Wenn du das nicht angefordert hast, ignoriere diese E-Mail."
+
+#: apps/accounts/views.py:77 apps/accounts/views.py:79
+msgid "Invalid or expired refresh token."
+msgstr "Ungültiges oder abgelaufenes Aktualisierungstoken."
+
+#: apps/accounts/views.py:116
+msgid "If an account exists for this email, a reset link has been sent."
+msgstr "Falls ein Konto mit dieser E-Mail existiert, wurde ein Link gesendet."
+
+#: apps/ai_assistant/claude_client.py:51
+msgid "The assistant is busy right now. Please try again in a minute."
+msgstr ""
+"Der Assistent ist gerade ausgelastet. Bitte versuche es in einer Minute "
+"erneut."
+
+#: apps/ai_assistant/claude_client.py:63
+msgid "The assistant can't help with this request."
+msgstr "Der Assistent kann bei dieser Anfrage nicht helfen."
+
+#: apps/ai_assistant/exceptions.py:8
+msgid "The assistant is not available right now. Please try again later."
+msgstr ""
+"Der Assistent ist gerade nicht verfügbar. Bitte versuche es später erneut."
+
+#: apps/ai_assistant/exceptions.py:14
+msgid "The assistant could not answer this request. Please try again."
+msgstr "Der Assistent konnte nicht antworten. Bitte versuche es erneut."
+
+#: apps/ai_assistant/models.py:20
+msgid "User"
+msgstr "Nutzer*in"
+
+#: apps/ai_assistant/models.py:21
+msgid "Assistant"
+msgstr "Assistent"
+
+#: apps/ai_assistant/services.py:30
+msgid "Choose an opportunity to explain."
+msgstr "Wähle eine Chance aus, die erklärt werden soll."
+
+#: apps/ai_assistant/services.py:35
+msgid "Choose a story to summarise."
+msgstr "Wähle eine Geschichte zum Zusammenfassen."
+
+#: apps/common/exceptions.py:19
+msgid "The request conflicts with the current state of the resource."
+msgstr "Die Anfrage widerspricht dem aktuellen Stand."
+
+#: apps/common/exceptions.py:24
+msgid "This status change is not allowed."
+msgstr "Diese Statusänderung ist nicht erlaubt."
+
+#: apps/common/exceptions.py:30
+msgid "This service is temporarily unavailable."
+msgstr "Dieser Dienst ist vorübergehend nicht verfügbar."
+
+#: apps/common/exceptions.py:54
+msgid "Something went wrong. Please try again."
+msgstr "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+
+#: apps/common/validators.py:16
+#, python-format
+msgid "Image is too large. Maximum size is %(mb)s MB."
+msgstr "Das Bild ist zu groß. Maximal %(mb)s MB."
+
+#: apps/common/validators.py:24
+msgid "Unsupported image type. Use JPG, PNG or WEBP."
+msgstr "Bildformat nicht unterstützt. Verwende JPG, PNG oder WEBP."
+
+#: apps/contributions/models.py:15 apps/stories/models.py:17
+msgid "In review"
+msgstr "In Prüfung"
+
+#: apps/contributions/models.py:16
+msgid "Active"
+msgstr "Aktiv"
+
+#: apps/contributions/models.py:17 apps/mentorship/models.py:14
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+#: apps/contributions/models.py:18
+msgid "Not approved"
+msgstr "Nicht freigegeben"
+
+#: apps/contributions/models.py:22 apps/opportunities/models.py:11
+#: apps/services/models.py:10 apps/stories/models.py:24
+msgid "Education"
+msgstr "Bildung"
+
+#: apps/contributions/models.py:23
+msgid "Health"
+msgstr "Gesundheit"
+
+#: apps/contributions/models.py:24 apps/services/models.py:13
+msgid "Livelihood"
+msgstr "Lebensunterhalt"
+
+#: apps/contributions/models.py:25
+msgid "Technology"
+msgstr "Technologie"
+
+#: apps/contributions/models.py:26
+msgid "Environment"
+msgstr "Umwelt"
+
+#: apps/contributions/models.py:27
+msgid "Youth & sports"
+msgstr "Jugend und Sport"
+
+#: apps/contributions/models.py:28 apps/mentorship/models.py:22
+#: apps/moderation/models.py:26
+msgid "Other"
+msgstr "Sonstiges"
+
+#: apps/contributions/models.py:32
+msgid "Mentoring"
+msgstr "Mentoring"
+
+#: apps/contributions/models.py:33
+msgid "Volunteering"
+msgstr "Ehrenamt"
+
+#: apps/contributions/models.py:34
+msgid "Equipment"
+msgstr "Ausstattung"
+
+#: apps/contributions/models.py:35
+msgid "Professional skills"
+msgstr "Fachliche Fähigkeiten"
+
+#: apps/contributions/models.py:36
+msgid "Financial pledge"
+msgstr "Finanzielle Zusage"
+
+#: apps/contributions/models.py:41
+msgid "Pledged"
+msgstr "Zugesagt"
+
+#: apps/contributions/models.py:42
+msgid "Confirmed by project"
+msgstr "Vom Projekt bestätigt"
+
+#: apps/contributions/models.py:43
+msgid "Fulfilled"
+msgstr "Erfüllt"
+
+#: apps/contributions/models.py:44 apps/mentorship/models.py:13
+msgid "Cancelled"
+msgstr "Zurückgezogen"
+
+#: apps/contributions/services.py:23
+msgid "This project is not accepting contributions right now."
+msgstr "Dieses Projekt nimmt gerade keine Beiträge an."
+
+#: apps/contributions/services.py:25
+msgid "This project does not accept this type of contribution."
+msgstr "Dieses Projekt nimmt diese Art von Beitrag nicht an."
+
+#: apps/contributions/services.py:28
+msgid "Enter the amount you are pledging."
+msgstr "Gib den Betrag ein, den du zusagst."
+
+#: apps/contributions/services.py:38
+msgid "New contribution pledged"
+msgstr "Neue Zusage"
+
+#: apps/contributions/services.py:39
+#, python-format
+msgid "%(name)s pledged support to “%(title)s”."
+msgstr "%(name)s hat Unterstützung für „%(title)s“ zugesagt."
+
+#: apps/diaspora/models.py:9
+msgid "Everyone"
+msgstr "Alle"
+
+#: apps/diaspora/models.py:10
+msgid "Signed-in members only"
+msgstr "Nur angemeldete Mitglieder"
+
+#: apps/diaspora/models.py:11
+msgid "Only me"
+msgstr "Nur ich"
+
+#: apps/diaspora/serializers.py:64
+msgid "Please confirm you agree to share this profile with the community."
+msgstr ""
+"Bitte bestätige, dass du dieses Profil mit der Gemeinschaft teilen möchtest."
+
+#: apps/diaspora/views.py:58
+msgid "You have not created an alumni profile yet."
+msgstr "Du hast noch kein Ehemaligen-Profil erstellt."
+
+#: apps/mentorship/models.py:10
+msgid "Pending"
+msgstr "Ausstehend"
+
+#: apps/mentorship/models.py:11
+msgid "Accepted"
+msgstr "Angenommen"
+
+#: apps/mentorship/models.py:12
+msgid "Declined"
+msgstr "Abgelehnt"
+
+#: apps/mentorship/models.py:18
+msgid "Career guidance"
+msgstr "Berufsberatung"
+
+#: apps/mentorship/models.py:19
+msgid "Technical skills"
+msgstr "Technische Fähigkeiten"
+
+#: apps/mentorship/models.py:20
+msgid "Scholarship applications"
+msgstr "Stipendienbewerbungen"
+
+#: apps/mentorship/models.py:21 apps/opportunities/models.py:15
+#: apps/stories/models.py:27
+msgid "Entrepreneurship"
+msgstr "Unternehmertum"
+
+#: apps/mentorship/services.py:24
+msgid "You cannot request mentorship from yourself."
+msgstr "Du kannst dich nicht selbst um Mentoring bitten."
+
+#: apps/mentorship/services.py:26
+msgid "This person is not accepting mentorship requests."
+msgstr "Diese Person nimmt keine Mentoring-Anfragen an."
+
+#: apps/mentorship/services.py:33
+msgid "You already have a pending request with this mentor."
+msgstr "Du hast bereits eine offene Anfrage bei dieser Person."
+
+#: apps/mentorship/services.py:35 apps/notifications/models.py:9
+msgid "New mentorship request"
+msgstr "Neue Mentoring-Anfrage"
+
+#: apps/mentorship/services.py:36
+#, python-format
+msgid "%(name)s would like your mentorship: %(goal)s"
+msgstr "%(name)s wünscht sich dein Mentoring: %(goal)s"
+
+#: apps/mentorship/services.py:60 apps/notifications/models.py:10
+msgid "Mentorship request update"
+msgstr "Neuigkeiten zu deiner Mentoring-Anfrage"
+
+#: apps/mentorship/services.py:61
+#, python-format
+msgid "Your mentorship request “%(goal)s” is now %(status)s."
+msgstr "Deine Mentoring-Anfrage „%(goal)s“ hat jetzt den Status: %(status)s."
+
+#: apps/moderation/models.py:9
+msgid "Story"
+msgstr "Geschichte"
+
+#: apps/moderation/models.py:10
+msgid "Comment"
+msgstr "Kommentar"
+
+#: apps/moderation/models.py:11
+msgid "Community project"
+msgstr "Gemeinschaftsprojekt"
+
+#: apps/moderation/models.py:15
+msgid "Open"
+msgstr "Offen"
+
+#: apps/moderation/models.py:16
+msgid "Resolved"
+msgstr "Erledigt"
+
+#: apps/moderation/models.py:17
+msgid "Dismissed"
+msgstr "Verworfen"
+
+#: apps/moderation/models.py:21
+msgid "Spam"
+msgstr "Spam"
+
+#: apps/moderation/models.py:22
+msgid "Harassment or hate"
+msgstr "Belästigung oder Hass"
+
+#: apps/moderation/models.py:23
+msgid "Shares private information"
+msgstr "Teilt private Informationen"
+
+#: apps/moderation/models.py:24
+msgid "False or misleading"
+msgstr "Falsch oder irreführend"
+
+#: apps/moderation/models.py:25
+msgid "Scam or fraud"
+msgstr "Betrug"
+
+#: apps/moderation/models.py:50
+msgid "Approve"
+msgstr "Freigeben"
+
+#: apps/moderation/models.py:51
+msgid "Reject"
+msgstr "Ablehnen"
+
+#: apps/moderation/models.py:52
+msgid "Hide"
+msgstr "Ausblenden"
+
+#: apps/moderation/models.py:53
+msgid "Resolve report"
+msgstr "Meldung erledigen"
+
+#: apps/moderation/models.py:54
+msgid "Dismiss report"
+msgstr "Meldung verwerfen"
+
+#: apps/moderation/services.py:45
+msgid "Your project is now active"
+msgstr "Dein Projekt ist jetzt aktiv"
+
+#: apps/moderation/services.py:45
+msgid "Your project was not approved"
+msgstr "Dein Projekt wurde nicht freigegeben"
+
+#: apps/moderation/services.py:61
+msgid "The reported content does not exist."
+msgstr "Der gemeldete Inhalt existiert nicht."
+
+#: apps/notifications/models.py:11
+msgid "Story published"
+msgstr "Geschichte veröffentlicht"
+
+#: apps/notifications/models.py:12
+msgid "Story needs changes"
+msgstr "Geschichte braucht Änderungen"
+
+#: apps/notifications/models.py:13
+msgid "New comment"
+msgstr "Neuer Kommentar"
+
+#: apps/notifications/models.py:14
+msgid "New contribution"
+msgstr "Neuer Beitrag"
+
+#: apps/notifications/models.py:15
+msgid "Project status update"
+msgstr "Neuigkeiten zum Projektstatus"
+
+#: apps/notifications/models.py:16
+msgid "System"
+msgstr "System"
+
+#: apps/opportunities/models.py:10
+msgid "Scholarship"
+msgstr "Stipendium"
+
+#: apps/opportunities/models.py:12
+msgid "Vocational training"
+msgstr "Berufsausbildung"
+
+#: apps/opportunities/models.py:13
+msgid "Job"
+msgstr "Stelle"
+
+#: apps/opportunities/models.py:14
+msgid "Internship"
+msgstr "Praktikum"
+
+#: apps/opportunities/models.py:19 apps/stories/models.py:16
+msgid "Draft"
+msgstr "Entwurf"
+
+#: apps/opportunities/models.py:20 apps/stories/models.py:18
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: apps/opportunities/models.py:21 apps/stories/models.py:20
+msgid "Archived"
+msgstr "Archiviert"
+
+#: apps/services/models.py:8
+msgid "Healthcare"
+msgstr "Gesundheitsversorgung"
+
+#: apps/services/models.py:9
+msgid "Humanitarian organization"
+msgstr "Humanitäre Organisation"
+
+#: apps/services/models.py:11
+msgid "Legal aid"
+msgstr "Rechtshilfe"
+
+#: apps/services/models.py:12
+msgid "Protection"
+msgstr "Schutz"
+
+#: apps/services/models.py:14
+msgid "Community service"
+msgstr "Gemeinschaftsdienst"
+
+#: apps/stories/models.py:19
+msgid "Needs changes"
+msgstr "Braucht Änderungen"
+
+#: apps/stories/models.py:25
+msgid "Career"
+msgstr "Beruf"
+
+#: apps/stories/models.py:26
+msgid "Resettlement"
+msgstr "Neuansiedlung"
+
+#: apps/stories/models.py:28
+msgid "Inspiration"
+msgstr "Inspiration"
+
+#: apps/stories/models.py:29
+msgid "Advice"
+msgstr "Ratschläge"
+
+#: apps/stories/models.py:30
+msgid "Community"
+msgstr "Gemeinschaft"
+
+#: apps/stories/services.py:27
+msgid "This story is already published."
+msgstr "Diese Geschichte ist bereits veröffentlicht."
+
+#: apps/stories/services.py:29
+msgid "This story is already waiting for review."
+msgstr "Diese Geschichte wartet bereits auf Prüfung."
+
+#: apps/stories/services.py:31
+msgid "Please confirm you consent to publishing this story."
+msgstr ""
+"Bitte bestätige dein Einverständnis zur Veröffentlichung dieser Geschichte."
+
+#: apps/stories/services.py:62
+msgid "Your story is live"
+msgstr "Deine Geschichte ist online"
+
+#: apps/stories/services.py:63
+#, python-format
+msgid "“%(title)s” has been published."
+msgstr "„%(title)s“ wurde veröffentlicht."
+
+#: apps/stories/services.py:77
+msgid "Your story needs changes"
+msgstr "Deine Geschichte braucht Änderungen"
+
+#: apps/stories/services.py:85
+msgid "Comments are only available on published stories."
+msgstr "Kommentare sind nur bei veröffentlichten Geschichten möglich."
+
+#: apps/stories/services.py:89
+msgid "New comment on your story"
+msgstr "Neuer Kommentar zu deiner Geschichte"
+
+#: apps/stories/services.py:90
+#, python-format
+msgid "%(name)s commented on “%(title)s”."
+msgstr "%(name)s hat „%(title)s“ kommentiert."
+
+#: config/settings/base.py:93
+msgid "English"
+msgstr "Englisch"
+
+#: config/settings/base.py:94
+msgid "Swahili"
+msgstr "Swahili"
+
+#: config/settings/base.py:95
+msgid "Spanish"
+msgstr "Spanisch"
+
+#: config/settings/base.py:96
+msgid "Italian"
+msgstr "Italienisch"
+
+#: config/settings/base.py:97
+msgid "German"
+msgstr "Deutsch"

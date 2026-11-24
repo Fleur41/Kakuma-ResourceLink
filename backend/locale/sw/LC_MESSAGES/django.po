@@ -1,0 +1,551 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Kakuma ResourceLink\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-24 19:52+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Kakuma ResourceLink team\n"
+"Language-Team: Kakuma ResourceLink team\n"
+"Language: sw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/accounts/models.py:17
+msgid "Community member"
+msgstr "Mwanajamii"
+
+#: apps/accounts/models.py:18
+msgid "Alumni"
+msgstr "Wahitimu"
+
+#: apps/accounts/models.py:19
+msgid "Mentor"
+msgstr "Mshauri"
+
+#: apps/accounts/models.py:20
+msgid "Moderator"
+msgstr "Msimamizi"
+
+#: apps/accounts/models.py:21
+msgid "Administrator"
+msgstr "Msimamizi mkuu"
+
+#: apps/accounts/models.py:59
+msgid "email address"
+msgstr "anwani ya barua pepe"
+
+#: apps/accounts/serializers.py:70
+msgid "An account with this email already exists."
+msgstr "Tayari kuna akaunti yenye barua pepe hii."
+
+#: apps/accounts/serializers.py:93
+msgid "Incorrect email or password."
+msgstr "Barua pepe au nenosiri si sahihi."
+
+#: apps/accounts/serializers.py:124
+msgid "This reset link is invalid or has expired."
+msgstr "Kiungo hiki si sahihi au muda wake umekwisha."
+
+#: apps/accounts/serializers.py:136
+msgid "Current password is incorrect."
+msgstr "Nenosiri la sasa si sahihi."
+
+#: apps/accounts/services.py:46
+msgid "Reset your Kakuma ResourceLink password"
+msgstr "Weka upya nenosiri lako la Kakuma ResourceLink"
+
+#: apps/accounts/services.py:47
+#, python-format
+msgid ""
+"Use this link to choose a new password: %(link)s\n"
+"If you did not request this, ignore this email."
+msgstr ""
+"Tumia kiungo hiki kuchagua nenosiri jipya: %(link)s\n"
+"Ikiwa hukuomba hili, puuza barua pepe hii."
+
+#: apps/accounts/views.py:77 apps/accounts/views.py:79
+msgid "Invalid or expired refresh token."
+msgstr "Tokeni ya kuonyesha upya si sahihi au imekwisha muda."
+
+#: apps/accounts/views.py:116
+msgid "If an account exists for this email, a reset link has been sent."
+msgstr ""
+"Ikiwa akaunti ipo kwa barua pepe hii, kiungo cha kuweka upya kimetumwa."
+
+#: apps/ai_assistant/claude_client.py:51
+msgid "The assistant is busy right now. Please try again in a minute."
+msgstr ""
+"Msaidizi ana shughuli sasa. Tafadhali jaribu tena baada ya dakika moja."
+
+#: apps/ai_assistant/claude_client.py:63
+msgid "The assistant can't help with this request."
+msgstr "Msaidizi hawezi kusaidia na ombi hili."
+
+#: apps/ai_assistant/exceptions.py:8
+msgid "The assistant is not available right now. Please try again later."
+msgstr "Msaidizi hapatikani sasa. Tafadhali jaribu tena baadaye."
+
+#: apps/ai_assistant/exceptions.py:14
+msgid "The assistant could not answer this request. Please try again."
+msgstr "Msaidizi hakuweza kujibu ombi hili. Tafadhali jaribu tena."
+
+#: apps/ai_assistant/models.py:20
+msgid "User"
+msgstr "Mtumiaji"
+
+#: apps/ai_assistant/models.py:21
+msgid "Assistant"
+msgstr "Msaidizi"
+
+#: apps/ai_assistant/services.py:30
+msgid "Choose an opportunity to explain."
+msgstr "Chagua fursa ya kuelezwa."
+
+#: apps/ai_assistant/services.py:35
+msgid "Choose a story to summarise."
+msgstr "Chagua hadithi ya kufupishwa."
+
+#: apps/common/exceptions.py:19
+msgid "The request conflicts with the current state of the resource."
+msgstr "Ombi linakinzana na hali ya sasa."
+
+#: apps/common/exceptions.py:24
+msgid "This status change is not allowed."
+msgstr "Mabadiliko haya ya hali hayaruhusiwi."
+
+#: apps/common/exceptions.py:30
+msgid "This service is temporarily unavailable."
+msgstr "Huduma hii haipatikani kwa muda."
+
+#: apps/common/exceptions.py:54
+msgid "Something went wrong. Please try again."
+msgstr "Hitilafu imetokea. Tafadhali jaribu tena."
+
+#: apps/common/validators.py:16
+#, python-format
+msgid "Image is too large. Maximum size is %(mb)s MB."
+msgstr "Picha ni kubwa mno. Ukubwa wa juu ni MB %(mb)s."
+
+#: apps/common/validators.py:24
+msgid "Unsupported image type. Use JPG, PNG or WEBP."
+msgstr "Aina ya picha haikubaliki. Tumia JPG, PNG au WEBP."
+
+#: apps/contributions/models.py:15 apps/stories/models.py:17
+msgid "In review"
+msgstr "Inakaguliwa"
+
+#: apps/contributions/models.py:16
+msgid "Active"
+msgstr "Hai"
+
+#: apps/contributions/models.py:17 apps/mentorship/models.py:14
+msgid "Completed"
+msgstr "Imekamilika"
+
+#: apps/contributions/models.py:18
+msgid "Not approved"
+msgstr "Haijaidhinishwa"
+
+#: apps/contributions/models.py:22 apps/opportunities/models.py:11
+#: apps/services/models.py:10 apps/stories/models.py:24
+msgid "Education"
+msgstr "Elimu"
+
+#: apps/contributions/models.py:23
+msgid "Health"
+msgstr "Afya"
+
+#: apps/contributions/models.py:24 apps/services/models.py:13
+msgid "Livelihood"
+msgstr "Riziki"
+
+#: apps/contributions/models.py:25
+msgid "Technology"
+msgstr "Teknolojia"
+
+#: apps/contributions/models.py:26
+msgid "Environment"
+msgstr "Mazingira"
+
+#: apps/contributions/models.py:27
+msgid "Youth & sports"
+msgstr "Vijana na michezo"
+
+#: apps/contributions/models.py:28 apps/mentorship/models.py:22
+#: apps/moderation/models.py:26
+msgid "Other"
+msgstr "Nyingine"
+
+#: apps/contributions/models.py:32
+msgid "Mentoring"
+msgstr "Ushauri"
+
+#: apps/contributions/models.py:33
+msgid "Volunteering"
+msgstr "Kujitolea"
+
+#: apps/contributions/models.py:34
+msgid "Equipment"
+msgstr "Vifaa"
+
+#: apps/contributions/models.py:35
+msgid "Professional skills"
+msgstr "Ujuzi wa kitaaluma"
+
+#: apps/contributions/models.py:36
+msgid "Financial pledge"
+msgstr "Ahadi ya fedha"
+
+#: apps/contributions/models.py:41
+msgid "Pledged"
+msgstr "Imeahidiwa"
+
+#: apps/contributions/models.py:42
+msgid "Confirmed by project"
+msgstr "Imethibitishwa na mradi"
+
+#: apps/contributions/models.py:43
+msgid "Fulfilled"
+msgstr "Imetimizwa"
+
+#: apps/contributions/models.py:44 apps/mentorship/models.py:13
+msgid "Cancelled"
+msgstr "Imeghairiwa"
+
+#: apps/contributions/services.py:23
+msgid "This project is not accepting contributions right now."
+msgstr "Mradi huu haupokei michango kwa sasa."
+
+#: apps/contributions/services.py:25
+msgid "This project does not accept this type of contribution."
+msgstr "Mradi huu haupokei aina hii ya mchango."
+
+#: apps/contributions/services.py:28
+msgid "Enter the amount you are pledging."
+msgstr "Weka kiasi unachoahidi."
+
+#: apps/contributions/services.py:38
+msgid "New contribution pledged"
+msgstr "Mchango mpya umeahidiwa"
+
+#: apps/contributions/services.py:39
+#, python-format
+msgid "%(name)s pledged support to “%(title)s”."
+msgstr "%(name)s ameahidi msaada kwa “%(title)s”."
+
+#: apps/diaspora/models.py:9
+msgid "Everyone"
+msgstr "Kila mtu"
+
+#: apps/diaspora/models.py:10
+msgid "Signed-in members only"
+msgstr "Wanachama walioingia tu"
+
+#: apps/diaspora/models.py:11
+msgid "Only me"
+msgstr "Mimi tu"
+
+#: apps/diaspora/serializers.py:64
+msgid "Please confirm you agree to share this profile with the community."
+msgstr "Tafadhali thibitisha kwamba unakubali kushiriki wasifu huu na jamii."
+
+#: apps/diaspora/views.py:58
+msgid "You have not created an alumni profile yet."
+msgstr "Bado hujaunda wasifu wa wahitimu."
+
+#: apps/mentorship/models.py:10
+msgid "Pending"
+msgstr "Inasubiri"
+
+#: apps/mentorship/models.py:11
+msgid "Accepted"
+msgstr "Imekubaliwa"
+
+#: apps/mentorship/models.py:12
+msgid "Declined"
+msgstr "Imekataliwa"
+
+#: apps/mentorship/models.py:18
+msgid "Career guidance"
+msgstr "Mwongozo wa kazi"
+
+#: apps/mentorship/models.py:19
+msgid "Technical skills"
+msgstr "Ujuzi wa kiufundi"
+
+#: apps/mentorship/models.py:20
+msgid "Scholarship applications"
+msgstr "Maombi ya ufadhili wa masomo"
+
+#: apps/mentorship/models.py:21 apps/opportunities/models.py:15
+#: apps/stories/models.py:27
+msgid "Entrepreneurship"
+msgstr "Ujasiriamali"
+
+#: apps/mentorship/services.py:24
+msgid "You cannot request mentorship from yourself."
+msgstr "Huwezi kujiomba ushauri mwenyewe."
+
+#: apps/mentorship/services.py:26
+msgid "This person is not accepting mentorship requests."
+msgstr "Mtu huyu hapokei maombi ya ushauri."
+
+#: apps/mentorship/services.py:33
+msgid "You already have a pending request with this mentor."
+msgstr "Tayari una ombi linalosubiri kwa mshauri huyu."
+
+#: apps/mentorship/services.py:35 apps/notifications/models.py:9
+msgid "New mentorship request"
+msgstr "Ombi jipya la ushauri"
+
+#: apps/mentorship/services.py:36
+#, python-format
+msgid "%(name)s would like your mentorship: %(goal)s"
+msgstr "%(name)s angependa ushauri wako: %(goal)s"
+
+#: apps/mentorship/services.py:60 apps/notifications/models.py:10
+msgid "Mentorship request update"
+msgstr "Taarifa ya ombi la ushauri"
+
+#: apps/mentorship/services.py:61
+#, python-format
+msgid "Your mentorship request “%(goal)s” is now %(status)s."
+msgstr "Ombi lako la ushauri “%(goal)s” sasa lina hali: %(status)s."
+
+#: apps/moderation/models.py:9
+msgid "Story"
+msgstr "Hadithi"
+
+#: apps/moderation/models.py:10
+msgid "Comment"
+msgstr "Maoni"
+
+#: apps/moderation/models.py:11
+msgid "Community project"
+msgstr "Mradi wa jamii"
+
+#: apps/moderation/models.py:15
+msgid "Open"
+msgstr "Wazi"
+
+#: apps/moderation/models.py:16
+msgid "Resolved"
+msgstr "Imetatuliwa"
+
+#: apps/moderation/models.py:17
+msgid "Dismissed"
+msgstr "Imetupiliwa mbali"
+
+#: apps/moderation/models.py:21
+msgid "Spam"
+msgstr "Barua taka"
+
+#: apps/moderation/models.py:22
+msgid "Harassment or hate"
+msgstr "Unyanyasaji au chuki"
+
+#: apps/moderation/models.py:23
+msgid "Shares private information"
+msgstr "Inashiriki taarifa za faragha"
+
+#: apps/moderation/models.py:24
+msgid "False or misleading"
+msgstr "Si kweli au inapotosha"
+
+#: apps/moderation/models.py:25
+msgid "Scam or fraud"
+msgstr "Utapeli au udanganyifu"
+
+#: apps/moderation/models.py:50
+msgid "Approve"
+msgstr "Idhinisha"
+
+#: apps/moderation/models.py:51
+msgid "Reject"
+msgstr "Kataa"
+
+#: apps/moderation/models.py:52
+msgid "Hide"
+msgstr "Ficha"
+
+#: apps/moderation/models.py:53
+msgid "Resolve report"
+msgstr "Tatua ripoti"
+
+#: apps/moderation/models.py:54
+msgid "Dismiss report"
+msgstr "Tupilia mbali ripoti"
+
+#: apps/moderation/services.py:45
+msgid "Your project is now active"
+msgstr "Mradi wako sasa uko hai"
+
+#: apps/moderation/services.py:45
+msgid "Your project was not approved"
+msgstr "Mradi wako haukuidhinishwa"
+
+#: apps/moderation/services.py:61
+msgid "The reported content does not exist."
+msgstr "Maudhui yaliyoripotiwa hayapo."
+
+#: apps/notifications/models.py:11
+msgid "Story published"
+msgstr "Hadithi imechapishwa"
+
+#: apps/notifications/models.py:12
+msgid "Story needs changes"
+msgstr "Hadithi inahitaji marekebisho"
+
+#: apps/notifications/models.py:13
+msgid "New comment"
+msgstr "Maoni mapya"
+
+#: apps/notifications/models.py:14
+msgid "New contribution"
+msgstr "Mchango mpya"
+
+#: apps/notifications/models.py:15
+msgid "Project status update"
+msgstr "Taarifa ya hali ya mradi"
+
+#: apps/notifications/models.py:16
+msgid "System"
+msgstr "Mfumo"
+
+#: apps/opportunities/models.py:10
+msgid "Scholarship"
+msgstr "Ufadhili wa masomo"
+
+#: apps/opportunities/models.py:12
+msgid "Vocational training"
+msgstr "Mafunzo ya ufundi"
+
+#: apps/opportunities/models.py:13
+msgid "Job"
+msgstr "Kazi"
+
+#: apps/opportunities/models.py:14
+msgid "Internship"
+msgstr "Mafunzo kazini"
+
+#: apps/opportunities/models.py:19 apps/stories/models.py:16
+msgid "Draft"
+msgstr "Rasimu"
+
+#: apps/opportunities/models.py:20 apps/stories/models.py:18
+msgid "Published"
+msgstr "Imechapishwa"
+
+#: apps/opportunities/models.py:21 apps/stories/models.py:20
+msgid "Archived"
+msgstr "Imehifadhiwa kumbukumbu"
+
+#: apps/services/models.py:8
+msgid "Healthcare"
+msgstr "Huduma za afya"
+
+#: apps/services/models.py:9
+msgid "Humanitarian organization"
+msgstr "Shirika la kibinadamu"
+
+#: apps/services/models.py:11
+msgid "Legal aid"
+msgstr "Msaada wa kisheria"
+
+#: apps/services/models.py:12
+msgid "Protection"
+msgstr "Ulinzi"
+
+#: apps/services/models.py:14
+msgid "Community service"
+msgstr "Huduma ya jamii"
+
+#: apps/stories/models.py:19
+msgid "Needs changes"
+msgstr "Inahitaji marekebisho"
+
+#: apps/stories/models.py:25
+msgid "Career"
+msgstr "Kazi na ujuzi"
+
+#: apps/stories/models.py:26
+msgid "Resettlement"
+msgstr "Makazi mapya"
+
+#: apps/stories/models.py:28
+msgid "Inspiration"
+msgstr "Hamasa"
+
+#: apps/stories/models.py:29
+msgid "Advice"
+msgstr "Ushauri"
+
+#: apps/stories/models.py:30
+msgid "Community"
+msgstr "Jamii"
+
+#: apps/stories/services.py:27
+msgid "This story is already published."
+msgstr "Hadithi hii tayari imechapishwa."
+
+#: apps/stories/services.py:29
+msgid "This story is already waiting for review."
+msgstr "Hadithi hii tayari inasubiri kukaguliwa."
+
+#: apps/stories/services.py:31
+msgid "Please confirm you consent to publishing this story."
+msgstr "Tafadhali thibitisha kwamba unakubali hadithi hii ichapishwe."
+
+#: apps/stories/services.py:62
+msgid "Your story is live"
+msgstr "Hadithi yako imechapishwa"
+
+#: apps/stories/services.py:63
+#, python-format
+msgid "“%(title)s” has been published."
+msgstr "“%(title)s” imechapishwa."
+
+#: apps/stories/services.py:77
+msgid "Your story needs changes"
+msgstr "Hadithi yako inahitaji marekebisho"
+
+#: apps/stories/services.py:85
+msgid "Comments are only available on published stories."
+msgstr "Maoni yanapatikana tu kwenye hadithi zilizochapishwa."
+
+#: apps/stories/services.py:89
+msgid "New comment on your story"
+msgstr "Maoni mapya kwenye hadithi yako"
+
+#: apps/stories/services.py:90
+#, python-format
+msgid "%(name)s commented on “%(title)s”."
+msgstr "%(name)s ametoa maoni kwenye “%(title)s”."
+
+#: config/settings/base.py:93
+msgid "English"
+msgstr "Kiingereza"
+
+#: config/settings/base.py:94
+msgid "Swahili"
+msgstr "Kiswahili"
+
+#: config/settings/base.py:95
+msgid "Spanish"
+msgstr "Kihispania"
+
+#: config/settings/base.py:96
+msgid "Italian"
+msgstr "Kiitaliano"
+
+#: config/settings/base.py:97
+msgid "German"
+msgstr "Kijerumani"
