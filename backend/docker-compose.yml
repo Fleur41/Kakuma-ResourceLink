@@ -1,0 +1,37 @@
+name: kakuma-resourcelink
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kakuma_resourcelink}
+      POSTGRES_USER: ${POSTGRES_USER:-kakuma}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kakuma}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kakuma} -d ${POSTGRES_DB:-kakuma_resourcelink}"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: .
+    profiles: ["full"]
+    env_file: .env
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.development
+      DATABASE_URL: postgres://${POSTGRES_USER:-kakuma}:${POSTGRES_PASSWORD:-kakuma}@db:5432/${POSTGRES_DB:-kakuma_resourcelink}
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  media:
