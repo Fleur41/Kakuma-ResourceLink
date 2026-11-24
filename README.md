@@ -99,6 +99,13 @@ See [`frontend/README.md`](frontend/README.md) for details.
 | Android | `cd mobile && ./gradlew testDebugUnitTest` (+ `connectedDebugAndroidTest` on an emulator) | 61 unit + 6 instrumented |
 | Web | `cd frontend && npm test` | 48 |
 
+## Team
+
+| Name | GitHub |
+|---|---|
+| Fleur41 | [github.com/Fleur41](https://github.com/Fleur41) |
+| Halkano Malise | [github.com/malise5](https://github.com/malise5) |
+
 ## Content policy
 
 All seed data is **illustrative sample content**. Organisations are generic, nothing is marked verified, and people are fictional. Replace it with verified content before a real launch.
