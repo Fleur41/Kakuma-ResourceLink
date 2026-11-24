@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -137,7 +138,10 @@ fun SectionHeader(title: String, modifier: Modifier = Modifier, action: (@Compos
     }
 }
 
-/** Gradient hero banner from the Home design ("Build a better future together"). */
+/**
+ * Hero banner from the Home design ("Build a better future together"). With a [photo] the text sits on a
+ * left-side scrim over the picture; without one it falls back to the brand gradient and optional [icon].
+ */
 @Composable
 fun HeroBanner(
     eyebrow: String,
@@ -146,15 +150,26 @@ fun HeroBanner(
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
     icon: ImageVector? = null,
+    photo: BrandPhoto? = null,
 ) {
+    val showIcon = icon != null && photo == null
     Box(
         modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(Brush.linearGradient(listOf(KrColors.Primary, KrColors.Accent)))
-            .padding(Spacing.lg),
+            .then(
+                if (photo == null) Modifier.background(Brush.linearGradient(listOf(KrColors.Primary, KrColors.Accent)))
+                else Modifier.heightIn(min = 184.dp),
+            ),
     ) {
-        Column(Modifier.fillMaxWidth(if (icon != null) 0.72f else 1f)) {
+        if (photo != null) {
+            PhotoBackground(
+                photo,
+                Brush.horizontalGradient(listOf(Color.Black.copy(alpha = 0.82f), Color.Black.copy(alpha = 0.45f), Color.Black.copy(alpha = 0.1f))),
+            )
+            PhotoCredit(photo.credit, Modifier.align(Alignment.BottomEnd).padding(8.dp))
+        }
+        Column(Modifier.padding(Spacing.lg).fillMaxWidth(if (showIcon) 0.72f else if (photo != null) 0.78f else 1f)) {
             Text(eyebrow.uppercase(), style = MaterialTheme.typography.labelSmall, color = KrColors.Gold)
             Spacer(Modifier.height(6.dp))
             Text(title, style = MaterialTheme.typography.titleLarge, color = Color.White)
@@ -170,10 +185,10 @@ fun HeroBanner(
                 }
             }
         }
-        if (icon != null) {
+        if (showIcon) {
             Icon(
                 icon, contentDescription = null, tint = Color.White.copy(alpha = 0.85f),
-                modifier = Modifier.align(Alignment.CenterEnd).size(72.dp),
+                modifier = Modifier.align(Alignment.CenterEnd).padding(end = Spacing.lg).size(72.dp),
             )
         }
     }
