@@ -40,6 +40,8 @@
     <string name="toast_account_created">Akaunti imefunguliwa</string>
     <string name="toast_bookmarked">Imehifadhiwa</string>
     <string name="toast_bookmark_removed">Imeondolewa</string>
+    <string name="toast_story_bookmarked">Hadithi imewekwa kwenye alamisho</string>
+    <string name="toast_story_bookmark_removed">Alamisho imeondolewa</string>
     <string name="toast_saved_offline_sync_later">Imehifadhiwa nje ya mtandao. Itasawazishwa baadaye</string>
     <string name="onboarding_title_1">Pata fursa</string>
     <string name="onboarding_body_1">Ufadhili wa masomo, mafunzo, kazi na mafunzo kazini mahali pamoja.</string>

@@ -40,6 +40,8 @@
     <string name="toast_account_created">Konto erstellt</string>
     <string name="toast_bookmarked">Gespeichert</string>
     <string name="toast_bookmark_removed">Aus Gespeicherten entfernt</string>
+    <string name="toast_story_bookmarked">Geschichte gemerkt</string>
+    <string name="toast_story_bookmark_removed">Lesezeichen entfernt</string>
     <string name="toast_saved_offline_sync_later">Offline gespeichert. Wird später synchronisiert</string>
     <string name="onboarding_title_1">Chancen finden</string>
     <string name="onboarding_body_1">Stipendien, Ausbildung, Jobs und Praktika an einem Ort.</string>

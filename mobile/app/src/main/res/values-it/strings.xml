@@ -40,6 +40,8 @@
     <string name="toast_account_created">Account creato</string>
     <string name="toast_bookmarked">Salvato</string>
     <string name="toast_bookmark_removed">Rimosso dai salvati</string>
+    <string name="toast_story_bookmarked">Storia aggiunta ai segnalibri</string>
+    <string name="toast_story_bookmark_removed">Segnalibro rimosso</string>
     <string name="toast_saved_offline_sync_later">Salvato offline. Verrà sincronizzato più tardi</string>
     <string name="onboarding_title_1">Trova opportunità</string>
     <string name="onboarding_body_1">Borse di studio, formazione, lavori e tirocini in un unico posto.</string>

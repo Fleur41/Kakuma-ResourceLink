@@ -140,7 +140,7 @@ class StoryDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val outcome = repository.setBookmarked(story, !story.isBookmarked)
             remote.update { d -> d?.copy(story = d.story.copy(isBookmarked = !story.isBookmarked)) }
-            uiEvents.report(outcome, if (story.isBookmarked) R.string.toast_bookmark_removed else R.string.toast_bookmarked)
+            uiEvents.report(outcome, if (story.isBookmarked) R.string.toast_story_bookmark_removed else R.string.toast_story_bookmarked)
         }
     }
 
