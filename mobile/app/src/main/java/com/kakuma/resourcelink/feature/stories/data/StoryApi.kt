@@ -43,6 +43,8 @@ data class StoryDto(
     @Json(name = "published_at") val publishedAt: String? = null,
     val body: String? = null,
     @Json(name = "rejection_reason") val rejectionReason: String? = null,
+    /** When the story last changed; the review queue shows it as "submitted". */
+    @Json(name = "updated_at") val updatedAt: String? = null,
 )
 
 @JsonClass(generateAdapter = true)

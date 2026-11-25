@@ -431,4 +431,30 @@
     <string name="toast_all_read">Tutto segnato come letto</string>
     <string name="toast_alumni_removed">Profilo rimosso</string>
     <string name="toast_removed_offline">Rimosso dal dispositivo</string>
+
+    <!-- Moderation (moderators and admins only) -->
+    <string name="moderation_title">Moderazione</string>
+    <string name="moderation_review_queue">Contenuti da esaminare</string>
+    <string name="moderation_subtitle">Esamina i contenuti della comunità prima della pubblicazione.</string>
+    <string name="moderation_tab_stories">Storie</string>
+    <string name="moderation_tab_projects">Progetti</string>
+    <string name="moderation_empty_title">Niente da esaminare</string>
+    <string name="moderation_empty_body">I nuovi invii compariranno qui.</string>
+    <string name="moderation_read_story">Leggi la storia</string>
+    <string name="moderation_hide_story">Nascondi la storia</string>
+    <string name="action_show_more">Mostra di più</string>
+    <string name="action_show_less">Mostra meno</string>
+    <string name="action_approve">Approva</string>
+    <string name="action_reject">Rifiuta</string>
+    <string name="moderation_approve_title">Approvare «%1$s»?</string>
+    <string name="moderation_reject_title">Rifiutare «%1$s»?</string>
+    <string name="moderation_approve_body">La storia verrà pubblicata e l\'autore avvisato.</string>
+    <string name="moderation_reason">Motivo per l\'autore</string>
+    <string name="moderation_note">Nota per il responsabile (facoltativa)</string>
+    <string name="moderation_reason_hint">Sii gentile e preciso, così potrà migliorarla.</string>
+    <string name="moderation_reason_required">Indica un motivo per l\'autore.</string>
+    <string name="moderation_already_reviewed">Qualcuno l\'ha già esaminato</string>
+    <string name="moderation_submitted_by">%1$s · %2$s</string>
+    <string name="toast_approved">Approvato</string>
+    <string name="toast_rejected">Rifiutato</string>
 </resources>

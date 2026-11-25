@@ -42,6 +42,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.outlined.VerifiedUser
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -94,6 +95,8 @@ data class ProfileActions(
     val myStories: () -> Unit,
     val mentorship: () -> Unit,
     val alumniProfile: () -> Unit,
+    /** Review queue; only shown to moderators and admins. */
+    val moderation: () -> Unit,
     /** Called once after the person signs out. */
     val signedOut: () -> Unit,
 )
@@ -164,6 +167,12 @@ fun ProfileRoute(actions: ProfileActions, viewModel: ProfileViewModel = hiltView
                 SettingRow(Icons.Outlined.Bookmarks, stringResource(R.string.opp_saved_title), onClick = actions.savedOpportunities)
                 SettingRow(Icons.Outlined.Handshake, stringResource(R.string.mentorship_title), onClick = actions.mentorship)
                 SettingRow(Icons.Outlined.Public, stringResource(R.string.alumni_my_profile), onClick = actions.alumniProfile)
+            }
+            if (user.isModerator) {
+                Spacer(Modifier.height(Spacing.sm))
+                SettingsGroup(stringResource(R.string.moderation_title)) {
+                    SettingRow(Icons.Outlined.VerifiedUser, stringResource(R.string.moderation_review_queue), onClick = actions.moderation)
+                }
             }
         }
         Spacer(Modifier.height(Spacing.sm))

@@ -427,4 +427,30 @@
     <string name="toast_all_read">Alle als gelesen markiert</string>
     <string name="toast_alumni_removed">Profil entfernt</string>
     <string name="toast_removed_offline">Vom Gerät entfernt</string>
+
+    <!-- Moderation (moderators and admins only) -->
+    <string name="moderation_title">Moderation</string>
+    <string name="moderation_review_queue">Zu prüfende Inhalte</string>
+    <string name="moderation_subtitle">Prüfe Inhalte der Gemeinschaft vor der Veröffentlichung.</string>
+    <string name="moderation_tab_stories">Geschichten</string>
+    <string name="moderation_tab_projects">Projekte</string>
+    <string name="moderation_empty_title">Nichts zu prüfen</string>
+    <string name="moderation_empty_body">Neue Einreichungen erscheinen hier.</string>
+    <string name="moderation_read_story">Geschichte lesen</string>
+    <string name="moderation_hide_story">Geschichte ausblenden</string>
+    <string name="action_show_more">Mehr anzeigen</string>
+    <string name="action_show_less">Weniger anzeigen</string>
+    <string name="action_approve">Freigeben</string>
+    <string name="action_reject">Ablehnen</string>
+    <string name="moderation_approve_title">„%1$s“ freigeben?</string>
+    <string name="moderation_reject_title">„%1$s“ ablehnen?</string>
+    <string name="moderation_approve_body">Die Geschichte wird veröffentlicht und die Person benachrichtigt.</string>
+    <string name="moderation_reason">Begründung für die Person</string>
+    <string name="moderation_note">Notiz für die Projektleitung (optional)</string>
+    <string name="moderation_reason_hint">Sei freundlich und konkret, damit sie es verbessern kann.</string>
+    <string name="moderation_reason_required">Bitte gib eine Begründung an.</string>
+    <string name="moderation_already_reviewed">Wurde bereits geprüft</string>
+    <string name="moderation_submitted_by">%1$s · %2$s</string>
+    <string name="toast_approved">Freigegeben</string>
+    <string name="toast_rejected">Abgelehnt</string>
 </resources>

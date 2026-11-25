@@ -470,4 +470,30 @@
     <string name="toast_all_read">All marked as read</string>
     <string name="toast_alumni_removed">Profile removed</string>
     <string name="toast_removed_offline">Removed from device</string>
+
+    <!-- Moderation (moderators and admins only) -->
+    <string name="moderation_title">Moderation</string>
+    <string name="moderation_review_queue">Content to review</string>
+    <string name="moderation_subtitle">Review community content before it\'s published.</string>
+    <string name="moderation_tab_stories">Stories</string>
+    <string name="moderation_tab_projects">Projects</string>
+    <string name="moderation_empty_title">Nothing to review</string>
+    <string name="moderation_empty_body">New submissions will appear here.</string>
+    <string name="moderation_read_story">Read story</string>
+    <string name="moderation_hide_story">Hide story</string>
+    <string name="action_show_more">Show more</string>
+    <string name="action_show_less">Show less</string>
+    <string name="action_approve">Approve</string>
+    <string name="action_reject">Reject</string>
+    <string name="moderation_approve_title">Approve “%1$s”?</string>
+    <string name="moderation_reject_title">Reject “%1$s”?</string>
+    <string name="moderation_approve_body">The story will be published and the author notified.</string>
+    <string name="moderation_reason">Reason for the author</string>
+    <string name="moderation_note">Note for the owner (optional)</string>
+    <string name="moderation_reason_hint">Be kind and specific so they can improve it.</string>
+    <string name="moderation_reason_required">Please give the author a reason.</string>
+    <string name="moderation_already_reviewed">Someone already reviewed this</string>
+    <string name="moderation_submitted_by">%1$s · %2$s</string>
+    <string name="toast_approved">Approved</string>
+    <string name="toast_rejected">Rejected</string>
 </resources>

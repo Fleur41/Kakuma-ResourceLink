@@ -33,6 +33,7 @@ object Routes {
     const val NOTIFICATIONS = "notifications"
     const val EDIT_PROFILE = "edit_profile"
     const val OFFLINE_LIBRARY = "offline_library"
+    const val MODERATION = "moderation"
 
     val topLevel = setOf(HOME, EXPLORE, STORIES, COMMUNITY, PROFILE)
 

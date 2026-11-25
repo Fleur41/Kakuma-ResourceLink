@@ -30,6 +30,7 @@ import com.kakuma.resourcelink.feature.home.CommunityRoute
 import com.kakuma.resourcelink.feature.home.HomeActions
 import com.kakuma.resourcelink.feature.home.HomeRoute
 import com.kakuma.resourcelink.feature.mentorship.presentation.MentorshipRequestsRoute
+import com.kakuma.resourcelink.feature.moderation.presentation.ModerationRoute
 import com.kakuma.resourcelink.feature.mentorship.presentation.RequestMentorshipRoute
 import com.kakuma.resourcelink.feature.notifications.domain.NotificationTarget
 import com.kakuma.resourcelink.feature.notifications.presentation.NotificationsRoute
@@ -181,6 +182,7 @@ fun AppNavHost(
                     myStories = { navController.openMyStories() },
                     mentorship = { navController.navigate(Routes.mentorship()) },
                     alumniProfile = { navController.navigate(Routes.MY_ALUMNI) },
+                    moderation = { navController.navigate(Routes.MODERATION) },
                     signedOut = { navController.toWelcome() },
                 ),
             )
@@ -252,6 +254,7 @@ fun AppNavHost(
         }
         padded(Routes.NOTIFICATIONS) { NotificationsRoute(onBack = back, onNavigate = navController::openTarget) }
         composable(Routes.EDIT_PROFILE) { EditProfileRoute(onBack = back) }
+        padded(Routes.MODERATION) { ModerationRoute(onBack = back) }
         composable(Routes.OFFLINE_LIBRARY) { OfflineLibraryRoute(onBack = back, onOpen = { navController.navigate(Routes.story(it)) }) }
     }
 }
