@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -245,6 +246,26 @@ fun CoverImage(url: String?, modifier: Modifier = Modifier, icon: ImageVector? =
             AsyncImage(model = url, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.matchParentSize())
         }
     }
+}
+
+/**
+ * A cover photo shown whole, as it was uploaded (no cropping): full width at the photo's own proportions.
+ * Tall portraits are capped at [maxHeight] and centred on a soft background so the page stays readable.
+ * Use [CoverImage] for list thumbnails, which need a uniform cropped shape.
+ */
+@Composable
+fun FullCoverImage(url: String, modifier: Modifier = Modifier, maxHeight: Dp = 480.dp) {
+    AsyncImage(
+        model = url,
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
+        modifier = modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 120.dp)
+            .heightIn(max = maxHeight)
+            .clip(MaterialTheme.shapes.large)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+    )
 }
 
 @Composable
