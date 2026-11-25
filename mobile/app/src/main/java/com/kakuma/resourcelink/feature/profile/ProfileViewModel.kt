@@ -12,6 +12,7 @@ import com.kakuma.resourcelink.core.common.toUiText
 import com.kakuma.resourcelink.core.datastore.PreferencesRepository
 import com.kakuma.resourcelink.core.datastore.ThemeMode
 import com.kakuma.resourcelink.core.di.IoDispatcher
+import com.kakuma.resourcelink.core.locale.AppLanguage
 import com.kakuma.resourcelink.core.locale.LanguageManager
 import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEventChannel
@@ -61,7 +62,9 @@ class ProfileViewModel @Inject constructor(
     val signedOut = signedOutChannel.receiveAsFlow()
 
     val state: StateFlow<ProfileUiState> = combine(auth.currentUser, auth.isLoggedIn, preferences.preferences, busy) { user, loggedIn, prefs, (uploading, out) ->
-        ProfileUiState(user, loggedIn, prefs.themeMode, languageManager.current().nativeName, uploading, out)
+        // The phone's language comes from the saved preference so the row updates as soon as it changes.
+        val language = prefs.languageTag?.let(AppLanguage::fromTag) ?: languageManager.current()
+        ProfileUiState(user, loggedIn, prefs.themeMode, language.nativeName, uploading, out)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProfileUiState())
 
     init { viewModelScope.launch { if (auth.isLoggedIn.value) auth.refreshCurrentUser() } }
@@ -83,6 +86,18 @@ class ProfileViewModel @Inject constructor(
                 uiEvents.snackbar(UiText.Res(R.string.error_image_invalid))
             } else when (val r = auth.uploadAvatar(picked.first, picked.second)) {
                 is AppResult.Success -> uiEvents.toast(UiText.Res(R.string.toast_photo_updated))
+                is AppResult.Failure -> uiEvents.snackbar(r.error.toUiText())
+            }
+            busy.update { it.copy(first = false) }
+        }
+    }
+
+    fun removeAvatar() {
+        if (busy.value.first) return
+        busy.update { it.copy(first = true) }
+        viewModelScope.launch {
+            when (val r = auth.removeAvatar()) {
+                is AppResult.Success -> uiEvents.toast(UiText.Res(R.string.toast_photo_removed))
                 is AppResult.Failure -> uiEvents.snackbar(r.error.toUiText())
             }
             busy.update { it.copy(first = false) }
