@@ -166,6 +166,23 @@ class StoryEditorViewModel @Inject constructor(
     }
 
     /** Called when leaving the editor so nothing typed is lost. */
+    /**
+     * Leaving with Back: finish any pending save first, then confirm with "Draft saved" when there is a draft.
+     * The toast goes through [AppMessages] because the editor closes right away.
+     */
+    fun leave(onDone: () -> Unit) {
+        if (leaving) return
+        leaving = true
+        val pending = autosave?.isActive == true
+        autosave?.cancel()
+        viewModelScope.launch {
+            val hasDraft = if (pending) persist() != null else _state.value.localId.isNotBlank()
+            if (hasDraft) appMessages.toast(UiText.Res(R.string.toast_draft_saved))
+            onDone()
+        }
+    }
+    private var leaving = false
+
     fun flush() {
         if (autosave?.isActive == true) {
             autosave?.cancel()

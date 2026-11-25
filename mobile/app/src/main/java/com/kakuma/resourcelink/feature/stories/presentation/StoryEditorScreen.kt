@@ -74,10 +74,10 @@ fun StoryEditorRoute(
     // Photo Picker: no storage permission needed; the image is copied into app storage.
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { viewModel.onCoverPicked(it) }
     DisposableEffect(Unit) { onDispose { viewModel.flush() } }
-    BackHandler { viewModel.flush(); onClose() }
+    BackHandler { viewModel.leave(onClose) }
 
     Scaffold(topBar = {
-        KrTopBar(stringResource(R.string.editor_title), onBack = { viewModel.flush(); onClose() }, actions = {
+        KrTopBar(stringResource(R.string.editor_title), onBack = { viewModel.leave(onClose) }, actions = {
             if (state.localId.isNotBlank()) {
                 IconButton(onClick = { confirmDiscard = true }) {
                     Icon(Icons.Outlined.DeleteOutline, contentDescription = stringResource(R.string.action_discard_draft))
