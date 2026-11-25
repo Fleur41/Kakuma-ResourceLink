@@ -5,6 +5,7 @@ from rest_framework import serializers
 from apps.accounts.serializers import PublicUserSerializer
 
 from .models import Comment, Story
+from .text import clean_title
 
 _MD_SYNTAX = re.compile(r"[#>*_`~\[\]()!-]+")
 
@@ -41,7 +42,7 @@ class StoryDetailSerializer(StoryListSerializer):
         extra_kwargs = {"excerpt": {"required": False}}
 
     def validate_title(self, value: str) -> str:
-        value = value.strip()
+        value = clean_title(value)
         if len(value) < 3:
             raise serializers.ValidationError("Title must be at least 3 characters.")
         return value

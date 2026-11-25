@@ -171,3 +171,33 @@ def test_feed_ordering_by_likes(api_client, auth_client, make_story):
     titles = [s["title"] for s in api_client.get(URL, {"ordering": "-likes_count"}).data["results"]]
     assert titles == ["B", "A"]
     assert a  # noqa
+
+
+@pytest.mark.parametrize(
+    "raw, expected",
+    [
+        ("# **Captain Daniel Lokiru: From Kakuma to the Open Seas**", "Captain Daniel Lokiru: From Kakuma to the Open Seas"),
+        ("## A __new__ beginning", "A new beginning"),
+        ("*Hope in Kakuma*", "Hope in Kakuma"),
+        ("`Code` and ~~old~~ words", "Code and old words"),
+        ("C# basics for beginners", "C# basics for beginners"),
+        ("#1 tip: why 2*3 matters", "#1 tip: why 2*3 matters"),
+        ("  Plain   title  ", "Plain title"),
+    ],
+)
+def test_clean_title(raw, expected):
+    from apps.stories.text import clean_title
+
+    assert clean_title(raw) == expected
+
+
+def test_markdown_is_removed_from_titles_on_save(auth_client):
+    res = auth_client().post(URL, {"title": "# **Hope in Kakuma**", "body": BODY}, format="json")
+    assert res.status_code == 201, res.data
+    assert res.data["title"] == "Hope in Kakuma"
+
+
+def test_title_that_is_only_markdown_is_too_short(auth_client):
+    res = auth_client().post(URL, {"title": "# ** **", "body": BODY}, format="json")
+    assert res.status_code == 400
+    assert "title" in res.data["error"]["details"]
