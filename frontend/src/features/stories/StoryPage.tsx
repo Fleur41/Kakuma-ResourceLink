@@ -22,7 +22,6 @@ import { useRequireMember } from '@/lib/useRequireMember'
 import { useStory, useToggleLike, useToggleStoryBookmark } from './hooks'
 import { Markdown } from './Markdown'
 import { ReportDialog } from './ReportDialog'
-import { StoryCover } from './StoryCard'
 
 export default function StoryPage() {
   const { id = '' } = useParams()
@@ -89,7 +88,10 @@ export default function StoryPage() {
         </div>
       </header>
 
-      {s.cover_image && <StoryCover story={s} className="aspect-[16/8] w-full rounded-xl" />}
+      {/* Full photo as uploaded (no cropping): natural proportions, capped so tall portraits stay on screen. */}
+      {s.cover_image && (
+        <img src={s.cover_image} alt="" className="mx-auto block h-auto max-h-[80vh] w-auto max-w-full rounded-xl" />
+      )}
 
       <Markdown>{s.body}</Markdown>
 

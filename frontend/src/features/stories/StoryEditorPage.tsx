@@ -227,7 +227,7 @@ function Editor({ existing }: { existing?: StoryDetail }) {
             <p className="mb-1.5 text-sm font-medium">{t('stories.editor.cover')}</p>
             {coverPreview ? (
               <div className="relative overflow-hidden rounded-lg">
-                <img src={coverPreview} alt={t('stories.editor.coverPreview')} className="aspect-[16/7] w-full object-cover" />
+                <img src={coverPreview} alt={t('stories.editor.coverPreview')} className="block h-auto max-h-[28rem] w-full bg-surface object-contain" />
                 <div className="absolute end-3 top-3 flex gap-2">
                   <Button size="sm" variant="inverse" onClick={() => fileInput.current?.click()}>
                     {t('stories.editor.changeCover')}
