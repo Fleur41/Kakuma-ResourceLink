@@ -33,6 +33,7 @@ import com.kakuma.resourcelink.core.designsystem.Spacing
 import com.kakuma.resourcelink.core.designsystem.component.BadgeTone
 import com.kakuma.resourcelink.core.designsystem.component.CategoryPill
 import com.kakuma.resourcelink.core.designsystem.component.CoverImage
+import com.kakuma.resourcelink.core.designsystem.component.FullCoverImage
 import com.kakuma.resourcelink.core.designsystem.component.InitialAvatar
 import com.kakuma.resourcelink.core.designsystem.component.KrCard
 import com.kakuma.resourcelink.core.designsystem.component.StatusBadge
@@ -75,11 +76,10 @@ fun StoryCard(
     showStatus: Boolean = false,
 ) {
     KrCard(modifier = modifier, onClick = onClick, contentPadding = PaddingValues(0.dp)) {
-        CoverImage(
-            story.coverImage,
-            Modifier.fillMaxWidth().height(150.dp).clip(MaterialTheme.shapes.large),
-            icon = Icons.Outlined.AutoStories,
-        )
+        // The whole photo as uploaded (no cropping); stories without a photo keep the short banner.
+        val cover = story.coverImage
+        if (!cover.isNullOrBlank()) FullCoverImage(cover, maxHeight = 360.dp)
+        else CoverImage(null, Modifier.fillMaxWidth().height(150.dp).clip(MaterialTheme.shapes.large), icon = Icons.Outlined.AutoStories)
         Column(Modifier.padding(Spacing.md)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 CategoryPill(story.category.label())

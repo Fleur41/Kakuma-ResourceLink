@@ -6,8 +6,8 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Badge, StatusBadge } from '@/components/ui/Badge'
 import { cn } from '@/lib/format'
 
-export function StoryCover({ story, className }: { story: { cover_image?: string | null }; className?: string }) {
-  if (story.cover_image) return <img src={story.cover_image} alt="" loading="lazy" className={cn('object-cover', className)} />
+export function StoryCover({ story, className, fit }: { story: { cover_image?: string | null }; className?: string; fit?: boolean }) {
+  if (story.cover_image) return <img src={story.cover_image} alt="" loading="lazy" className={cn(fit ? 'object-contain' : 'object-cover', className)} />
   return (
     <div aria-hidden className={cn('hero-gradient flex items-end p-4', className)}>
       <span className="font-display text-4xl font-bold text-white/30">“</span>
@@ -29,8 +29,16 @@ export function StoryCard({ story, showStatus, horizontal }: { story: StoryList;
   const href = `/stories/${story.id}`
   return (
     <article className={cn('card card-interactive group relative flex overflow-hidden', horizontal ? 'flex-row gap-4 p-4' : 'flex-col')}>
-      <div className={cn('overflow-hidden', horizontal ? 'size-24 shrink-0 sm:size-28' : 'aspect-[16/9] w-full')}>
-        <StoryCover story={story} className="size-full transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100" />
+      {/* Whole photo as uploaded (no cropping): natural proportions in grid cards, fitted inside the square thumbnail. */}
+      <div className={cn('overflow-hidden bg-surface', horizontal ? 'size-24 shrink-0 sm:size-28' : story.cover_image ? 'w-full' : 'aspect-[16/9] w-full')}>
+        <StoryCover
+          story={story}
+          className={cn(
+            'transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100',
+            story.cover_image && !horizontal ? 'mx-auto block h-auto max-h-96 w-auto max-w-full' : 'size-full',
+          )}
+          fit={Boolean(story.cover_image)}
+        />
       </div>
       <div className={cn('flex flex-1 flex-col gap-2', horizontal ? '' : 'p-5')}>
         <div className="flex flex-wrap gap-2">
