@@ -142,7 +142,7 @@ function TopBar() {
         </nav>
 
         <div className="ms-auto flex items-center gap-1">
-          <div className="me-2 hidden md:block">
+          <div className="me-3 hidden md:block">
             <LanguageSelect tone="dark" id="lang-top" />
           </div>
           {user ? (
