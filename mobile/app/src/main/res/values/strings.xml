@@ -444,6 +444,8 @@
     <string name="toast_profile_updated">Profile updated</string>
     <string name="toast_photo_updated">Photo updated</string>
     <string name="toast_signed_out">Signed out</string>
+    <string name="toast_language_changed">Language changed to %1$s</string>
+    <string name="toast_language_changed_device_only">%1$s set on this phone only. Account not updated.</string>
     <string name="toast_mentorship_sent">Request sent</string>
     <string name="toast_mentorship_accepted">Request accepted</string>
     <string name="toast_mentorship_declined">Request declined</string>

@@ -405,6 +405,8 @@
     <string name="toast_profile_updated">Profilo aggiornato</string>
     <string name="toast_photo_updated">Foto aggiornata</string>
     <string name="toast_signed_out">Disconnesso</string>
+    <string name="toast_language_changed">Lingua cambiata in %1$s</string>
+    <string name="toast_language_changed_device_only">%1$s solo su questo telefono. Account non aggiornato.</string>
     <string name="toast_mentorship_sent">Richiesta inviata</string>
     <string name="toast_mentorship_accepted">Richiesta accettata</string>
     <string name="toast_mentorship_declined">Richiesta rifiutata</string>

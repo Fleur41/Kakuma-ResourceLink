@@ -401,6 +401,8 @@
     <string name="toast_profile_updated">Wasifu umesasishwa</string>
     <string name="toast_photo_updated">Picha imesasishwa</string>
     <string name="toast_signed_out">Umetoka</string>
+    <string name="toast_language_changed">Lugha imebadilishwa kuwa %1$s</string>
+    <string name="toast_language_changed_device_only">%1$s imewekwa kwenye simu hii tu. Akaunti haijasasishwa.</string>
     <string name="toast_mentorship_sent">Ombi limetumwa</string>
     <string name="toast_mentorship_accepted">Ombi limekubaliwa</string>
     <string name="toast_mentorship_declined">Ombi limekataliwa</string>
