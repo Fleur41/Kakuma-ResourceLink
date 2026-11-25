@@ -209,6 +209,16 @@
   .prose-story code {
     @apply bg-hover px-1 py-0.5 text-sm;
   }
+  .rich-editor .tiptap > :first-child {
+    @apply mt-0;
+  }
+  .rich-editor .tiptap li > p {
+    @apply my-1;
+  }
+  .rich-editor .tiptap p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply pointer-events-none float-start h-0 text-muted/80;
+  }
   .sr-only-focusable:not(:focus) {
     @apply sr-only;
   }

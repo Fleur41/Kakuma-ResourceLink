@@ -10,14 +10,14 @@ import { StatusBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ConfirmDialog } from '@/components/ui/Dialog'
 import { ErrorState, PageLoader, useErrorMessage } from '@/components/ui/feedback'
-import { Checkbox, SelectField, TextArea, TextField } from '@/components/ui/Field'
+import { Checkbox, SelectField, TextField } from '@/components/ui/Field'
 import { PageHeader } from '@/components/ui/Page'
 import { useToast } from '@/components/ui/toast-context'
 import { useAuth } from '@/features/auth/auth-context'
 import { currentLanguage, LANGUAGES } from '@/i18n'
-import { cn, wordCount } from '@/lib/format'
+import { wordCount } from '@/lib/format'
 import { STORY_CATEGORIES, useStory } from './hooks'
-import { Markdown } from './Markdown'
+import { RichTextEditor } from './RichTextEditor'
 import { validateImage, validateStory, type StoryErrors } from './storyValidation'
 
 const LOCAL_DRAFT_KEY = 'kk.story-draft.new'
@@ -81,7 +81,6 @@ function Editor({ existing }: { existing?: StoryDetail }) {
   const [cover, setCover] = useState<File | null>(null)
   const [coverError, setCoverError] = useState<string>()
   const [errors, setErrors] = useState<StoryErrors>({})
-  const [tab, setTab] = useState<'write' | 'preview'>('write')
   const [confirmSubmit, setConfirmSubmit] = useState(false)
   const fileInput = useRef<HTMLInputElement>(null)
   const skipBlock = useRef(false)
@@ -260,34 +259,14 @@ function Editor({ existing }: { existing?: StoryDetail }) {
           </div>
 
           <div>
-            <div role="tablist" aria-label={t('stories.editor.bodyMode')} className="mb-2 flex gap-1">
-              {(['write', 'preview'] as const).map((m) => (
-                <button
-                  key={m}
-                  type="button"
-                  role="tab"
-                  aria-selected={tab === m}
-                  onClick={() => setTab(m)}
-                  className={cn('min-h-10 rounded-md px-4 text-sm font-semibold', tab === m ? 'bg-primary-container text-primary' : 'text-muted hover:text-primary')}
-                >
-                  {t(`stories.editor.${m}`)}
-                </button>
-              ))}
-            </div>
-            {tab === 'write' ? (
-              <TextArea
-                label={t('stories.editor.body')}
-                placeholder={t('stories.editor.bodyPlaceholder')}
-                value={form.body}
-                onChange={(e) => set('body', e.target.value)}
-                error={errors.body}
-                hint={t('stories.editor.markdownHint')}
-                rows={16}
-                required
-              />
-            ) : (
-              <div className="min-h-64 rounded-md border border-border p-5">{form.body.trim() ? <Markdown>{form.body}</Markdown> : <p className="text-muted">{t('stories.editor.nothingToPreview')}</p>}</div>
-            )}
+            <RichTextEditor
+              label={t('stories.editor.body')}
+              placeholder={t('stories.editor.bodyPlaceholder')}
+              value={form.body}
+              onChange={(md) => set('body', md)}
+              error={errors.body}
+              required
+            />
             <p className="mt-1 text-end text-sm text-muted" aria-live="polite">
               {t('stories.editor.wordCount', { count: words })}
             </p>

@@ -30,6 +30,7 @@ sealed interface MdBlock {
     data class Heading(val level: Int, val text: String) : MdBlock
     data class Paragraph(val text: String) : MdBlock
     data class Bullet(val text: String) : MdBlock
+    data class Numbered(val number: Int, val text: String) : MdBlock
     data class Quote(val text: String) : MdBlock
 }
 
@@ -52,6 +53,11 @@ object MarkdownParser {
                     blocks += MdBlock.Heading(hashes.coerceIn(1, 3), trimmed.drop(hashes).trim())
                 }
                 trimmed.startsWith("- ") || trimmed.startsWith("* ") -> { flush(); blocks += MdBlock.Bullet(trimmed.drop(2).trim()) }
+                NUMBERED.matches(trimmed) -> {
+                    flush()
+                    val (number, text) = NUMBERED.matchEntire(trimmed)!!.destructured
+                    blocks += MdBlock.Numbered(number.toIntOrNull() ?: 1, text.trim())
+                }
                 trimmed.startsWith(">") -> { flush(); blocks += MdBlock.Quote(trimmed.drop(1).trim()) }
                 else -> { if (paragraph.isNotEmpty()) paragraph.append(' '); paragraph.append(trimmed) }
             }
@@ -60,28 +66,55 @@ object MarkdownParser {
         return blocks
     }
 
-    /** Inline **bold** and *italic* / _italic_. Anything else is shown as plain text (no links or HTML). */
-    fun inline(text: String): AnnotatedString = buildAnnotatedString {
+    private val NUMBERED = Regex("""(\d{1,9})[.)]\s+(.*)""")
+    private const val ESCAPABLE = "\\`*_{}[]()#+-.!>~|<"
+    private val Bold = SpanStyle(fontWeight = FontWeight.SemiBold)
+    private val Italic = SpanStyle(fontStyle = FontStyle.Italic)
+
+    /**
+     * Inline ***bold italic***, **bold** and *italic* / _italic_ (nestable), plus backslash escapes such as `\*`.
+     * Anything else is shown as plain text (no links or HTML).
+     */
+    fun inline(text: String): AnnotatedString = buildAnnotatedString { appendInline(text) }
+
+    private fun AnnotatedString.Builder.appendInline(text: String) {
         var i = 0
         while (i < text.length) {
+            val c = text[i]
+            if (c == '\\' && i + 1 < text.length && text[i + 1] in ESCAPABLE) {
+                append(text[i + 1]); i += 2; continue
+            }
+            val triple = if (text.startsWith("***", i)) findMarker(text, "***", i + 3) else -1
+            if (triple > i + 3) {
+                withStyle(Bold) { withStyle(Italic) { appendInline(text.substring(i + 3, triple)) } }
+                i = triple + 3; continue
+            }
+            val double = if (text.startsWith("**", i)) findMarker(text, "**", i + 2) else -1
+            if (double > i + 2) {
+                withStyle(Bold) { appendInline(text.substring(i + 2, double)) }
+                i = double + 2; continue
+            }
+            val single = if ((c == '*' || c == '_') && i + 1 < text.length && text[i + 1] != ' ' && text[i + 1] != c) findMarker(text, c.toString(), i + 1) else -1
+            if (single > i + 1) {
+                withStyle(Italic) { appendInline(text.substring(i + 1, single)) }
+                i = single + 1; continue
+            }
+            append(c); i++
+        }
+    }
+
+    /** Index of the closing [marker] from [from], skipping escaped characters and, for single markers, doubled ones. */
+    private fun findMarker(text: String, marker: String, from: Int): Int {
+        var j = from
+        while (j < text.length) {
             when {
-                text.startsWith("**", i) -> {
-                    val end = text.indexOf("**", i + 2)
-                    if (end > i + 2) {
-                        withStyle(SpanStyle(fontWeight = FontWeight.SemiBold)) { append(text.substring(i + 2, end)) }
-                        i = end + 2
-                    } else { append(text[i]); i++ }
-                }
-                (text[i] == '*' || text[i] == '_') && i + 1 < text.length && text[i + 1] != ' ' -> {
-                    val end = text.indexOf(text[i], i + 1)
-                    if (end > i + 1) {
-                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append(text.substring(i + 1, end)) }
-                        i = end + 1
-                    } else { append(text[i]); i++ }
-                }
-                else -> { append(text[i]); i++ }
+                text[j] == '\\' -> j += 2
+                text.startsWith(marker, j) && (marker.length > 1 || j + 1 >= text.length || text[j + 1] != marker[0]) -> return j
+                marker.length == 1 && text[j] == marker[0] -> j += 2 // part of a ** pair inside an italic run
+                else -> j++
             }
         }
+        return -1
     }
 }
 
@@ -103,6 +136,11 @@ fun MarkdownText(source: String, modifier: Modifier = Modifier) {
                 is MdBlock.Paragraph -> Text(MarkdownParser.inline(block.text), style = MaterialTheme.typography.bodyLarge)
                 is MdBlock.Bullet -> Row {
                     Text("•", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.secondary)
+                    Spacer(Modifier.width(8.dp))
+                    Text(MarkdownParser.inline(block.text), style = MaterialTheme.typography.bodyLarge)
+                }
+                is MdBlock.Numbered -> Row {
+                    Text("${block.number}.", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.secondary)
                     Spacer(Modifier.width(8.dp))
                     Text(MarkdownParser.inline(block.text), style = MaterialTheme.typography.bodyLarge)
                 }

@@ -43,7 +43,7 @@ data class StoryEditorUiState(
     val lastSavedAt: Long? = null,
 ) {
     val isEmpty: Boolean get() = title.isBlank() && body.isBlank() && coverPath == null
-    val wordCount: Int get() = body.split(Regex("\\s+")).count { it.isNotBlank() }
+    val wordCount: Int get() = body.split(Regex("\\s+")).count { word -> word.any(Char::isLetterOrDigit) }
 }
 
 fun DraftError.toUiText(): UiText = when (this) {

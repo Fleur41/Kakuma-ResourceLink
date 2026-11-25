@@ -52,4 +52,27 @@ class MarkdownParserTest {
         assertEquals("2 * 3 = 6 and **open", MarkdownParser.inline("2 * 3 = 6 and **open").text)
         assertEquals("<script>x</script>", MarkdownParser.inline("<script>x</script>").text)
     }
+
+    @Test fun `parses numbered lists written by the editors`() {
+        assertEquals(
+            listOf(MdBlock.Numbered(1, "First"), MdBlock.Numbered(2, "Second **step**"), MdBlock.Bullet("nested")),
+            MarkdownParser.parse("1. First\n2. Second **step**\n  - nested"),
+        )
+    }
+
+    @Test fun `bold italic, nested styles and escapes`() {
+        val text = MarkdownParser.inline("a ***both*** b **bold *in* it** \\*not italic\\*")
+
+        assertEquals("a both b bold in it *not italic*", text.text)
+        fun styled(pred: (androidx.compose.ui.text.SpanStyle) -> Boolean) =
+            text.spanStyles.filter { pred(it.item) }.map { text.text.substring(it.start, it.end) }
+        assertEquals(listOf("both", "bold in it"), styled { it.fontWeight == FontWeight.SemiBold })
+        assertEquals(listOf("both", "in"), styled { it.fontStyle == FontStyle.Italic })
+    }
+
+    @Test fun `italic run may contain bold`() {
+        val text = MarkdownParser.inline("*a **b** c*")
+        assertEquals("a b c", text.text)
+        assertEquals("a b c", text.spanStyles.single { it.item.fontStyle == FontStyle.Italic }.let { text.text.substring(it.start, it.end) })
+    }
 }

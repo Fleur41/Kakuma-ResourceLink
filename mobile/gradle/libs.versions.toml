@@ -28,6 +28,7 @@ moshi = "1.15.2"
 paging = "3.5.3"
 work = "2.12.0"
 coil = "3.6.3"
+richEditor = "1.2.1"
 
 junit = "4.13.2"
 mockk = "1.14.12"
@@ -94,6 +95,7 @@ androidx-work-testing = { group = "androidx.work", name = "work-testing", versio
 
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+richtext-editor = { group = "com.mohamedrejeb.richeditor", name = "richeditor-compose", version.ref = "richEditor" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
