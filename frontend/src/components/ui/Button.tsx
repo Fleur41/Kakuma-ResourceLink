@@ -3,7 +3,7 @@ import { Link, type LinkProps } from 'react-router'
 import { cn } from '@/lib/format'
 import { Spinner } from './feedback'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'tonal' | 'text' | 'danger' | 'inverse'
+export type ButtonVariant = 'primary' | 'secondary' | 'tonal' | 'text' | 'danger' | 'inverse' | 'outlineInverse'
 type Size = 'sm' | 'md' | 'lg'
 
 const base =
@@ -17,6 +17,8 @@ const variants: Record<ButtonVariant, string> = {
   text: 'text-primary hover:bg-primary-container',
   danger: 'bg-error text-white hover:brightness-110',
   inverse: 'bg-white text-[#161616] hover:bg-[#e0e0e0]',
+  /** White outline for dark panels and photos. */
+  outlineInverse: 'border border-white/70 bg-transparent text-white hover:bg-white hover:text-[#161616]',
 }
 
 const sizes: Record<Size, string> = {

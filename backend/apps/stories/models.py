@@ -32,7 +32,7 @@ class StoryCategory(models.TextChoices):
 
 class Story(UUIDModel):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="stories")
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=400)
     slug = models.SlugField(max_length=230, unique=True, editable=False)
     excerpt = models.CharField(max_length=300, blank=True)
     # CommonMark Markdown. Clients render with raw HTML disabled.

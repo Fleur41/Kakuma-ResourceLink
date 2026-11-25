@@ -40,6 +40,8 @@
     <string name="toast_account_created">Akaunti imefunguliwa</string>
     <string name="toast_bookmarked">Imehifadhiwa</string>
     <string name="toast_bookmark_removed">Imeondolewa</string>
+    <string name="toast_story_bookmarked">Hadithi imewekwa kwenye alamisho</string>
+    <string name="toast_story_bookmark_removed">Alamisho imeondolewa</string>
     <string name="toast_saved_offline_sync_later">Imehifadhiwa nje ya mtandao. Itasawazishwa baadaye</string>
     <string name="onboarding_title_1">Pata fursa</string>
     <string name="onboarding_body_1">Ufadhili wa masomo, mafunzo, kazi na mafunzo kazini mahali pamoja.</string>
@@ -398,7 +400,11 @@
     <string name="action_remove_offline">Ondoa kwenye kifaa</string>
     <string name="toast_profile_updated">Wasifu umesasishwa</string>
     <string name="toast_photo_updated">Picha imesasishwa</string>
+    <string name="toast_photo_removed">Picha imeondolewa</string>
+    <string name="action_remove_photo">Ondoa picha</string>
     <string name="toast_signed_out">Umetoka</string>
+    <string name="toast_language_changed">Lugha imebadilishwa kuwa %1$s</string>
+    <string name="toast_language_changed_device_only">%1$s imewekwa kwenye simu hii tu. Akaunti haijasasishwa.</string>
     <string name="toast_mentorship_sent">Ombi limetumwa</string>
     <string name="toast_mentorship_accepted">Ombi limekubaliwa</string>
     <string name="toast_mentorship_declined">Ombi limekataliwa</string>

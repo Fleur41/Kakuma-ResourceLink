@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { BookOpen, Bookmark, Bot, GraduationCap, LifeBuoy, PenLine, UsersRound, Wrench } from 'lucide-react'
 import { mentorshipApi, notificationsApi, opportunitiesApi, storiesApi } from '@/api/endpoints'
 import { ButtonLink } from '@/components/ui/Button'
+import { PhotoBackdrop } from '@/components/ui/PhotoBackdrop'
 import { CardSkeletons, ErrorState, Skeleton } from '@/components/ui/feedback'
 import { useAuth } from '@/features/auth/auth-context'
 import { OpportunityCard } from '@/features/opportunities/OpportunityCard'
@@ -49,14 +50,15 @@ export default function DashboardPage() {
       </header>
 
       <div className="grid gap-px border border-border bg-border lg:grid-cols-[1fr_360px]">
-        <section className="hero-gradient flex min-h-72 flex-col justify-end gap-5 p-8 text-white sm:p-10">
-          <p className="eyebrow text-shell-accent">{t('dashboard.heroEyebrow')}</p>
-          <h2 className="max-w-lg text-[30px] leading-tight font-light text-white sm:text-[38px]">{t('dashboard.heroTitle')}</h2>
-          <div className="flex flex-wrap gap-3">
+        <section className="hero-gradient relative flex min-h-80 flex-col justify-end gap-5 overflow-hidden p-8 text-white sm:p-10">
+          <PhotoBackdrop slot="dashboard" priority />
+          <p className="eyebrow relative z-10 text-shell-accent">{t('dashboard.heroEyebrow')}</p>
+          <h2 className="relative z-10 max-w-lg text-[30px] leading-tight font-light text-white sm:text-[38px]">{t('dashboard.heroTitle')}</h2>
+          <div className="relative z-10 flex flex-wrap gap-3">
             <ButtonLink to="/opportunities" variant="inverse">
               {t('dashboard.exploreNow')}
             </ButtonLink>
-            <ButtonLink to="/assistant" className="border border-white/70 text-white hover:bg-white hover:text-[#161616]" icon={<Bot size={18} aria-hidden />}>
+            <ButtonLink to="/assistant" variant="outlineInverse" icon={<Bot size={18} aria-hidden />}>
               {t('dashboard.askAssistant')}
             </ButtonLink>
           </div>

@@ -88,6 +88,9 @@ class AuthRepositoryImpl @Inject constructor(
         return safeApiCall(moshi) { api.uploadAvatar(part) }.onSuccess { userStore.save(it) }.map { it.toDomain() }
     }
 
+    override suspend fun removeAvatar(): AppResult<User> =
+        safeApiCall(moshi) { api.removeAvatar() }.onSuccess { userStore.save(it) }.map { it.toDomain() }
+
     override suspend fun requestPasswordReset(email: String): AppResult<Unit> =
         safeApiCall(moshi) { api.requestPasswordReset(EmailRequest(email.trim().lowercase())) }
 

@@ -63,17 +63,21 @@ import com.kakuma.resourcelink.feature.stories.domain.StoryCategory
 import java.io.File
 
 @Composable
-fun StoryEditorRoute(onClose: () -> Unit, viewModel: StoryEditorViewModel = hiltViewModel()) {
+fun StoryEditorRoute(
+    onClose: () -> Unit,
+    onSubmitted: () -> Unit = onClose,
+    viewModel: StoryEditorViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var confirmDiscard by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)
     // Photo Picker: no storage permission needed; the image is copied into app storage.
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { viewModel.onCoverPicked(it) }
     DisposableEffect(Unit) { onDispose { viewModel.flush() } }
-    BackHandler { viewModel.flush(); onClose() }
+    BackHandler { viewModel.leave(onClose) }
 
     Scaffold(topBar = {
-        KrTopBar(stringResource(R.string.editor_title), onBack = { viewModel.flush(); onClose() }, actions = {
+        KrTopBar(stringResource(R.string.editor_title), onBack = { viewModel.leave(onClose) }, actions = {
             if (state.localId.isNotBlank()) {
                 IconButton(onClick = { confirmDiscard = true }) {
                     Icon(Icons.Outlined.DeleteOutline, contentDescription = stringResource(R.string.action_discard_draft))
@@ -146,7 +150,7 @@ fun StoryEditorRoute(onClose: () -> Unit, viewModel: StoryEditorViewModel = hilt
             }
             Text(stringResource(R.string.editor_review_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             KrPrimaryButton(
-                stringResource(R.string.action_submit_review), onClick = { viewModel.submit(onClose) },
+                stringResource(R.string.action_submit_review), onClick = { viewModel.submit(onSubmitted) },
                 loading = state.isSubmitting, modifier = Modifier.fillMaxWidth(),
             )
             KrOutlinedButton(stringResource(R.string.action_save_draft), viewModel::saveDraft, Modifier.fillMaxWidth())

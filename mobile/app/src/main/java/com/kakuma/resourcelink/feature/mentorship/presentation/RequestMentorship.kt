@@ -34,6 +34,7 @@ import com.kakuma.resourcelink.core.designsystem.Spacing
 import com.kakuma.resourcelink.core.designsystem.component.KrPrimaryButton
 import com.kakuma.resourcelink.core.designsystem.component.KrTextField
 import com.kakuma.resourcelink.core.designsystem.component.KrTopBar
+import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEventChannel
 import com.kakuma.resourcelink.core.ui.UiEventEffect
 import com.kakuma.resourcelink.feature.mentorship.domain.HelpArea
@@ -70,6 +71,7 @@ data class RequestMentorshipUiState(
 class RequestMentorshipViewModel @Inject constructor(
     private val savedState: SavedStateHandle,
     private val repository: MentorshipRepository,
+    private val appMessages: AppMessages,
 ) : ViewModel() {
     private val mentorId: String = checkNotNull(savedState["mentorId"])
     private val _state = MutableStateFlow(
@@ -104,7 +106,7 @@ class RequestMentorshipViewModel @Inject constructor(
         _state.update { it.copy(isSending = true) }
         viewModelScope.launch {
             when (val r = repository.send(mentorId, s.goal, s.areas, s.message)) {
-                is AppResult.Success -> { uiEvents.toast(UiText.Res(R.string.toast_mentorship_sent)); onDone() }
+                is AppResult.Success -> { appMessages.toast(UiText.Res(R.string.toast_mentorship_sent)); onDone() }
                 is AppResult.Failure -> {
                     _state.update { it.copy(isSending = false) }
                     val e = r.error

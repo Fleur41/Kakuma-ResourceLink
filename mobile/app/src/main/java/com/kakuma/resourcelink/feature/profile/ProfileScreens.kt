@@ -32,16 +32,20 @@ import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.DownloadForOffline
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.Handshake
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -52,6 +56,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -118,12 +123,29 @@ fun ProfileRoute(actions: ProfileActions, viewModel: ProfileViewModel = hiltView
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box {
                         InitialAvatar(user.fullName, user.avatarUrl, size = 72.dp)
-                        SmallFloatingActionButton(
-                            onClick = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
-                            modifier = Modifier.align(Alignment.BottomEnd).size(30.dp),
-                        ) {
-                            if (state.isUploadingAvatar) CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 2.dp)
-                            else Icon(Icons.Outlined.CameraAlt, stringResource(R.string.cd_change_photo), Modifier.size(16.dp))
+                        var photoMenu by remember { mutableStateOf(false) }
+                        val pickPhoto = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+                        Box(Modifier.align(Alignment.BottomEnd)) {
+                            SmallFloatingActionButton(
+                                // With a photo: choose Change or Remove. Without one: go straight to the picker.
+                                onClick = { if (state.isUploadingAvatar) Unit else if (user.avatarUrl != null) photoMenu = true else pickPhoto() },
+                                modifier = Modifier.size(30.dp),
+                            ) {
+                                if (state.isUploadingAvatar) CircularProgressIndicator(Modifier.size(14.dp), strokeWidth = 2.dp)
+                                else Icon(Icons.Outlined.CameraAlt, stringResource(R.string.cd_change_photo), Modifier.size(16.dp))
+                            }
+                            DropdownMenu(expanded = photoMenu, onDismissRequest = { photoMenu = false }) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.cd_change_photo)) },
+                                    leadingIcon = { Icon(Icons.Outlined.Image, contentDescription = null) },
+                                    onClick = { photoMenu = false; pickPhoto() },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.action_remove_photo)) },
+                                    leadingIcon = { Icon(Icons.Outlined.DeleteOutline, contentDescription = null) },
+                                    onClick = { photoMenu = false; viewModel.removeAvatar() },
+                                )
+                            }
                         }
                     }
                     Spacer(Modifier.width(Spacing.sm))

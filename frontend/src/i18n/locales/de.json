@@ -117,7 +117,7 @@
     "passwordMatch": "Die Passwörter stimmen nicht überein.",
     "terms": "Bitte akzeptiere die Gemeinschaftsregeln, um fortzufahren.",
     "titleLength": "Verwende mindestens 3 Zeichen.",
-    "titleMax": "Der Titel darf höchstens 200 Zeichen haben.",
+    "titleMax": "Der Titel darf höchstens 400 Zeichen haben.",
     "bodyMax": "Die Geschichte ist zu lang (höchstens 50.000 Zeichen).",
     "imageType": "Wähle ein JPG-, PNG- oder WebP-Bild.",
     "imageSize": "Das Bild ist zu groß. Maximal 5 MB.",

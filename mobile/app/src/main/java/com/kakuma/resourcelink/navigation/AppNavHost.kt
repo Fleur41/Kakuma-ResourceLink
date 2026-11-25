@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -41,6 +42,7 @@ import com.kakuma.resourcelink.feature.profile.ProfileRoute
 import com.kakuma.resourcelink.feature.projects.presentation.ProjectDetailRoute
 import com.kakuma.resourcelink.feature.projects.presentation.ProjectsRoute
 import com.kakuma.resourcelink.feature.services.presentation.ServicesRoute
+import com.kakuma.resourcelink.feature.stories.domain.StoryFeed
 import com.kakuma.resourcelink.feature.stories.presentation.StoriesRoute
 import com.kakuma.resourcelink.feature.stories.presentation.StoryDetailRoute
 import com.kakuma.resourcelink.feature.stories.presentation.StoryEditorRoute
@@ -51,6 +53,14 @@ fun NavHostController.navigateToTab(route: String) = navigate(route) {
     launchSingleTop = true
     restoreState = true
 }
+
+/** Opens the Stories tab on the signed-in user's own stories (drafts, in review and published). */
+fun NavHostController.openMyStories() {
+    navigateToTab(Routes.STORIES)
+    getBackStackEntry(Routes.STORIES).savedStateHandle[KEY_OPEN_FEED] = StoryFeed.MINE.name
+}
+
+private const val KEY_OPEN_FEED = "openFeed"
 
 /** Leaves the auth flow after sign-in, so Back never returns to the login screen. */
 fun NavHostController.finishAuth() = navigate(Routes.HOME) {
@@ -142,11 +152,14 @@ fun AppNavHost(
             )
         }
         tab(Routes.EXPLORE) { OpportunitiesRoute(onOpen = { navController.navigate(Routes.opportunity(it)) }) }
-        tab(Routes.STORIES) {
+        tab(Routes.STORIES) { entry ->
+            val openFeed by entry.savedStateHandle.getStateFlow<String?>(KEY_OPEN_FEED, null).collectAsStateWithLifecycle()
             StoriesRoute(
                 onOpenStory = { navController.navigate(Routes.story(it)) },
                 onWrite = { navController.navigate(Routes.storyEditor(it)) },
                 onRequireLogin = requireLogin,
+                openFeed = openFeed?.let(StoryFeed::valueOf),
+                onFeedOpened = { entry.savedStateHandle[KEY_OPEN_FEED] = null },
             )
         }
         tab(Routes.COMMUNITY) {
@@ -165,7 +178,7 @@ fun AppNavHost(
                     language = { navController.navigate(Routes.language(onboarding = false)) },
                     savedOpportunities = { navController.navigate(Routes.savedOpportunities()) },
                     offlineLibrary = { navController.navigate(Routes.OFFLINE_LIBRARY) },
-                    myStories = { navController.navigateToTab(Routes.STORIES) },
+                    myStories = { navController.openMyStories() },
                     mentorship = { navController.navigate(Routes.mentorship()) },
                     alumniProfile = { navController.navigate(Routes.MY_ALUMNI) },
                     signedOut = { navController.toWelcome() },
@@ -188,7 +201,9 @@ fun AppNavHost(
                 onRequireLogin = requireLogin,
             )
         }
-        composable(Routes.STORY_EDITOR, listOf(optionalString("draftId"))) { StoryEditorRoute(onClose = back) }
+        composable(Routes.STORY_EDITOR, listOf(optionalString("draftId"))) {
+            StoryEditorRoute(onClose = back, onSubmitted = { navController.popBackStack(); navController.openMyStories() })
+        }
         padded(Routes.ALUMNI, listOf(bool("mentorsOnly", false))) {
             AlumniDirectoryRoute(
                 onBack = back,
@@ -241,8 +256,8 @@ fun AppNavHost(
     }
 }
 
-private fun NavGraphBuilder.tab(route: String, content: @Composable () -> Unit) =
-    composable(route) { Box(Modifier.fillMaxSize().statusBarsPadding()) { content() } }
+private fun NavGraphBuilder.tab(route: String, content: @Composable (NavBackStackEntry) -> Unit) =
+    composable(route) { entry -> Box(Modifier.fillMaxSize().statusBarsPadding()) { content(entry) } }
 
 /** Non-tab screens built from a Column (not a Scaffold) keep clear of the gesture/navigation bar. */
 private fun NavGraphBuilder.padded(route: String, args: List<androidx.navigation.NamedNavArgument> = emptyList(), content: @Composable () -> Unit) =

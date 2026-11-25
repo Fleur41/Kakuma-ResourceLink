@@ -26,6 +26,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,6 +74,8 @@ fun StoriesRoute(
     onOpenStory: (String) -> Unit,
     onWrite: (draftId: String?) -> Unit,
     onRequireLogin: () -> Unit,
+    openFeed: StoryFeed? = null,
+    onFeedOpened: () -> Unit = {},
     viewModel: StoriesViewModel = hiltViewModel(),
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -81,6 +84,10 @@ fun StoriesRoute(
     val drafts by viewModel.localDrafts.collectAsStateWithLifecycle()
     val items = viewModel.stories.collectAsLazyPagingItems()
     UiEventEffect(viewModel.events)
+    // A one-off request from another screen (e.g. Profile > My stories) to show a specific feed.
+    LaunchedEffect(openFeed) {
+        if (openFeed != null) { viewModel.selectFeed(openFeed); onFeedOpened() }
+    }
 
     val personal = filter.feed == StoryFeed.SAVED || filter.feed == StoryFeed.MINE
     Box(Modifier.fillMaxSize()) {

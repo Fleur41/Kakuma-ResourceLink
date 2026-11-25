@@ -117,7 +117,7 @@
     "passwordMatch": "Passwords don't match.",
     "terms": "Please accept the community guidelines to continue.",
     "titleLength": "Use at least 3 characters.",
-    "titleMax": "Keep the title under 200 characters.",
+    "titleMax": "Keep the title under 400 characters.",
     "bodyMax": "This story is too long (maximum 50,000 characters).",
     "imageType": "Choose a JPG, PNG or WebP image.",
     "imageSize": "Image is too large. Maximum size is 5 MB.",

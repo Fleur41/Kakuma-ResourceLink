@@ -40,6 +40,8 @@
     <string name="toast_account_created">Konto erstellt</string>
     <string name="toast_bookmarked">Gespeichert</string>
     <string name="toast_bookmark_removed">Aus Gespeicherten entfernt</string>
+    <string name="toast_story_bookmarked">Geschichte gemerkt</string>
+    <string name="toast_story_bookmark_removed">Lesezeichen entfernt</string>
     <string name="toast_saved_offline_sync_later">Offline gespeichert. Wird später synchronisiert</string>
     <string name="onboarding_title_1">Chancen finden</string>
     <string name="onboarding_body_1">Stipendien, Ausbildung, Jobs und Praktika an einem Ort.</string>
@@ -398,7 +400,11 @@
     <string name="action_remove_offline">Vom Gerät entfernen</string>
     <string name="toast_profile_updated">Profil aktualisiert</string>
     <string name="toast_photo_updated">Foto aktualisiert</string>
+    <string name="toast_photo_removed">Foto entfernt</string>
+    <string name="action_remove_photo">Foto entfernen</string>
     <string name="toast_signed_out">Abgemeldet</string>
+    <string name="toast_language_changed">Sprache auf %1$s geändert</string>
+    <string name="toast_language_changed_device_only">%1$s nur auf diesem Telefon. Konto nicht aktualisiert.</string>
     <string name="toast_mentorship_sent">Anfrage gesendet</string>
     <string name="toast_mentorship_accepted">Anfrage angenommen</string>
     <string name="toast_mentorship_declined">Anfrage abgelehnt</string>

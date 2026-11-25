@@ -9,6 +9,7 @@ import { StoryCard } from '@/features/stories/StoryCard'
 import { useDocumentTitle } from '@/lib/hooks'
 import { DeadlineChip } from '@/features/opportunities/OpportunityCard'
 import { Badge } from '@/components/ui/Badge'
+import { PhotoBackdrop } from '@/components/ui/PhotoBackdrop'
 
 export default function LandingPage() {
   const { t } = useTranslation()
@@ -24,16 +25,17 @@ export default function LandingPage() {
 
   return (
     <div className="space-y-20">
-      <section className="hero-gradient -mx-4 -mt-10 flex min-h-[560px] flex-col items-center justify-center px-6 py-20 text-center text-white sm:-mx-6 lg:-mx-10 lg:-mt-14">
-        <div className="max-w-3xl space-y-6">
+      <section className="hero-gradient relative -mx-4 -mt-10 flex min-h-[600px] flex-col items-center justify-center overflow-hidden px-6 py-20 text-center text-white sm:-mx-6 lg:-mx-10 lg:-mt-14 lg:min-h-[680px]">
+        <PhotoBackdrop slot="hero" priority />
+        <div className="relative z-10 max-w-3xl space-y-6">
           <p className="eyebrow text-shell-accent">{t('landing.eyebrow')}</p>
           <h1 className="text-[40px] leading-[1.08] font-light text-white sm:text-[64px]">{t('landing.headline')}</h1>
-          <p className="mx-auto max-w-xl text-lg font-light text-white/75">{t('landing.lead')}</p>
+          <p className="mx-auto max-w-xl text-lg font-light text-white/85">{t('landing.lead')}</p>
           <div className="flex flex-wrap justify-center gap-4 pt-4">
             <ButtonLink to="/opportunities" size="lg" variant="inverse">
               {t('landing.ctaExplore')}
             </ButtonLink>
-            <ButtonLink to="/login?next=%2Fstories%2Fnew" size="lg" className="border border-white/70 text-white hover:bg-white hover:text-[#161616]">
+            <ButtonLink to="/login?next=%2Fstories%2Fnew" size="lg" variant="outlineInverse">
               {t('stories.shareYourStory')}
             </ButtonLink>
           </div>
@@ -123,15 +125,16 @@ export default function LandingPage() {
         ))}
       </section>
 
-      <section className="hero-gradient -mx-4 -mb-10 flex flex-col items-center gap-5 px-6 py-24 text-center text-white sm:-mx-6 lg:-mx-10 lg:-mb-14">
-        <Users size={28} aria-hidden className="text-shell-accent" />
-        <h2 className="text-[32px] font-light text-white sm:text-[44px]">{t('landing.joinTitle')}</h2>
-        <p className="max-w-xl font-light text-white/75">{t('landing.joinBody')}</p>
-        <div className="flex flex-wrap justify-center gap-4 pt-2">
+      <section className="hero-gradient relative -mx-4 -mb-10 flex min-h-[480px] flex-col items-center justify-center gap-5 overflow-hidden px-6 py-24 text-center text-white sm:-mx-6 lg:-mx-10 lg:-mb-14">
+        <PhotoBackdrop slot="community" />
+        <Users size={28} aria-hidden className="relative z-10 text-shell-accent" />
+        <h2 className="relative z-10 text-[32px] font-light text-white sm:text-[44px]">{t('landing.joinTitle')}</h2>
+        <p className="relative z-10 max-w-xl font-light text-white/80">{t('landing.joinBody')}</p>
+        <div className="relative z-10 flex flex-wrap justify-center gap-4 pt-2">
           <ButtonLink to="/register" size="lg" variant="inverse">
             {t('auth.joinUs')}
           </ButtonLink>
-          <ButtonLink to="/login" size="lg" className="border border-white/70 text-white hover:bg-white hover:text-[#161616]">
+          <ButtonLink to="/login" size="lg" variant="outlineInverse">
             {t('auth.signIn')}
           </ButtonLink>
         </div>

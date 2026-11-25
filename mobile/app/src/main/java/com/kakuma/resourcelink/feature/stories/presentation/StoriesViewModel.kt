@@ -65,7 +65,7 @@ class StoriesViewModel @Inject constructor(
     fun toggleBookmark(story: Story) = viewModelScope.launch {
         uiEvents.report(
             repository.setBookmarked(story, !story.isBookmarked),
-            if (story.isBookmarked) R.string.toast_bookmark_removed else R.string.toast_bookmarked,
+            if (story.isBookmarked) R.string.toast_story_bookmark_removed else R.string.toast_story_bookmarked,
         )
     }
 

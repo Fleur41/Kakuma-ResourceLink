@@ -5,7 +5,7 @@ enum class DraftError { TITLE_TOO_SHORT, BODY_TOO_SHORT, CONSENT_REQUIRED }
 object StoryValidation {
     const val MIN_TITLE = 3
     const val MIN_BODY = 50
-    const val MAX_TITLE = 200
+    const val MAX_TITLE = 400
 
     /** Rules for sending a story to review. Saving a draft is always allowed. */
     fun forSubmit(title: String, body: String, consent: Boolean): Map<String, DraftError> = buildMap {

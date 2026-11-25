@@ -221,7 +221,7 @@ function Editor({ existing }: { existing?: StoryDetail }) {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="card space-y-5 p-5 sm:p-8">
-          <TextField label={t('stories.editor.storyTitle')} value={form.title} maxLength={200} onChange={(e) => set('title', e.target.value)} error={errors.title} required />
+          <TextField label={t('stories.editor.storyTitle')} value={form.title} maxLength={400} onChange={(e) => set('title', e.target.value)} error={errors.title} required />
 
           <div>
             <p className="mb-1.5 text-sm font-medium">{t('stories.editor.cover')}</p>

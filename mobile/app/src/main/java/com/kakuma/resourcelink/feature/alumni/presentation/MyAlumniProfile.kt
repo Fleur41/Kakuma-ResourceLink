@@ -50,6 +50,7 @@ import com.kakuma.resourcelink.core.designsystem.component.FullScreenLoading
 import com.kakuma.resourcelink.core.designsystem.component.KrPrimaryButton
 import com.kakuma.resourcelink.core.designsystem.component.KrTextField
 import com.kakuma.resourcelink.core.designsystem.component.KrTopBar
+import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEventChannel
 import com.kakuma.resourcelink.core.ui.UiEventEffect
 import com.kakuma.resourcelink.feature.alumni.domain.AlumniRepository
@@ -77,7 +78,10 @@ data class MyAlumniUiState(
 )
 
 @HiltViewModel
-class MyAlumniProfileViewModel @Inject constructor(private val repository: AlumniRepository) : ViewModel() {
+class MyAlumniProfileViewModel @Inject constructor(
+    private val repository: AlumniRepository,
+    private val appMessages: AppMessages,
+) : ViewModel() {
     private val _state = MutableStateFlow(MyAlumniUiState())
     val state = _state.asStateFlow()
     private val uiEvents = UiEventChannel()
@@ -122,7 +126,7 @@ class MyAlumniProfileViewModel @Inject constructor(private val repository: Alumn
         viewModelScope.launch {
             when (val r = repository.saveMyProfile(profile, isNew = !s.exists)) {
                 is AppResult.Success -> {
-                    uiEvents.toast(UiText.Res(R.string.toast_profile_updated))
+                    appMessages.toast(UiText.Res(R.string.toast_profile_updated))
                     _state.update { it.copy(isSaving = false, exists = true, profile = r.data) }
                     onDone()
                 }
@@ -140,7 +144,7 @@ class MyAlumniProfileViewModel @Inject constructor(private val repository: Alumn
     fun delete(onDone: () -> Unit) {
         viewModelScope.launch {
             when (val r = repository.deleteMyProfile()) {
-                is AppResult.Success -> { uiEvents.toast(UiText.Res(R.string.toast_alumni_removed)); onDone() }
+                is AppResult.Success -> { appMessages.toast(UiText.Res(R.string.toast_alumni_removed)); onDone() }
                 is AppResult.Failure -> uiEvents.snackbar(r.error.toUiText())
             }
         }
