@@ -8,6 +8,7 @@ import com.kakuma.resourcelink.R
 import com.kakuma.resourcelink.core.common.UiText
 import com.kakuma.resourcelink.core.common.toUiText
 import com.kakuma.resourcelink.core.locale.LanguageManager
+import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEventChannel
 import com.kakuma.resourcelink.feature.stories.domain.DraftError
 import com.kakuma.resourcelink.feature.stories.domain.DraftRepository
@@ -57,6 +58,7 @@ class StoryEditorViewModel @Inject constructor(
     private val drafts: DraftRepository,
     languageManager: LanguageManager,
     private val savedState: SavedStateHandle,
+    private val appMessages: AppMessages,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(StoryEditorUiState(language = languageManager.current().tag))
@@ -141,8 +143,8 @@ class StoryEditorViewModel @Inject constructor(
         viewModelScope.launch {
             val draft = persist() ?: return@launch
             when (val outcome = drafts.submit(draft.localId)) {
-                SubmitOutcome.SubmittedForReview -> { uiEvents.toast(UiText.Res(R.string.toast_story_submitted)); onDone() }
-                SubmitOutcome.QueuedOffline -> { uiEvents.toast(UiText.Res(R.string.toast_story_queued)); onDone() }
+                SubmitOutcome.SubmittedForReview -> { appMessages.toast(UiText.Res(R.string.toast_story_submitted)); onDone() }
+                SubmitOutcome.QueuedOffline -> { appMessages.toast(UiText.Res(R.string.toast_story_queued)); onDone() }
                 is SubmitOutcome.Invalid -> _state.update {
                     it.copy(isSubmitting = false, errors = outcome.fieldErrors.mapValues { e -> UiText.Raw(e.value) })
                 }
@@ -158,7 +160,7 @@ class StoryEditorViewModel @Inject constructor(
         autosave?.cancel()
         viewModelScope.launch {
             _state.value.localId.takeIf { it.isNotBlank() }?.let { drafts.delete(it) }
-            uiEvents.toast(UiText.Res(R.string.toast_draft_deleted))
+            appMessages.toast(UiText.Res(R.string.toast_draft_deleted))
             onDone()
         }
     }

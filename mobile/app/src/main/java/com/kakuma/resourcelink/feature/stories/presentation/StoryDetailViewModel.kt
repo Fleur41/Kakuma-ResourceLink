@@ -7,6 +7,7 @@ import com.kakuma.resourcelink.R
 import com.kakuma.resourcelink.core.common.AppResult
 import com.kakuma.resourcelink.core.common.UiText
 import com.kakuma.resourcelink.core.common.toUiText
+import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEventChannel
 import com.kakuma.resourcelink.core.ui.report
 import com.kakuma.resourcelink.feature.auth.domain.AuthRepository
@@ -46,6 +47,7 @@ class StoryDetailViewModel @Inject constructor(
     savedState: SavedStateHandle,
     private val repository: StoryRepository,
     authRepository: AuthRepository,
+    private val appMessages: AppMessages,
 ) : ViewModel() {
     val id: String = checkNotNull(savedState["id"])
 
@@ -145,7 +147,7 @@ class StoryDetailViewModel @Inject constructor(
     fun delete(onDeleted: () -> Unit) {
         viewModelScope.launch {
             when (val r = repository.deleteStory(id)) {
-                is AppResult.Success -> { uiEvents.toast(UiText.Res(R.string.toast_story_deleted)); onDeleted() }
+                is AppResult.Success -> { appMessages.toast(UiText.Res(R.string.toast_story_deleted)); onDeleted() }
                 is AppResult.Failure -> uiEvents.snackbar(r.error.toUiText())
             }
         }

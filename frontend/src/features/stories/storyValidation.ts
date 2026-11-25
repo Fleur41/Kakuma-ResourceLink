@@ -14,7 +14,7 @@ export function validateStory(d: StoryDraft, submitting: boolean): StoryErrors {
   const e: StoryErrors = {}
   const title = d.title.trim()
   if (title.length < 3) e.title = 'validation.titleLength'
-  else if (title.length > 200) e.title = 'validation.titleMax'
+  else if (title.length > 400) e.title = 'validation.titleMax'
   if (!d.body.trim()) e.body = 'validation.required'
   else if (d.body.length > 50_000) e.body = 'validation.bodyMax'
   if (submitting && !d.consent) e.consent = 'stories.editor.consentRequired'

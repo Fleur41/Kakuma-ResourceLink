@@ -118,7 +118,7 @@
     "passwordMatch": "Le password non coincidono.",
     "terms": "Accetta le linee guida della comunità per continuare.",
     "titleLength": "Usa almeno 3 caratteri.",
-    "titleMax": "Il titolo deve avere meno di 200 caratteri.",
+    "titleMax": "Il titolo deve avere meno di 400 caratteri.",
     "bodyMax": "La storia è troppo lunga (massimo 50.000 caratteri).",
     "imageType": "Scegli un'immagine JPG, PNG o WebP.",
     "imageSize": "Immagine troppo grande. La dimensione massima è 5 MB.",

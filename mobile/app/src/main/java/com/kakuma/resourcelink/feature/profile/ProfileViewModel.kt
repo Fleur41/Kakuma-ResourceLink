@@ -114,7 +114,10 @@ data class EditProfileUiState(
 )
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor(private val auth: AuthRepository) : ViewModel() {
+class EditProfileViewModel @Inject constructor(
+    private val auth: AuthRepository,
+    private val appMessages: AppMessages,
+) : ViewModel() {
     private val _state = MutableStateFlow(EditProfileUiState())
     val state = _state
     private val uiEvents = UiEventChannel()
@@ -138,7 +141,7 @@ class EditProfileViewModel @Inject constructor(private val auth: AuthRepository)
         _state.update { it.copy(isSaving = true) }
         viewModelScope.launch {
             when (val r = auth.updateProfile(s.fullName.trim(), s.bio.trim(), s.location.trim(), null)) {
-                is AppResult.Success -> { uiEvents.toast(UiText.Res(R.string.toast_profile_updated)); onDone() }
+                is AppResult.Success -> { appMessages.toast(UiText.Res(R.string.toast_profile_updated)); onDone() }
                 is AppResult.Failure -> {
                     _state.update { it.copy(isSaving = false) }
                     val e = r.error

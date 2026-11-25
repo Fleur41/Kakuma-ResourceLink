@@ -63,7 +63,11 @@ import com.kakuma.resourcelink.feature.stories.domain.StoryCategory
 import java.io.File
 
 @Composable
-fun StoryEditorRoute(onClose: () -> Unit, viewModel: StoryEditorViewModel = hiltViewModel()) {
+fun StoryEditorRoute(
+    onClose: () -> Unit,
+    onSubmitted: () -> Unit = onClose,
+    viewModel: StoryEditorViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var confirmDiscard by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)
@@ -146,7 +150,7 @@ fun StoryEditorRoute(onClose: () -> Unit, viewModel: StoryEditorViewModel = hilt
             }
             Text(stringResource(R.string.editor_review_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             KrPrimaryButton(
-                stringResource(R.string.action_submit_review), onClick = { viewModel.submit(onClose) },
+                stringResource(R.string.action_submit_review), onClick = { viewModel.submit(onSubmitted) },
                 loading = state.isSubmitting, modifier = Modifier.fillMaxWidth(),
             )
             KrOutlinedButton(stringResource(R.string.action_save_draft), viewModel::saveDraft, Modifier.fillMaxWidth())
