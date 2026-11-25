@@ -49,9 +49,11 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import com.kakuma.resourcelink.R
 import com.mohamedrejeb.richeditor.model.HeadingStyle
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -60,6 +62,27 @@ import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
 
 private val BoldStyle = SpanStyle(fontWeight = FontWeight.Bold)
 private val ItalicStyle = SpanStyle(fontStyle = FontStyle.Italic)
+// Text sizes the library gives heading paragraphs (HeadingStyle.H1..H3 visuals).
+private val HeadingSizes = listOf(2.em, 1.5.em, 1.17.em)
+
+/**
+ * Like a word processor, the line after a heading is normal text. The library carries the heading's
+ * size and bold into the new paragraph, so once text is typed into a non-heading paragraph that still
+ * looks like a heading, strip those styles from that paragraph.
+ */
+private fun keepNormalParagraphsNormal(state: RichTextState) {
+    val selection = state.selection
+    if (!selection.collapsed) return
+    // The displayed text joins paragraphs with spaces, but each paragraph keeps its own paragraph-style range.
+    val cursor = selection.min
+    val ranges = state.annotatedString.paragraphStyles
+    val paragraph = ranges.firstOrNull { cursor >= it.start && cursor < it.end } ?: ranges.lastOrNull { it.end == cursor } ?: return
+    // Only once something is typed in this paragraph: style lookups read the character before the cursor.
+    if (cursor <= paragraph.start || state.currentHeadingStyle != HeadingStyle.Normal) return
+    val size = state.currentSpanStyle.fontSize
+    if (size !in HeadingSizes) return
+    state.removeSpanStyle(SpanStyle(fontSize = size, fontWeight = FontWeight.Bold), TextRange(paragraph.start, paragraph.end))
+}
 
 /**
  * Word-style editor for a story body. The story is still stored as Markdown ([markdown] in,
@@ -88,6 +111,7 @@ fun StoryBodyEditor(
     }
     LaunchedEffect(state) {
         snapshotFlow { state.annotatedString }.collect {
+            keepNormalParagraphsNormal(state)
             val md = if (state.annotatedString.text.isBlank()) "" else state.toMarkdown()
             if (lastMarkdown != null && md != lastMarkdown) {
                 lastMarkdown = md
