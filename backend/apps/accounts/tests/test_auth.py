@@ -138,6 +138,25 @@ class TestProfile:
         res = auth_client().post("/api/v1/auth/me/avatar/", {"avatar": image_file()}, format="multipart")
         assert res.status_code == 400
 
+    def test_avatar_remove(self, auth_client, image_file):
+        client = auth_client()
+        client.post("/api/v1/auth/me/avatar/", {"avatar": image_file()}, format="multipart")
+        stored = client.user.profile.__class__.objects.get(pk=client.user.profile.pk).avatar
+        assert stored and stored.storage.exists(stored.name)
+
+        res = client.delete("/api/v1/auth/me/avatar/")
+        assert res.status_code == 200
+        assert res.data["profile"]["avatar"] is None
+        assert not stored.storage.exists(stored.name)
+
+    def test_avatar_remove_without_photo(self, auth_client):
+        res = auth_client().delete("/api/v1/auth/me/avatar/")
+        assert res.status_code == 200
+        assert res.data["profile"]["avatar"] is None
+
+    def test_avatar_remove_requires_auth(self, api_client):
+        assert api_client.delete("/api/v1/auth/me/avatar/").status_code == 401
+
 
 class TestPasswordReset:
     def test_reset_flow(self, api_client, user):

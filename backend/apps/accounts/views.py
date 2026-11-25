@@ -105,6 +105,16 @@ class AvatarUploadView(APIView):
         serializer.save()
         return Response(UserSerializer(request.user, context={"request": request}).data)
 
+    @extend_schema(request=None, responses={200: UserSerializer}, tags=["auth"])
+    def delete(self, request):
+        """Removes the profile photo (deletes the file). Safe to call when there is no photo."""
+        profile = request.user.profile
+        if profile.avatar:
+            profile.avatar.delete(save=False)
+            profile.avatar = None
+            profile.save(update_fields=["avatar"])
+        return Response(UserSerializer(request.user, context={"request": request}).data)
+
 
 class PasswordResetRequestView(PublicAuthView):
     @extend_schema(request=PasswordResetRequestSerializer, responses={202: None}, tags=["auth"])
