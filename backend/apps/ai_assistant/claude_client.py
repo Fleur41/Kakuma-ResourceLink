@@ -1,24 +1,16 @@
 """Thin wrapper around the Anthropic SDK. The only module that talks to the Claude API."""
 import logging
-from dataclasses import dataclass
 
 import anthropic
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from .exceptions import AIError, AIUnavailable
+from .llm import Completion
 
 logger = logging.getLogger(__name__)
 
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
-
-
-@dataclass(frozen=True)
-class Completion:
-    text: str
-    model: str
-    input_tokens: int
-    output_tokens: int
 
 
 class ClaudeClient:

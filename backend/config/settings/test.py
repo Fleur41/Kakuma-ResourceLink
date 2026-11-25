@@ -4,6 +4,9 @@ from .base import REST_FRAMEWORK
 
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+AI_PROVIDER = "openai"
+AI_MODEL = "gpt-6.2-sol"
+OPENAI_API_KEY = "test-key-not-real"
 ANTHROPIC_API_KEY = "test-key-not-real"
 STORIES_REQUIRE_REVIEW = True
 PROJECTS_REQUIRE_REVIEW = True

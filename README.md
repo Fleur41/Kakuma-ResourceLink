@@ -6,11 +6,11 @@ A multilingual (English, Kiswahili, Español, Italiano, Deutsch), offline-first 
 
 | Part | Stack | Folder | Status |
 |---|---|---|---|
-| Backend API | Django 5.2 · DRF · PostgreSQL 16 · Simple JWT · Claude API | `backend/` | ✅ Implemented & tested |
+| Backend API | Django 5.2 · DRF · PostgreSQL 16 · Simple JWT · OpenAI API | `backend/` | ✅ Implemented & tested |
 | Android app | Kotlin · Jetpack Compose · MVVM + Clean Architecture · Hilt · Room · Retrofit | `mobile/` | ✅ Implemented & tested ([guide](mobile/README.md)) |
 | Web app | React 19 · TypeScript · Vite · TanStack Query · Tailwind | `frontend/` | ✅ Implemented & tested ([guide](frontend/README.md)) |
 
-Both clients share one backend, one PostgreSQL database and one authentication system. No Firebase. The Claude API key never leaves the server.
+Both clients share one backend, one PostgreSQL database and one authentication system. No Firebase. The AI API key never leaves the server.
 
 ## Documentation
 
@@ -27,7 +27,7 @@ Requirements: Python 3.11+, Docker.
 
 ```bash
 cd backend
-cp .env.example .env            # then set DJANGO_SECRET_KEY (and ANTHROPIC_API_KEY to enable the assistant)
+cp .env.example .env            # then set DJANGO_SECRET_KEY (and OPENAI_API_KEY to enable the assistant)
 docker compose up -d db         # PostgreSQL 16 on localhost:5432
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
@@ -56,20 +56,22 @@ Run the whole stack in Docker instead: `docker compose --profile full up --build
 ### Tests
 
 ```bash
-cd backend && pytest            # runs against PostgreSQL; Claude is always mocked
+cd backend && pytest            # runs against PostgreSQL; the AI provider is always mocked
 pytest --cov=apps               # coverage report
 ```
 
 ### Backend modules
 
-`accounts` (email login, JWT with refresh rotation and blacklist, password reset, profiles) · `opportunities` (+ bookmarks) · `services` · `stories` (drafts → review → publish, likes, comments, bookmarks) · `diaspora` (consent-based alumni profiles) · `mentorship` (request state machine) · `contributions` (community projects and pledges; pledges are commitments, not payments) · `notifications` · `moderation` (review queues, reports, audit log) · `ai_assistant` (Claude, grounded on platform data).
+`accounts` (email login, JWT with refresh rotation and blacklist, password reset, profiles) · `opportunities` (+ bookmarks) · `services` · `stories` (drafts → review → publish, likes, comments, bookmarks) · `diaspora` (consent-based alumni profiles) · `mentorship` (request state machine) · `contributions` (community projects and pledges; pledges are commitments, not payments) · `notifications` · `moderation` (review queues, reports, audit log) · `ai_assistant` (OpenAI by default, grounded on platform data).
 
-### Claude assistant
+### AI assistant
 
 - `POST /api/v1/ai/chat/` supports `chat`, `explain_opportunity`, `summarize_story` and `translate`.
 - Answers are grounded on published platform records retrieved for each question. The system prompt forbids inventing listings and forbids refugee-status or eligibility decisions.
-- The default model is `claude-opus-5-5`, configurable with `AI_MODEL` and `AI_EFFORT`. Server-side refusal fallback is enabled (`AI_ENABLE_FALLBACKS`).
-- Without `ANTHROPIC_API_KEY` the endpoint returns `503 ai_unavailable`. It never returns a fabricated answer.
+- The provider is OpenAI (Responses API) by default: `AI_PROVIDER=openai`, `OPENAI_API_KEY`, default model `gpt-6.2-sol` (use `gpt-6.2-astra` for harder reasoning). `AI_MODEL` and `AI_EFFORT` are configurable. Conversations are stored in our database only (`store=False` at OpenAI).
+- Claude is still supported: set `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY` and a Claude `AI_MODEL` (for example `claude-opus-5-5`). Server-side refusal fallback (`AI_ENABLE_FALLBACKS`) applies to Claude only.
+- Local models through Ollama (no API key, nothing leaves the server): `brew install ollama && brew services start ollama`, `ollama pull qwen3:8b`, then set `AI_PROVIDER=ollama` and `AI_MODEL=qwen3:8b` (`OLLAMA_BASE_URL` defaults to `http://localhost:11434/v1`). The timeout defaults to 180 s because the first request loads the model.
+- Without the key for the chosen provider (or with Ollama not running) the endpoint returns `503 ai_unavailable`. It never returns a fabricated answer.
 
 ### Server translations
 

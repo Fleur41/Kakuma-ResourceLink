@@ -1,4 +1,4 @@
-"""Retrieve verified platform records relevant to a question so Claude answers from real data only."""
+"""Retrieve verified platform records relevant to a question so the assistant answers from real data only."""
 import re
 from dataclasses import dataclass
 from functools import reduce

@@ -194,17 +194,23 @@ PASSWORD_RESET_URL = env(
 STORIES_REQUIRE_REVIEW = env.bool("STORIES_REQUIRE_REVIEW", default=True)
 PROJECTS_REQUIRE_REVIEW = env.bool("PROJECTS_REQUIRE_REVIEW", default=True)
 
-# Claude AI — key is only ever read on the server.
+# AI assistant — API keys are only ever read on the server.
+# openai (ChatGPT models, Responses API) | anthropic (Claude) | ollama (local models, no key)
+AI_PROVIDER = env("AI_PROVIDER", default="openai")
+OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
 ANTHROPIC_API_KEY = env("ANTHROPIC_API_KEY", default="")
-AI_MODEL = env("AI_MODEL", default="claude-opus-5-5")
-# low | medium | high — chat assistance does well at low/medium effort.
+OLLAMA_BASE_URL = env("OLLAMA_BASE_URL", default="http://localhost:11434/v1")
+_DEFAULT_MODELS = {"openai": "gpt-6.2-sol", "anthropic": "claude-opus-5-5", "ollama": "qwen3:8b"}
+AI_MODEL = env("AI_MODEL", default=_DEFAULT_MODELS.get(AI_PROVIDER, ""))
+# low | medium | high reasoning effort — chat assistance does well at low/medium effort.
 AI_EFFORT = env("AI_EFFORT", default="medium")
-# Server-side refusal fallback (Claude API only). Disable on Bedrock/Vertex/Foundry.
+# Server-side refusal fallback (anthropic provider only). Disable on Bedrock/Vertex/Foundry.
 AI_ENABLE_FALLBACKS = env.bool("AI_ENABLE_FALLBACKS", default=True)
-AI_MAX_OUTPUT_TOKENS = env.int("AI_MAX_OUTPUT_TOKENS", default=8000)  # includes adaptive thinking
+AI_MAX_OUTPUT_TOKENS = env.int("AI_MAX_OUTPUT_TOKENS", default=8000)  # includes reasoning tokens
 AI_HISTORY_MESSAGES = env.int("AI_HISTORY_MESSAGES", default=12)
 AI_MAX_INPUT_CHARS = env.int("AI_MAX_INPUT_CHARS", default=4000)
-AI_TIMEOUT_SECONDS = env.int("AI_TIMEOUT_SECONDS", default=60)
+# Local models are slower, and the first request also loads the model into memory.
+AI_TIMEOUT_SECONDS = env.int("AI_TIMEOUT_SECONDS", default=180 if AI_PROVIDER == "ollama" else 60)
 
 LOGGING = {
     "version": 1,

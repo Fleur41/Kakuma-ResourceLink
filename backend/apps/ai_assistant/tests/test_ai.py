@@ -1,13 +1,17 @@
-"""AI assistant tests. Claude is always mocked — no network calls, no real API key."""
+"""AI assistant tests. The AI provider is always mocked — no network calls, no real API key."""
 from types import SimpleNamespace
 from unittest import mock
 
 import anthropic
 import httpx2 as httpx
+import openai
 import pytest
 
 from apps.ai_assistant import grounding
-from apps.ai_assistant.claude_client import ClaudeClient, Completion
+from apps.ai_assistant.claude_client import ClaudeClient
+from apps.ai_assistant.llm import Completion, get_client
+from apps.ai_assistant.ollama_client import OllamaClient
+from apps.ai_assistant.openai_client import OpenAIClient
 from apps.ai_assistant.exceptions import AIUnavailable
 from apps.ai_assistant.models import AIConversation, AIMessage
 from apps.opportunities.models import Opportunity
@@ -19,9 +23,8 @@ CHAT = "/api/v1/ai/chat/"
 
 @pytest.fixture
 def fake_complete():
-    with mock.patch.object(ClaudeClient, "__init__", return_value=None), mock.patch.object(
-        ClaudeClient, "complete", return_value=Completion("Here is what I found.", "claude-opus-5-5", 120, 40)
-    ) as complete:
+    complete = mock.Mock(return_value=Completion("Here is what I found.", "gpt-6.2-sol", 120, 40))
+    with mock.patch("apps.ai_assistant.services.get_client", return_value=SimpleNamespace(complete=complete)):
         yield complete
 
 
@@ -102,8 +105,10 @@ def test_requires_auth(api_client):
     assert api_client.post(CHAT, {"message": "hi"}, format="json").status_code == 401
 
 
-def test_missing_api_key_returns_503(auth_client, settings):
-    settings.ANTHROPIC_API_KEY = ""
+@pytest.mark.parametrize("provider,key_setting", [("openai", "OPENAI_API_KEY"), ("anthropic", "ANTHROPIC_API_KEY")])
+def test_missing_api_key_returns_503(auth_client, settings, provider, key_setting):
+    settings.AI_PROVIDER = provider
+    setattr(settings, key_setting, "")
     res = auth_client().post(CHAT, {"message": "hi"}, format="json")
     assert res.status_code == 503 and res.data["error"]["code"] == "ai_unavailable"
     assert not AIMessage.objects.exists()  # nothing fabricated or stored
@@ -150,6 +155,84 @@ def test_client_maps_api_errors(settings):
     with mock.patch.object(client._client.messages, "create", side_effect=anthropic.APIConnectionError(request=req)):
         with pytest.raises(AIUnavailable):
             client.complete(system="S", messages=[{"role": "user", "content": "x"}])
+
+
+def test_provider_setting_picks_the_client(settings):
+    settings.AI_PROVIDER = "openai"
+    assert isinstance(get_client(), OpenAIClient)
+    settings.AI_PROVIDER = "anthropic"
+    assert isinstance(get_client(), ClaudeClient)
+    settings.AI_PROVIDER = "ollama"
+    assert isinstance(get_client(), OllamaClient)
+
+
+def _openai_response(parts=None, status="completed"):
+    parts = parts if parts is not None else [SimpleNamespace(type="output_text", text="Answer")]
+    return SimpleNamespace(
+        status=status, model="gpt-6.2-sol", incomplete_details=None,
+        output=[SimpleNamespace(type="reasoning"), SimpleNamespace(type="message", content=parts)],
+        usage=SimpleNamespace(input_tokens=10, output_tokens=5),
+    )
+
+
+def test_openai_client_sends_expected_request(settings):
+    client = OpenAIClient(api_key="test")
+    with mock.patch.object(client._client.responses, "create", return_value=_openai_response()) as create:
+        result = client.complete(system="SYS", messages=[{"role": "user", "content": "hi"}])
+    assert result == Completion("Answer", "gpt-6.2-sol", 10, 5)
+    kw = create.call_args.kwargs
+    assert kw["model"] == settings.AI_MODEL and kw["instructions"] == "SYS"
+    assert kw["input"] == [{"role": "user", "content": "hi"}]
+    assert kw["reasoning"] == {"effort": settings.AI_EFFORT} and kw["store"] is False
+
+
+def test_openai_refusal_and_empty_answer_are_errors():
+    client = OpenAIClient(api_key="test")
+    refusal = _openai_response([SimpleNamespace(type="refusal", refusal="no")])
+    for response in (refusal, _openai_response([], status="incomplete")):
+        with mock.patch.object(client._client.responses, "create", return_value=response):
+            with pytest.raises(Exception) as exc:
+                client.complete(system="S", messages=[{"role": "user", "content": "x"}])
+        assert exc.value.default_code == "ai_error"
+
+
+def test_openai_client_maps_api_errors():
+    client = OpenAIClient(api_key="test")
+    req = httpx.Request("POST", "https://api.openai.com/v1/responses")
+    rate_limited = openai.RateLimitError("slow down", response=httpx.Response(429, request=req), body=None)
+    for err in (rate_limited, openai.APIConnectionError(request=req)):
+        with mock.patch.object(client._client.responses, "create", side_effect=err):
+            with pytest.raises(AIUnavailable):
+                client.complete(system="S", messages=[{"role": "user", "content": "x"}])
+
+
+def _chat_response(content="Answer"):
+    return SimpleNamespace(
+        model="qwen3:8b", choices=[SimpleNamespace(message=SimpleNamespace(content=content, refusal=None))],
+        usage=SimpleNamespace(prompt_tokens=10, completion_tokens=5),
+    )
+
+
+def test_ollama_client_sends_system_prompt_first_and_hides_reasoning(settings):
+    settings.AI_MODEL = "qwen3:8b"
+    client = OllamaClient(base_url="http://ollama.test/v1")
+    reply = _chat_response("<think>private notes</think>\n\nHere is the answer.")
+    with mock.patch.object(client._client.chat.completions, "create", return_value=reply) as create:
+        result = client.complete(system="SYS", messages=[{"role": "user", "content": "hi"}])
+    assert result == Completion("Here is the answer.", "qwen3:8b", 10, 5)
+    kw = create.call_args.kwargs
+    assert kw["model"] == "qwen3:8b"
+    assert kw["messages"] == [{"role": "system", "content": "SYS"}, {"role": "user", "content": "hi"}]
+
+
+def test_ollama_down_or_model_missing_is_unavailable():
+    client = OllamaClient(base_url="http://ollama.test/v1")
+    req = httpx.Request("POST", "http://ollama.test/v1/chat/completions")
+    missing = openai.NotFoundError("model not found", response=httpx.Response(404, request=req), body=None)
+    for err in (openai.APIConnectionError(request=req), missing):
+        with mock.patch.object(client._client.chat.completions, "create", side_effect=err):
+            with pytest.raises(AIUnavailable):
+                client.complete(system="S", messages=[{"role": "user", "content": "x"}])
 
 
 def test_keywords_skip_stopwords():
