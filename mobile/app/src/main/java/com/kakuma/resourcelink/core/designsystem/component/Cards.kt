@@ -53,12 +53,13 @@ fun KrCard(
     contentPadding: PaddingValues = PaddingValues(Spacing.md),
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val shape = MaterialTheme.shapes.large
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.large)
+            .clip(shape)
             .then(if (onClick != null) Modifier.clickable(role = Role.Button, onClick = onClick) else Modifier),
-        shape = MaterialTheme.shapes.large,
+        shape = shape,
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
     ) { Column(Modifier.padding(contentPadding), content = content) }
@@ -66,11 +67,12 @@ fun KrCard(
 
 @Composable
 fun CategoryPill(text: String, modifier: Modifier = Modifier) {
+    val backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
     Text(
         text = text,
         modifier = modifier
             .clip(RoundedCornerShape(50))
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .background(backgroundColor)
             .padding(horizontal = 10.dp, vertical = 3.dp),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onTertiaryContainer,
