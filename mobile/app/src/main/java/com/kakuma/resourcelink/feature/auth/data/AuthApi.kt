@@ -3,6 +3,7 @@ package com.kakuma.resourcelink.feature.auth.data
 import com.kakuma.resourcelink.core.network.AuthInterceptor
 import okhttp3.MultipartBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
@@ -31,6 +32,9 @@ interface AuthApi {
     @Multipart
     @POST("auth/me/avatar/")
     suspend fun uploadAvatar(@Part avatar: MultipartBody.Part): UserDto
+
+    @DELETE("auth/me/avatar/")
+    suspend fun removeAvatar(): UserDto
 
     @Headers(AuthInterceptor.NO_AUTH)
     @POST("auth/password-reset/")

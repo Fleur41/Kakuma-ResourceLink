@@ -404,6 +404,8 @@
     <string name="action_remove_offline">Quitar del dispositivo</string>
     <string name="toast_profile_updated">Perfil actualizado</string>
     <string name="toast_photo_updated">Foto actualizada</string>
+    <string name="toast_photo_removed">Foto eliminada</string>
+    <string name="action_remove_photo">Quitar foto</string>
     <string name="toast_signed_out">Sesión cerrada</string>
     <string name="toast_language_changed">Idioma cambiado a %1$s</string>
     <string name="toast_language_changed_device_only">%1$s solo en este teléfono. Cuenta no actualizada.</string>

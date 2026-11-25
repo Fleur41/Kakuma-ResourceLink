@@ -2,13 +2,18 @@ package com.kakuma.resourcelink.feature.profile
 
 import app.cash.turbine.test
 import com.kakuma.resourcelink.R
+import com.kakuma.resourcelink.core.common.AppError
+import com.kakuma.resourcelink.core.common.AppResult
 import com.kakuma.resourcelink.core.common.UiText
 import com.kakuma.resourcelink.core.datastore.PreferencesRepository
 import com.kakuma.resourcelink.core.ui.AppMessages
 import com.kakuma.resourcelink.core.ui.UiEvent
 import com.kakuma.resourcelink.feature.auth.domain.AuthRepository
+import com.kakuma.resourcelink.feature.auth.domain.User
 import com.kakuma.resourcelink.sync.SyncScheduler
 import com.kakuma.resourcelink.testutil.MainDispatcherRule
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
@@ -16,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -45,6 +51,27 @@ class ProfileViewModelTest {
         coVerifyOrder {
             auth.logout()
             preferences.resetOnboarding()
+        }
+    }
+
+    @Test fun `removing the photo confirms with a short toast`() = runTest {
+        coEvery { auth.removeAvatar() } returns AppResult.Success(mockk<User>(relaxed = true))
+        val vm = viewModel()
+
+        vm.events.test {
+            vm.removeAvatar()
+            assertEquals(UiEvent.Toast(UiText.Res(R.string.toast_photo_removed)), awaitItem())
+        }
+        coVerify(exactly = 1) { auth.removeAvatar() }
+    }
+
+    @Test fun `a failed photo removal shows a snackbar`() = runTest {
+        coEvery { auth.removeAvatar() } returns AppResult.Failure(AppError.Network)
+        val vm = viewModel()
+
+        vm.events.test {
+            vm.removeAvatar()
+            assertTrue(awaitItem() is UiEvent.Snackbar)
         }
     }
 }

@@ -400,6 +400,8 @@
     <string name="action_remove_offline">Ondoa kwenye kifaa</string>
     <string name="toast_profile_updated">Wasifu umesasishwa</string>
     <string name="toast_photo_updated">Picha imesasishwa</string>
+    <string name="toast_photo_removed">Picha imeondolewa</string>
+    <string name="action_remove_photo">Ondoa picha</string>
     <string name="toast_signed_out">Umetoka</string>
     <string name="toast_language_changed">Lugha imebadilishwa kuwa %1$s</string>
     <string name="toast_language_changed_device_only">%1$s imewekwa kwenye simu hii tu. Akaunti haijasasishwa.</string>
