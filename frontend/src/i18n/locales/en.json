@@ -46,7 +46,17 @@
   },
   "footer": {
     "tagline": "Kakuma ResourceLink connects current and former Kakuma residents with opportunities, services, stories and mentorship.",
-    "sampleNotice": "Listings marked “Not verified” are sample content. Always confirm details with the organisation."
+    "sampleNotice": "Listings marked “Not verified” are sample content. Always confirm details with the organisation.",
+    "discover": "Discover",
+    "yourAccount": "Your account",
+    "getInvolved": "Get involved",
+    "getInvolvedText": "Share your journey, mentor someone starting out, or support a community project.",
+    "shareStory": "Share your story",
+    "copyright": "© {{year}} Kakuma ResourceLink. Built with and for the Kakuma community.",
+    "backToTop": "Back to top",
+    "privacy": "Privacy",
+    "terms": "Terms of use",
+    "legal": "Legal"
   },
   "roles": {
     "member": "Community member",
@@ -659,5 +669,81 @@
     "reasonRequired": "Please give the author a reason.",
     "approved": "Approved",
     "rejected": "Rejected"
+  },
+  "legal": {
+    "lastUpdated": "Last updated {{date}}",
+    "seeAlso": "See also:",
+    "privacy": {
+      "title": "Privacy notice",
+      "intro": "This notice explains what information Kakuma ResourceLink collects, why we use it and the choices you have.",
+      "sections": {
+        "s1": {
+          "title": "Information we collect",
+          "body": "When you create an account we store your name, email address, role and preferred language. You can choose to add a bio, location, phone number and profile photo. We also keep what you publish or send through the platform, such as stories, alumni profiles, community projects, mentorship requests, reports and conversations with the AI assistant."
+        },
+        "s2": {
+          "title": "How we use it",
+          "body": "We use your information to run your account, show the content you publish, connect mentors and mentees, send you notifications, keep the community safe through moderation and improve the service. We do not sell your information or use it for advertising."
+        },
+        "s3": {
+          "title": "What others can see",
+          "body": "Content you publish, such as stories, alumni profiles and community projects, can be seen by anyone who visits the site. Do not include personal details in public posts that you would not want others to see."
+        },
+        "s4": {
+          "title": "The AI assistant",
+          "body": "Messages you send to the AI assistant are processed by an AI model to write replies. Depending on how the platform is set up, this model may be run by the ResourceLink team or by an outside provider. Do not share sensitive details, such as identity or case numbers, with the assistant."
+        },
+        "s5": {
+          "title": "Keeping your information safe",
+          "body": "We keep your information only for as long as we need it for these purposes and protect it with reasonable technical measures. Passwords are stored in hashed form, never as plain text. No system is completely secure, so please use a strong password that you do not use anywhere else."
+        },
+        "s6": {
+          "title": "Your choices",
+          "body": "You can view and update your profile and the content you have posted at any time, and change your language. To ask for a copy of your information or for your account to be deleted, contact the ResourceLink team."
+        },
+        "s7": {
+          "title": "Changes to this notice",
+          "body": "We may update this notice as the platform grows. When we make important changes, we will let members know on the platform."
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "By creating an account or using Kakuma ResourceLink, you agree to these terms. Please read them carefully.",
+      "sections": {
+        "s1": {
+          "title": "Who can use ResourceLink",
+          "body": "ResourceLink is for current and former residents of Kakuma and the people and organisations that support them. Give accurate information when you register and keep your password to yourself."
+        },
+        "s2": {
+          "title": "Community standards",
+          "body": "Be respectful. Do not post anything false, hateful, harassing or sexually explicit, or anything that puts someone at risk. Do not share other people's personal information without their permission, and do not use the platform for scams, spam or asking for money."
+        },
+        "s3": {
+          "title": "Your content",
+          "body": "You keep ownership of the stories and other content you post. By publishing, you allow ResourceLink to display and share it on the platform. You are responsible for what you post and must have the right to share it."
+        },
+        "s4": {
+          "title": "Moderation",
+          "body": "Moderators review content and may edit, hide or remove anything that breaks these terms. Accounts that seriously or repeatedly break the rules may be suspended or closed. You can report content you believe is harmful."
+        },
+        "s5": {
+          "title": "Opportunities and services",
+          "body": "Listings are shared to help you, but we cannot guarantee that they are accurate, complete or still open. Listings marked “Not verified” are sample content. Always confirm details with the organisation, and never pay anyone to apply for an opportunity."
+        },
+        "s6": {
+          "title": "The AI assistant",
+          "body": "The AI assistant gives general guidance and can make mistakes. It is not legal, medical or financial advice. Check important information with a qualified person or the organisation concerned."
+        },
+        "s7": {
+          "title": "Limits of our responsibility",
+          "body": "ResourceLink is provided as it is, without guarantees. As far as the law allows, we are not responsible for losses that come from using the platform or from contact with other users or organisations."
+        },
+        "s8": {
+          "title": "Changes to these terms",
+          "body": "We may update these terms. If you keep using ResourceLink after changes are posted, you accept the updated terms."
+        }
+      }
+    }
   }
 }

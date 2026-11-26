@@ -30,6 +30,7 @@ const AssistantPage = lazy(() => import('@/features/assistant/AssistantPage'))
 const NotificationsPage = lazy(() => import('@/features/notifications/NotificationsPage'))
 const ProfilePage = lazy(() => import('@/features/profile/ProfilePage'))
 const ModerationPage = lazy(() => import('@/features/moderation/ModerationPage'))
+const LegalPage = lazy(() => import('@/features/legal/LegalPage'))
 const NotFoundPage = lazy(() => import('./NotFoundPage'))
 
 export const routes: RouteObject[] = [
@@ -66,6 +67,8 @@ export const routes: RouteObject[] = [
           { path: 'notifications', element: <RequireAuth><NotificationsPage /></RequireAuth> },
           { path: 'profile', element: <RequireAuth><ProfilePage /></RequireAuth> },
           { path: 'moderation', element: <RequireAuth moderator><ModerationPage /></RequireAuth> },
+          { path: 'privacy', element: <LegalPage doc="privacy" /> },
+          { path: 'terms', element: <LegalPage doc="terms" /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
