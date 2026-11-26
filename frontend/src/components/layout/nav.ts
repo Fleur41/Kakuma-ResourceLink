@@ -1,12 +1,12 @@
 import {
   Bell,
-  Bot,
   BookOpen,
   Briefcase,
   HandHeart,
   LayoutDashboard,
   LifeBuoy,
   ShieldCheck,
+  Sparkles,
   UserRound,
   Users,
   UsersRound,
@@ -38,7 +38,7 @@ export const memberNav: NavItem[] = [
   { to: '/alumni', labelKey: 'nav.alumni', icon: Users },
   { to: '/mentorship', labelKey: 'nav.mentorship', icon: UsersRound },
   { to: '/projects', labelKey: 'nav.community', icon: HandHeart },
-  { to: '/assistant', labelKey: 'nav.assistant', icon: Bot },
+  { to: '/assistant', labelKey: 'nav.assistant', icon: Sparkles },
   { to: '/notifications', labelKey: 'nav.notifications', icon: Bell },
   { to: '/profile', labelKey: 'nav.profile', icon: UserRound },
 ]
