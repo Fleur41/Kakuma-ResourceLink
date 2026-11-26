@@ -28,7 +28,12 @@ class OllamaClient:
             response = self._client.chat.completions.create(
                 model=settings.AI_MODEL,
                 messages=[{"role": "system", "content": system}, *messages],
-                max_tokens=settings.AI_MAX_OUTPUT_TOKENS,
+                # A small local model can get stuck repeating itself; the cap stops that within seconds, not minutes.
+                max_tokens=settings.OLLAMA_MAX_OUTPUT_TOKENS,
+                # Thinking makes qwen3-style models 3-5x slower to answer, which chat users feel most on phones.
+                **({} if settings.OLLAMA_THINK else {"reasoning_effort": "none"}),
+                # Keep the model in memory between messages so a reply doesn't wait for it to reload.
+                extra_body={"keep_alive": settings.OLLAMA_KEEP_ALIVE},
             )
         except openai.APIConnectionError:
             # Includes timeouts: the model may still be loading, or Ollama isn't running.

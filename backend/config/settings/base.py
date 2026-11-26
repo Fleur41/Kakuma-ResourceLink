@@ -200,6 +200,12 @@ AI_PROVIDER = env("AI_PROVIDER", default="openai")
 OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
 ANTHROPIC_API_KEY = env("ANTHROPIC_API_KEY", default="")
 OLLAMA_BASE_URL = env("OLLAMA_BASE_URL", default="http://localhost:11434/v1")
+# Off by default: thinking makes local models several times slower to reply.
+OLLAMA_THINK = env.bool("OLLAMA_THINK", default=False)
+# How long Ollama keeps the model in memory after a reply (Ollama's own default is 5m).
+OLLAMA_KEEP_ALIVE = env("OLLAMA_KEEP_ALIVE", default="2h")
+# Chat answers are short; the cap stops a local model that starts repeating itself.
+OLLAMA_MAX_OUTPUT_TOKENS = env.int("OLLAMA_MAX_OUTPUT_TOKENS", default=1024)
 _DEFAULT_MODELS = {"openai": "gpt-6.2-sol", "anthropic": "claude-opus-5-5", "ollama": "qwen3:8b"}
 AI_MODEL = env("AI_MODEL", default=_DEFAULT_MODELS.get(AI_PROVIDER, ""))
 # low | medium | high reasoning effort — chat assistance does well at low/medium effort.

@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError
 
@@ -48,8 +49,8 @@ def _user_turn(task: str, message: str, sources, language: str, target_language:
             f"<text_to_translate>\n{grounding.neutralize(message)}\n</text_to_translate>"
         )
     return (
-        f"{grounding.render(sources)}\n\nTask: {TASK_INSTRUCTIONS[task]}\n"
-        f"Reply in {lang_name}.\n<user_message>\n{message}\n</user_message>"
+        f"{grounding.render(sources)}\n\nToday's date: {timezone.localdate().isoformat()}\n"
+        f"Task: {TASK_INSTRUCTIONS[task]}\nReply in {lang_name}.\n<user_message>\n{message}\n</user_message>"
     )
 
 
