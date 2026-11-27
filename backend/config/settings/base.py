@@ -184,11 +184,19 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="no-reply@kakuma-resourcelink.local")
-# Link sent in password-reset emails; clients handle `{uid}` and `{token}`.
-PASSWORD_RESET_URL = env(
-    "PASSWORD_RESET_URL", default="http://localhost:5173/reset-password?uid={uid}&token={token}"
-)
+# SMTP (used when EMAIL_BACKEND is django.core.mail.backends.smtp.EmailBackend), e.g. Gmail with an app password.
+EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=15)
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER or "no-reply@kakuma-resourcelink.local")
+# Password reset by emailed 6-digit code.
+PASSWORD_RESET_CODE_MINUTES = env.int("PASSWORD_RESET_CODE_MINUTES", default=15)
+PASSWORD_RESET_CODE_ATTEMPTS = env.int("PASSWORD_RESET_CODE_ATTEMPTS", default=5)
+PASSWORD_RESET_RESEND_SECONDS = env.int("PASSWORD_RESET_RESEND_SECONDS", default=60)
 
 # Stories are reviewed by moderators before publication unless disabled.
 STORIES_REQUIRE_REVIEW = env.bool("STORIES_REQUIRE_REVIEW", default=True)
