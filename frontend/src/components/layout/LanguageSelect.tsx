@@ -15,7 +15,8 @@ function Flag({ code }: { code: Language }) {
   return <F aria-hidden className="h-4 w-6 shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgba(0,0,0,0.15)]" />
 }
 
-export function LanguageSelect({ tone = 'light', id = 'lang-select' }: { tone?: 'light' | 'dark'; id?: string }) {
+/** `compact` shows the flag and language code in a pill sized to match the top bar's other controls. */
+export function LanguageSelect({ tone = 'light', compact = false, id = 'lang-select' }: { tone?: 'light' | 'dark'; compact?: boolean; id?: string }) {
   const { t } = useTranslation()
   const { setLanguage } = useAuth()
   const current = currentLanguage()
@@ -94,15 +95,26 @@ export function LanguageSelect({ tone = 'light', id = 'lang-select' }: { tone?: 
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onButtonKey}
         className={cn(
-          'flex min-h-10 w-full min-w-40 cursor-pointer items-center gap-2.5 rounded-md border ps-3 pe-3 text-sm font-medium transition-colors',
-          dark ? 'border-white/25 bg-white/10 text-white hover:bg-white/15' : 'border-border bg-surface text-text hover:border-muted',
+          'flex cursor-pointer items-center text-sm font-medium transition-colors',
+          compact ? 'h-9 gap-2 rounded-full border px-3' : 'min-h-10 w-full min-w-40 gap-2.5 rounded-md border px-3',
+          dark ? 'border-white/15 bg-transparent text-white hover:border-white/25 hover:bg-white/10' : 'border-border bg-surface text-text hover:border-muted',
+          dark && open && 'border-white/25 bg-white/15',
         )}
       >
         <Flag code={selected.code} />
-        <span lang={selected.code} className="flex-1 text-start">
-          {selected.label}
-        </span>
-        <ChevronDown size={16} aria-hidden className={cn('ms-2 shrink-0 transition-transform', open && 'rotate-180')} />
+        {compact ? (
+          <span className="uppercase">
+            <span className="sr-only" lang={selected.code}>
+              {selected.label}
+            </span>
+            <span aria-hidden>{selected.code}</span>
+          </span>
+        ) : (
+          <span lang={selected.code} className="flex-1 text-start">
+            {selected.label}
+          </span>
+        )}
+        <ChevronDown size={14} aria-hidden className={cn('shrink-0 opacity-70 transition-transform', !compact && 'ms-2', open && 'rotate-180')} />
       </button>
       {open && (
         <ul
@@ -113,7 +125,7 @@ export function LanguageSelect({ tone = 'light', id = 'lang-select' }: { tone?: 
           aria-labelledby={labelId}
           aria-activedescendant={`${id}-opt-${LANGUAGES[active].code}`}
           onKeyDown={onListKey}
-          className="absolute end-0 z-50 mt-2 w-full min-w-56 rounded-lg border border-border bg-surface p-1.5 text-text shadow-lg focus:outline-none"
+          className="absolute end-0 z-50 mt-2 w-full min-w-56 rounded-xl border border-border bg-surface p-1.5 text-text shadow-lg focus:outline-none"
         >
           {LANGUAGES.map((l, i) => (
             <li
