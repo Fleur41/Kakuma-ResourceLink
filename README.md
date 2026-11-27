@@ -70,7 +70,7 @@ pytest --cov=apps               # coverage report
 - Answers are grounded on published platform records retrieved for each question. The system prompt forbids inventing listings and forbids refugee-status or eligibility decisions.
 - The provider is OpenAI (Responses API) by default: `AI_PROVIDER=openai`, `OPENAI_API_KEY`, default model `gpt-6.2-sol` (use `gpt-6.2-astra` for harder reasoning). `AI_MODEL` and `AI_EFFORT` are configurable. Conversations are stored in our database only (`store=False` at OpenAI).
 - Claude is still supported: set `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY` and a Claude `AI_MODEL` (for example `claude-opus-5-5`). Server-side refusal fallback (`AI_ENABLE_FALLBACKS`) applies to Claude only.
-- Local models through Ollama (no API key, nothing leaves the server): `brew install ollama && brew services start ollama`, `ollama pull qwen3:8b`, then set `AI_PROVIDER=ollama` and `AI_MODEL=qwen3:8b` (`OLLAMA_BASE_URL` defaults to `http://localhost:11434/v1`). The timeout defaults to 180 s because the first request loads the model.
+- Local models through Ollama (no API key, nothing leaves the server): `brew install ollama && brew services start ollama`, `ollama pull gemma3:12b`, then set `AI_PROVIDER=ollama` and `AI_MODEL=gemma3:12b` (it handles Kiswahili far better than `qwen3:8b`) (`OLLAMA_BASE_URL` defaults to `http://localhost:11434/v1`). The timeout defaults to 180 s because the first request loads the model. Restart `runserver` after editing `.env`: its auto-reload keeps the old values.
 - Without the key for the chosen provider (or with Ollama not running) the endpoint returns `503 ai_unavailable`. It never returns a fabricated answer.
 
 ### Server translations
