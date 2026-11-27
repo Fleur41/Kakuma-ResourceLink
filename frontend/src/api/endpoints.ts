@@ -44,7 +44,8 @@ export const authApi = {
     return api<User>('auth/me/avatar/', { method: 'POST', body: fd })
   },
   requestPasswordReset: (email: string) => api<void>('auth/password-reset/', { method: 'POST', body: { email } }),
-  confirmPasswordReset: (body: { uid: string; token: string; new_password: string }) =>
+  verifyPasswordReset: (body: { email: string; code: string }) => api<void>('auth/password-reset/verify/', { method: 'POST', body }),
+  confirmPasswordReset: (body: { email: string; code: string; new_password: string }) =>
     api<void>('auth/password-reset/confirm/', { method: 'POST', body }),
   changePassword: (body: { old_password: string; new_password: string }) =>
     api<void>('auth/change-password/', { method: 'POST', body }),

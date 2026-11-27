@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import type { RouteObject } from 'react-router'
+import { Navigate, type RouteObject } from 'react-router'
 import { AppShell } from '@/components/layout/AppShell'
 import { GuestOnly, RequireAuth } from '@/features/auth/guards'
 import HomePage from '@/features/home/HomePage'
@@ -10,7 +10,6 @@ import RouteError from './RouteError'
 const LoginPage = lazy(() => import('@/features/auth/LoginPage'))
 const RegisterPage = lazy(() => import('@/features/auth/RegisterPage'))
 const ForgotPasswordPage = lazy(() => import('@/features/auth/PasswordResetPages').then((m) => ({ default: m.ForgotPasswordPage })))
-const ResetPasswordPage = lazy(() => import('@/features/auth/PasswordResetPages').then((m) => ({ default: m.ResetPasswordPage })))
 const OpportunitiesPage = lazy(() => import('@/features/opportunities/OpportunitiesPage'))
 const OpportunityDetailPage = lazy(() => import('@/features/opportunities/OpportunityDetailPage'))
 const ServicesPage = lazy(() => import('@/features/services/ServicesPage'))
@@ -45,7 +44,8 @@ export const routes: RouteObject[] = [
           { path: 'login', element: <GuestOnly><LoginPage /></GuestOnly> },
           { path: 'register', element: <GuestOnly><RegisterPage /></GuestOnly> },
           { path: 'forgot-password', element: <ForgotPasswordPage /> },
-          { path: 'reset-password', element: <ResetPasswordPage /> },
+          // Older emails linked here; reset now uses a code.
+          { path: 'reset-password', element: <Navigate to="/forgot-password" replace /> },
 
           { path: 'opportunities', element: <OpportunitiesPage /> },
           { path: 'opportunities/:id', element: <OpportunityDetailPage /> },
