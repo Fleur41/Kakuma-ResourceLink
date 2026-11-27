@@ -50,35 +50,13 @@ msgstr "Tayari kuna akaunti yenye barua pepe hii."
 msgid "Incorrect email or password."
 msgstr "Barua pepe au nenosiri si sahihi."
 
-#: apps/accounts/serializers.py:124
-msgid "This reset link is invalid or has expired."
-msgstr "Kiungo hiki si sahihi au muda wake umekwisha."
-
 #: apps/accounts/serializers.py:136
 msgid "Current password is incorrect."
 msgstr "Nenosiri la sasa si sahihi."
 
-#: apps/accounts/services.py:46
-msgid "Reset your Kakuma ResourceLink password"
-msgstr "Weka upya nenosiri lako la Kakuma ResourceLink"
-
-#: apps/accounts/services.py:47
-#, python-format
-msgid ""
-"Use this link to choose a new password: %(link)s\n"
-"If you did not request this, ignore this email."
-msgstr ""
-"Tumia kiungo hiki kuchagua nenosiri jipya: %(link)s\n"
-"Ikiwa hukuomba hili, puuza barua pepe hii."
-
 #: apps/accounts/views.py:77 apps/accounts/views.py:79
 msgid "Invalid or expired refresh token."
 msgstr "Tokeni ya kuonyesha upya si sahihi au imekwisha muda."
-
-#: apps/accounts/views.py:116
-msgid "If an account exists for this email, a reset link has been sent."
-msgstr ""
-"Ikiwa akaunti ipo kwa barua pepe hii, kiungo cha kuweka upya kimetumwa."
 
 #: apps/ai_assistant/claude_client.py:51
 msgid "The assistant is busy right now. Please try again in a minute."
@@ -549,3 +527,30 @@ msgstr "Kiitaliano"
 #: config/settings/base.py:97
 msgid "German"
 msgstr "Kijerumani"
+
+msgid "Your Kakuma ResourceLink password reset code"
+msgstr "Nambari yako ya kuweka upya nenosiri la Kakuma ResourceLink"
+
+#, python-format
+msgid ""
+"Hello %(name)s,\n"
+"\n"
+"Your password reset code is: %(code)s\n"
+"\n"
+"Enter this code in the Kakuma ResourceLink app or website within %(minutes)d minutes to choose a new password.\n"
+"\n"
+"If you didn't ask to reset your password, you can ignore this email. Your password won't change."
+msgstr ""
+"Habari %(name)s,\n"
+"\n"
+"Nambari yako ya kuweka upya nenosiri ni: %(code)s\n"
+"\n"
+"Weka nambari hii kwenye programu au tovuti ya Kakuma ResourceLink ndani ya dakika %(minutes)d ili kuchagua nenosiri jipya.\n"
+"\n"
+"Ikiwa hukuomba kuweka upya nenosiri lako, unaweza kupuuza barua pepe hii. Nenosiri lako halitabadilika."
+
+msgid "That code is wrong or has expired. Check the latest email, or ask for a new code."
+msgstr "Nambari hiyo si sahihi au muda wake umekwisha. Angalia barua pepe ya karibuni, au omba nambari mpya."
+
+msgid "If an account exists for this email, a reset code has been sent."
+msgstr "Ikiwa akaunti ipo kwa barua pepe hii, nambari ya kuweka upya imetumwa."

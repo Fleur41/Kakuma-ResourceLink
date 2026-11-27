@@ -158,37 +158,101 @@ class TestProfile:
         assert api_client.delete("/api/v1/auth/me/avatar/").status_code == 401
 
 
+RESET = "/api/v1/auth/password-reset/"
+VERIFY = "/api/v1/auth/password-reset/verify/"
+CONFIRM = "/api/v1/auth/password-reset/confirm/"
+NEW_PASSWORD = "An0ther-strong-pass"
+
+
+def _emailed_code() -> str:
+    import re
+
+    return re.search(r"\b(\d{6})\b", mail.outbox[-1].body).group(1)
+
+
 class TestPasswordReset:
     def test_reset_flow(self, api_client, user):
-        res = api_client.post("/api/v1/auth/password-reset/", {"email": user.email}, format="json")
+        res = api_client.post(RESET, {"email": user.email}, format="json")
         assert res.status_code == 202
         assert len(mail.outbox) == 1
-        import re
-
-        uid, token = re.search(r"uid=([\w-]+)&token=([\w-]+)", mail.outbox[0].body).groups()
-        res = api_client.post(
-            "/api/v1/auth/password-reset/confirm/",
-            {"uid": uid, "token": token, "new_password": "An0ther-strong-pass"}, format="json",
-        )
+        code = _emailed_code()
+        assert api_client.post(VERIFY, {"email": user.email, "code": code}, format="json").status_code == 204
+        res = api_client.post(CONFIRM, {"email": user.email, "code": code, "new_password": NEW_PASSWORD}, format="json")
         assert res.status_code == 204
         user.refresh_from_db()
-        assert user.check_password("An0ther-strong-pass")
+        assert user.check_password(NEW_PASSWORD)
+        # A code works only once.
+        res = api_client.post(CONFIRM, {"email": user.email, "code": code, "new_password": "Yet-another-pass1"}, format="json")
+        assert res.status_code == 400
+
+    def test_code_is_not_stored_in_plain_text(self, api_client, user):
+        from apps.accounts.models import PasswordResetCode
+
+        api_client.post(RESET, {"email": user.email}, format="json")
+        assert _emailed_code() not in PasswordResetCode.objects.get(user=user).code_hash
+
+    def test_email_is_in_the_users_language(self, api_client, user):
+        user.preferred_language = "sw"
+        user.save(update_fields=["preferred_language"])
+        api_client.post(RESET, {"email": user.email}, format="json")
+        assert "nenosiri" in mail.outbox[0].body.lower()
 
     def test_unknown_email_gives_same_response(self, api_client):
-        res = api_client.post("/api/v1/auth/password-reset/", {"email": "nobody@example.test"}, format="json")
+        res = api_client.post(RESET, {"email": "nobody@example.test"}, format="json")
         assert res.status_code == 202
         assert len(mail.outbox) == 0
-
-    def test_bad_token(self, api_client, user):
-        from django.utils.encoding import force_bytes
-        from django.utils.http import urlsafe_base64_encode
-
-        res = api_client.post(
-            "/api/v1/auth/password-reset/confirm/",
-            {"uid": urlsafe_base64_encode(force_bytes(user.pk)), "token": "bad", "new_password": "An0ther-strong-pass"},
-            format="json",
-        )
+        res = api_client.post(VERIFY, {"email": "nobody@example.test", "code": "123456"}, format="json")
         assert res.status_code == 400
+        assert "code" in res.data["error"]["details"]
+
+    def test_wrong_code(self, api_client, user):
+        api_client.post(RESET, {"email": user.email}, format="json")
+        wrong = "000000" if _emailed_code() != "000000" else "111111"
+        res = api_client.post(VERIFY, {"email": user.email, "code": wrong}, format="json")
+        assert res.status_code == 400
+        assert "code" in res.data["error"]["details"]
+
+    def test_code_blocked_after_too_many_wrong_tries(self, api_client, user, settings):
+        api_client.post(RESET, {"email": user.email}, format="json")
+        code = _emailed_code()
+        wrong = "000000" if code != "000000" else "111111"
+        for _ in range(settings.PASSWORD_RESET_CODE_ATTEMPTS):
+            api_client.post(VERIFY, {"email": user.email, "code": wrong}, format="json")
+        assert api_client.post(VERIFY, {"email": user.email, "code": code}, format="json").status_code == 400
+
+    def test_expired_code(self, api_client, user):
+        from datetime import timedelta
+
+        from django.utils import timezone
+
+        from apps.accounts.models import PasswordResetCode
+
+        api_client.post(RESET, {"email": user.email}, format="json")
+        PasswordResetCode.objects.filter(user=user).update(expires_at=timezone.now() - timedelta(seconds=1))
+        assert api_client.post(VERIFY, {"email": user.email, "code": _emailed_code()}, format="json").status_code == 400
+
+    def test_new_code_replaces_old_one_and_resends_are_spaced(self, api_client, user, settings):
+        from apps.accounts.models import PasswordResetCode
+
+        api_client.post(RESET, {"email": user.email}, format="json")
+        first = _emailed_code()
+        api_client.post(RESET, {"email": user.email}, format="json")
+        assert len(mail.outbox) == 1  # too soon: no second email
+        settings.PASSWORD_RESET_RESEND_SECONDS = 0
+        api_client.post(RESET, {"email": user.email}, format="json")
+        assert len(mail.outbox) == 2
+        assert PasswordResetCode.objects.filter(user=user).count() == 1
+        if _emailed_code() != first:
+            assert api_client.post(VERIFY, {"email": user.email, "code": first}, format="json").status_code == 400
+
+    def test_weak_password_keeps_the_code_usable(self, api_client, user):
+        api_client.post(RESET, {"email": user.email}, format="json")
+        code = _emailed_code()
+        res = api_client.post(CONFIRM, {"email": user.email, "code": code, "new_password": "12345678"}, format="json")
+        assert res.status_code == 400
+        assert "new_password" in res.data["error"]["details"]
+        res = api_client.post(CONFIRM, {"email": user.email, "code": code, "new_password": NEW_PASSWORD}, format="json")
+        assert res.status_code == 204
 
     def test_change_password_revokes_refresh_tokens(self, api_client, user):
         tokens = api_client.post(LOGIN, {"email": user.email, "password": PASSWORD}, format="json").data["tokens"]

@@ -50,34 +50,13 @@ msgstr "Für diese E-Mail gibt es bereits ein Konto."
 msgid "Incorrect email or password."
 msgstr "E-Mail oder Passwort ist falsch."
 
-#: apps/accounts/serializers.py:124
-msgid "This reset link is invalid or has expired."
-msgstr "Dieser Link ist ungültig oder abgelaufen."
-
 #: apps/accounts/serializers.py:136
 msgid "Current password is incorrect."
 msgstr "Das aktuelle Passwort ist falsch."
 
-#: apps/accounts/services.py:46
-msgid "Reset your Kakuma ResourceLink password"
-msgstr "Setze dein Kakuma-ResourceLink-Passwort zurück"
-
-#: apps/accounts/services.py:47
-#, python-format
-msgid ""
-"Use this link to choose a new password: %(link)s\n"
-"If you did not request this, ignore this email."
-msgstr ""
-"Nutze diesen Link, um ein neues Passwort festzulegen: %(link)s\n"
-"Wenn du das nicht angefordert hast, ignoriere diese E-Mail."
-
 #: apps/accounts/views.py:77 apps/accounts/views.py:79
 msgid "Invalid or expired refresh token."
 msgstr "Ungültiges oder abgelaufenes Aktualisierungstoken."
-
-#: apps/accounts/views.py:116
-msgid "If an account exists for this email, a reset link has been sent."
-msgstr "Falls ein Konto mit dieser E-Mail existiert, wurde ein Link gesendet."
 
 #: apps/ai_assistant/claude_client.py:51
 msgid "The assistant is busy right now. Please try again in a minute."
@@ -552,3 +531,30 @@ msgstr "Italienisch"
 #: config/settings/base.py:97
 msgid "German"
 msgstr "Deutsch"
+
+msgid "Your Kakuma ResourceLink password reset code"
+msgstr "Dein Code zum Zurücksetzen des Kakuma ResourceLink-Passworts"
+
+#, python-format
+msgid ""
+"Hello %(name)s,\n"
+"\n"
+"Your password reset code is: %(code)s\n"
+"\n"
+"Enter this code in the Kakuma ResourceLink app or website within %(minutes)d minutes to choose a new password.\n"
+"\n"
+"If you didn't ask to reset your password, you can ignore this email. Your password won't change."
+msgstr ""
+"Hallo %(name)s,\n"
+"\n"
+"dein Code zum Zurücksetzen des Passworts lautet: %(code)s\n"
+"\n"
+"Gib diesen Code innerhalb von %(minutes)d Minuten in der Kakuma ResourceLink-App oder auf der Website ein, um ein neues Passwort zu wählen.\n"
+"\n"
+"Wenn du das Zurücksetzen nicht angefordert hast, kannst du diese E-Mail ignorieren. Dein Passwort bleibt unverändert."
+
+msgid "That code is wrong or has expired. Check the latest email, or ask for a new code."
+msgstr "Der Code ist falsch oder abgelaufen. Prüfe die neueste E-Mail oder fordere einen neuen Code an."
+
+msgid "If an account exists for this email, a reset code has been sent."
+msgstr "Wenn ein Konto mit dieser E-Mail existiert, wurde ein Code zum Zurücksetzen gesendet."
