@@ -22,6 +22,45 @@ in **5 languages**, on the **web** and in an **offline-first Android app**, with
 
 </div>
 
+## Pitch deck
+
+<a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-01-cover.jpg" alt="Pitch deck cover: Kakuma ResourceLink" width="100%"></a>
+
+**[▶ Open the full pitch deck](https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d)**: present it in the browser, or download it as PowerPoint or PDF. The whole pitch is below, slide by slide.
+
+<details open>
+<summary><b>All slides</b></summary>
+<br>
+
+<table>
+  <tr>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-02-problem.jpg" alt="Slide 2: The problem"></a><br><sub><b>2.</b> The problem</sub></td>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-03-solution.jpg" alt="Slide 3: One platform, five pillars"></a><br><sub><b>3.</b> One platform, five pillars</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-04-different.jpg" alt="Slide 4: What makes it different"></a><br><sub><b>4.</b> What makes it different</sub></td>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-05-journey.jpg" alt="Slide 5: The demo: Amina’s journey"></a><br><sub><b>5.</b> The demo: Amina’s journey</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-06-assistant.jpg" alt="Slide 6: An AI that explains, never decides"></a><br><sub><b>6.</b> An AI that explains, never decides</sub></td>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-07-phone.jpg" alt="Slide 7: Built for weak connections"></a><br><sub><b>7.</b> Built for weak connections</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-08-safety.jpg" alt="Slide 8: Safe by design"></a><br><sub><b>8.</b> Safe by design</sub></td>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-09-architecture.jpg" alt="Slide 9: How it fits together"></a><br><sub><b>9.</b> How it fits together</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-10-numbers.jpg" alt="Slide 10: What we built"></a><br><sub><b>10.</b> What we built</sub></td>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-11-next.jpg" alt="Slide 11: What’s next"></a><br><sub><b>11.</b> What’s next</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-12-thanks.jpg" alt="Slide 12: Thank you"></a><br><sub><b>12.</b> Thank you</sub></td>
+    <td width="50%"><a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d"><img src="docs/slides/slide-13-qa1.jpg" alt="Slide 13: Judge questions (1 of 2)"></a><br><sub><b>13.</b> Judge questions (1 of 2)</sub></td>
+  </tr>
+</table>
+
+</details>
+
 ## The problem
 
 In Kakuma, information is scattered across notice boards, WhatsApp groups and word of mouth. Alumni abroad want to help but have no channel to reach people. Many people read in a second language, on weak connections.
@@ -82,7 +121,7 @@ In Kakuma, information is scattered across notice boards, WhatsApp groups and wo
   <tr>
     <td align="center"><img src="docs/screenshots/mobile-stories.png" alt="Android stories" width="220"><br><sub><b>Stories</b></sub></td>
     <td align="center"><img src="docs/screenshots/mobile-alumni.png" alt="Android alumni network" width="220"><br><sub><b>Alumni network</b></sub></td>
-    <td></td>
+    <td align="center"><img src="docs/screenshots/mobile-assistant.png" alt="Android AI assistant" width="220"><br><sub><b>AI assistant</b></sub></td>
   </tr>
 </table>
 
