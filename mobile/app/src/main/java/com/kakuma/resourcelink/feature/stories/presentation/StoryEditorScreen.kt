@@ -129,7 +129,7 @@ fun StoryEditorRoute(
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
                 )
             }
-            LanguageDropdown(AppLanguage.fromTag(state.language)) { viewModel.onLanguageChange(it.tag) }
+            LanguageDropdown(AppLanguage.fromTag(state.language), label = stringResource(R.string.field_story_language)) { viewModel.onLanguageChange(it.tag) }
             StoryBodyEditor(
                 markdown = state.body, onMarkdownChange = viewModel::onBodyChange,
                 label = stringResource(R.string.field_story_body),

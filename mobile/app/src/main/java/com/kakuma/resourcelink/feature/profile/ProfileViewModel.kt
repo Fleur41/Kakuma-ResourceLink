@@ -64,7 +64,7 @@ class ProfileViewModel @Inject constructor(
     val state: StateFlow<ProfileUiState> = combine(auth.currentUser, auth.isLoggedIn, preferences.preferences, busy) { user, loggedIn, prefs, (uploading, out) ->
         // The phone's language comes from the saved preference so the row updates as soon as it changes.
         val language = prefs.languageTag?.let(AppLanguage::fromTag) ?: languageManager.current()
-        ProfileUiState(user, loggedIn, prefs.themeMode, language.nativeName, uploading, out)
+        ProfileUiState(user, loggedIn, prefs.themeMode, "${language.flag}  ${language.nativeName}", uploading, out)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProfileUiState())
 
     init { viewModelScope.launch { if (auth.isLoggedIn.value) auth.refreshCurrentUser() } }
