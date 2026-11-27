@@ -98,6 +98,7 @@
     <string name="opp_requirements">Requisitos</string>
     <string name="opp_empty_title">No se encontraron oportunidades</string>
     <string name="opp_empty_body">Prueba otra categoría u otra búsqueda.</string>
+    <string name="opp_search_all">Buscar en todas las categorías</string>
     <string name="opp_saved_empty_title">Aún no has guardado nada</string>
     <string name="opp_saved_empty_body">Toca el marcador de cualquier oportunidad para tenerla aquí, incluso sin conexión.</string>
     <string name="opp_bookmark_hint">Lo guardado está disponible sin conexión.</string>
@@ -198,6 +199,7 @@
     <string name="format_bullet_list">Lista con viñetas</string>
     <string name="format_numbered_list">Lista numerada</string>
     <string name="format_clear">Borrar formato</string>
+    <string name="cd_clear_search">Borrar búsqueda</string>
     <string name="validation_title_length">Usa al menos %1$d caracteres</string>
     <string name="validation_body_length">Escribe al menos %1$d caracteres</string>
     <string name="validation_consent">Confirma que aceptas publicar</string>

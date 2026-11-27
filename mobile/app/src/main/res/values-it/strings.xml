@@ -98,6 +98,7 @@
     <string name="opp_requirements">Requisiti</string>
     <string name="opp_empty_title">Nessuna opportunità trovata</string>
     <string name="opp_empty_body">Prova un\'altra categoria o un altro termine.</string>
+    <string name="opp_search_all">Cerca in tutte le categorie</string>
     <string name="opp_saved_empty_title">Ancora nessun elemento salvato</string>
     <string name="opp_saved_empty_body">Tocca il segnalibro su un\'opportunità per tenerla qui, anche offline.</string>
     <string name="opp_bookmark_hint">Gli elementi salvati sono disponibili offline.</string>
@@ -198,6 +199,7 @@
     <string name="format_bullet_list">Elenco puntato</string>
     <string name="format_numbered_list">Elenco numerato</string>
     <string name="format_clear">Cancella formattazione</string>
+    <string name="cd_clear_search">Cancella ricerca</string>
     <string name="validation_title_length">Usa almeno %1$d caratteri</string>
     <string name="validation_body_length">Scrivi almeno %1$d caratteri</string>
     <string name="validation_consent">Conferma di accettare la pubblicazione</string>

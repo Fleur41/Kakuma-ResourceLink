@@ -98,6 +98,7 @@
     <string name="opp_requirements">Voraussetzungen</string>
     <string name="opp_empty_title">Keine Chancen gefunden</string>
     <string name="opp_empty_body">Versuche eine andere Kategorie oder einen anderen Suchbegriff.</string>
+    <string name="opp_search_all">In allen Kategorien suchen</string>
     <string name="opp_saved_empty_title">Noch nichts gespeichert</string>
     <string name="opp_saved_empty_body">Tippe bei einer Chance auf das Lesezeichen, um sie hier zu behalten, auch offline.</string>
     <string name="opp_bookmark_hint">Gespeichertes ist offline verfügbar.</string>
@@ -197,6 +198,7 @@
     <string name="format_bullet_list">Aufzählung</string>
     <string name="format_numbered_list">Nummerierte Liste</string>
     <string name="format_clear">Formatierung löschen</string>
+    <string name="cd_clear_search">Suche löschen</string>
     <string name="validation_title_length">Verwende mindestens %1$d Zeichen</string>
     <string name="validation_body_length">Schreibe mindestens %1$d Zeichen</string>
     <string name="validation_consent">Bitte bestätige, dass du der Veröffentlichung zustimmst</string>

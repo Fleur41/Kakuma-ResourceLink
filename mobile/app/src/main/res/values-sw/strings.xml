@@ -98,6 +98,7 @@
     <string name="opp_requirements">Mahitaji</string>
     <string name="opp_empty_title">Hakuna fursa zilizopatikana</string>
     <string name="opp_empty_body">Jaribu aina nyingine au neno lingine.</string>
+    <string name="opp_search_all">Tafuta katika aina zote</string>
     <string name="opp_saved_empty_title">Bado hujahifadhi chochote</string>
     <string name="opp_saved_empty_body">Gusa alama ya kuhifadhi kwenye fursa yoyote ili iwe hapa, hata bila mtandao.</string>
     <string name="opp_bookmark_hint">Vilivyohifadhiwa vinapatikana bila mtandao.</string>
@@ -197,6 +198,7 @@
     <string name="format_bullet_list">Orodha ya vitone</string>
     <string name="format_numbered_list">Orodha ya namba</string>
     <string name="format_clear">Futa mpangilio</string>
+    <string name="cd_clear_search">Futa utafutaji</string>
     <string name="validation_title_length">Tumia angalau herufi %1$d</string>
     <string name="validation_body_length">Andika angalau herufi %1$d</string>
     <string name="validation_consent">Tafadhali thibitisha kuwa unakubali kuchapisha</string>

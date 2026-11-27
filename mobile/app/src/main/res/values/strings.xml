@@ -115,6 +115,7 @@
     <string name="opp_requirements">Requirements</string>
     <string name="opp_empty_title">No opportunities found</string>
     <string name="opp_empty_body">Try another category or search term.</string>
+    <string name="opp_search_all">Search all categories</string>
     <string name="opp_saved_empty_title">Nothing saved yet</string>
     <string name="opp_saved_empty_body">Tap the bookmark on any opportunity to keep it here, even offline.</string>
     <string name="opp_bookmark_hint">Saved items are available offline.</string>
@@ -218,6 +219,7 @@
     <string name="format_bullet_list">Bulleted list</string>
     <string name="format_numbered_list">Numbered list</string>
     <string name="format_clear">Clear formatting</string>
+    <string name="cd_clear_search">Clear search</string>
     <string name="validation_title_length">Use at least %1$d characters</string>
     <string name="validation_body_length">Write at least %1$d characters</string>
     <string name="validation_consent">Please confirm you agree to publish</string>
