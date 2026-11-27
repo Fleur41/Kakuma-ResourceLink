@@ -46,7 +46,17 @@
   },
   "footer": {
     "tagline": "Kakuma ResourceLink inawaunganisha wakazi wa sasa na wa zamani wa Kakuma na fursa, huduma, hadithi na ushauri.",
-    "sampleNotice": "Matangazo yaliyoandikwa “Haijathibitishwa” ni maudhui ya mfano. Thibitisha maelezo na shirika kila mara."
+    "sampleNotice": "Matangazo yaliyoandikwa “Haijathibitishwa” ni maudhui ya mfano. Thibitisha maelezo na shirika kila mara.",
+    "discover": "Gundua",
+    "yourAccount": "Akaunti yako",
+    "getInvolved": "Shiriki",
+    "getInvolvedText": "Simulia safari yako, mwongoze mtu anayeanza, au saidia mradi wa jamii.",
+    "shareStory": "Simulia hadithi yako",
+    "copyright": "© {{year}} Kakuma ResourceLink. Imejengwa pamoja na jamii ya Kakuma, kwa ajili yake.",
+    "backToTop": "Rudi juu",
+    "privacy": "Faragha",
+    "terms": "Masharti ya matumizi",
+    "legal": "Kisheria"
   },
   "roles": {
     "member": "Mwanajamii",
@@ -171,14 +181,20 @@
     "sessionExpired": "Muda wa kuingia umeisha. Tafadhali ingia tena.",
     "signInToContinue": "Ingia ili kuendelea",
     "forgotTitle": "Weka upya nenosiri lako",
-    "forgotSubtitle": "Weka barua pepe yako nasi tutakutumia kiungo cha kuchagua nenosiri jipya.",
-    "sendResetLink": "Tuma kiungo",
-    "checkEmailTitle": "Angalia barua pepe yako",
-    "checkEmailBody": "Ikiwa kuna akaunti ya {{email}}, utapokea kiungo cha kuweka upya nenosiri.",
+    "forgotSubtitle": "Weka barua pepe yako nasi tutakutumia nambari ya tarakimu 6 ili kuchagua nenosiri jipya.",
+    "sendCode": "Tuma nambari",
+    "codeTitle": "Weka nambari yako",
+    "codeSubtitle": "Ikiwa kuna akaunti ya {{email}}, tumeitumia nambari ya tarakimu 6. Inafanya kazi kwa dakika 15.",
+    "codeLabel": "Nambari ya tarakimu 6",
+    "codeRequired": "Weka nambari ya tarakimu 6 kutoka kwenye barua pepe",
+    "checkSpam": "Huioni barua pepe? Angalia folda ya barua taka (spam).",
+    "verifyCode": "Endelea",
+    "resendCode": "Tuma nambari mpya",
+    "resendIn": "Nambari mpya baada ya sekunde {{seconds}}",
+    "codeResent": "Nambari mpya inatumwa",
+    "changeEmail": "Tumia barua pepe nyingine",
     "backToSignIn": "Rudi kuingia",
     "resetTitle": "Chagua nenosiri jipya",
-    "resetInvalidTitle": "Kiungo hiki si sahihi au muda wake umeisha",
-    "resetInvalidBody": "Omba kiungo kipya na ukitumie ndani ya saa chache.",
     "updatePassword": "Badilisha nenosiri",
     "passwordUpdated": "Nenosiri limebadilishwa"
   },
@@ -352,13 +368,23 @@
       "coverPreview": "Hakiki ya picha ya jalada",
       "category": "Mada",
       "language": "Lugha ya hadithi",
-      "bodyMode": "Hali ya mhariri",
-      "write": "Andika",
-      "preview": "Hakiki",
       "body": "Hadithi yako",
       "bodyPlaceholder": "Anza kuandika hadithi yako…",
-      "markdownHint": "Tumia **herufi nzito**, *mlalo*, # vichwa na - orodha.",
-      "nothingToPreview": "Bado hakuna cha kuhakiki.",
+      "format": {
+        "toolbar": "Mpangilio wa maandishi",
+        "undo": "Tendua",
+        "redo": "Rudia",
+        "textStyle": "Mtindo wa maandishi",
+        "normal": "Maandishi ya kawaida",
+        "heading1": "Kichwa 1",
+        "heading2": "Kichwa 2",
+        "heading3": "Kichwa 3",
+        "bold": "Herufi nzito",
+        "italic": "Mlalo",
+        "bulletList": "Orodha ya vitone",
+        "numberedList": "Orodha ya namba",
+        "clear": "Futa mpangilio"
+      },
       "wordCount_one": "Neno {{count}}",
       "wordCount_other": "Maneno {{count}}",
       "excerpt": "Muhtasari mfupi (si lazima)",
@@ -649,5 +675,81 @@
     "reasonRequired": "Tafadhali mpe mwandishi sababu.",
     "approved": "Imeidhinishwa",
     "rejected": "Imekataliwa"
+  },
+  "legal": {
+    "lastUpdated": "Ilisasishwa mwisho {{date}}",
+    "seeAlso": "Tazama pia:",
+    "privacy": {
+      "title": "Taarifa ya faragha",
+      "intro": "Taarifa hii inaeleza ni habari gani Kakuma ResourceLink inakusanya, kwa nini tunaitumia na chaguo ulizo nazo.",
+      "sections": {
+        "s1": {
+          "title": "Habari tunazokusanya",
+          "body": "Unapofungua akaunti tunahifadhi jina lako, anwani ya barua pepe, nafasi yako na lugha unayopendelea. Unaweza kuongeza wasifu, mahali ulipo, nambari ya simu na picha ya wasifu. Pia tunahifadhi unachochapisha au kutuma kupitia jukwaa, kama hadithi, wasifu wa wahitimu, miradi ya jamii, maombi ya ushauri, ripoti na mazungumzo na msaidizi wa AI."
+        },
+        "s2": {
+          "title": "Jinsi tunavyozitumia",
+          "body": "Tunatumia habari zako kuendesha akaunti yako, kuonyesha unachochapisha, kuunganisha washauri na wanaoshauriwa, kukutumia arifa, kulinda jamii kupitia usimamizi na kuboresha huduma. Hatuuzi habari zako wala kuzitumia kwa matangazo."
+        },
+        "s3": {
+          "title": "Wengine wanaona nini",
+          "body": "Unachochapisha, kama hadithi, wasifu wa wahitimu na miradi ya jamii, kinaweza kuonekana na yeyote anayetembelea tovuti. Usiweke katika machapisho ya umma habari binafsi ambazo hungependa wengine wazione."
+        },
+        "s4": {
+          "title": "Msaidizi wa AI",
+          "body": "Ujumbe unaotuma kwa msaidizi wa AI huchakatwa na modeli ya AI ili kuandika majibu. Kulingana na jinsi jukwaa lilivyowekwa, modeli hii inaweza kuendeshwa na timu ya ResourceLink au na mtoa huduma wa nje. Usishiriki habari nyeti, kama nambari za utambulisho au za kesi, na msaidizi."
+        },
+        "s5": {
+          "title": "Kulinda habari zako",
+          "body": "Tunahifadhi habari zako kwa muda tunaouhitaji kwa madhumuni haya tu na tunazilinda kwa hatua za kiufundi zinazofaa. Nywila huhifadhiwa kwa njia iliyosimbwa, kamwe si kama maandishi wazi. Hakuna mfumo ulio salama kabisa, kwa hivyo tumia nywila imara usiyoitumia mahali pengine."
+        },
+        "s6": {
+          "title": "Chaguo zako",
+          "body": "Unaweza kuona na kusasisha wasifu wako na maudhui uliyochapisha wakati wowote, na kubadilisha lugha. Ili kuomba nakala ya habari zako au akaunti yako ifutwe, wasiliana na timu ya ResourceLink."
+        },
+        "s7": {
+          "title": "Mabadiliko ya taarifa hii",
+          "body": "Huenda tukasasisha taarifa hii jukwaa linapokua. Tukifanya mabadiliko muhimu, tutawajulisha wanachama kwenye jukwaa."
+        }
+      }
+    },
+    "terms": {
+      "title": "Masharti ya matumizi",
+      "intro": "Kwa kufungua akaunti au kutumia Kakuma ResourceLink, unakubali masharti haya. Tafadhali yasome kwa makini.",
+      "sections": {
+        "s1": {
+          "title": "Nani anaweza kutumia ResourceLink",
+          "body": "ResourceLink ni kwa wakazi wa sasa na wa zamani wa Kakuma pamoja na watu na mashirika yanayowasaidia. Toa habari sahihi unapojisajili na usimpe mtu mwingine nywila yako."
+        },
+        "s2": {
+          "title": "Kanuni za jamii",
+          "body": "Kuwa na heshima. Usichapishe chochote cha uongo, cha chuki, cha unyanyasaji au cha ngono, wala chochote kinachomweka mtu hatarini. Usishiriki habari binafsi za watu wengine bila ruhusa yao, na usitumie jukwaa kwa ulaghai, barua taka au kuomba pesa."
+        },
+        "s3": {
+          "title": "Maudhui yako",
+          "body": "Hadithi na maudhui mengine unayochapisha yanabaki kuwa yako. Kwa kuchapisha, unairuhusu ResourceLink kuyaonyesha na kuyashiriki kwenye jukwaa. Unawajibika kwa unachochapisha na lazima uwe na haki ya kukishiriki."
+        },
+        "s4": {
+          "title": "Usimamizi",
+          "body": "Wasimamizi hukagua maudhui na wanaweza kuhariri, kuficha au kuondoa chochote kinachokiuka masharti haya. Akaunti zinazokiuka kanuni vibaya au mara kwa mara zinaweza kusimamishwa au kufungwa. Unaweza kuripoti maudhui unayoamini ni hatari."
+        },
+        "s5": {
+          "title": "Fursa na huduma",
+          "body": "Matangazo yanashirikiwa ili kukusaidia, lakini hatuwezi kuhakikisha kuwa ni sahihi, kamili au bado yako wazi. Matangazo yaliyoandikwa “Haijathibitishwa” ni mifano tu. Thibitisha maelezo na shirika husika kila wakati, na usimlipe mtu yeyote ili kuomba fursa."
+        },
+        "s6": {
+          "title": "Msaidizi wa AI",
+          "body": "Msaidizi wa AI hutoa mwongozo wa jumla na anaweza kukosea. Si ushauri wa kisheria, wa matibabu wala wa kifedha. Thibitisha habari muhimu na mtaalamu au shirika husika."
+        },
+        "s7": {
+          "title": "Mipaka ya wajibu wetu",
+          "body": "ResourceLink inatolewa kama ilivyo, bila dhamana. Kwa kiwango kinachoruhusiwa na sheria, hatuwajibiki kwa hasara zinazotokana na kutumia jukwaa au kuwasiliana na watumiaji au mashirika mengine."
+        },
+        "s8": {
+          "title": "Mabadiliko ya masharti haya",
+          "body": "Huenda tukasasisha masharti haya. Ukiendelea kutumia ResourceLink baada ya mabadiliko kuchapishwa, unakubali masharti mapya."
+        }
+      }
+    }
   }
 }

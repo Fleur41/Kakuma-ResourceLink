@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-import { BookOpen, Bookmark, Bot, GraduationCap, LifeBuoy, PenLine, UsersRound, Wrench } from 'lucide-react'
+import { BookOpen, Bookmark, GraduationCap, LifeBuoy, PenLine, Sparkles, UsersRound, Wrench } from 'lucide-react'
 import { mentorshipApi, notificationsApi, opportunitiesApi, storiesApi } from '@/api/endpoints'
 import { ButtonLink } from '@/components/ui/Button'
 import { PhotoBackdrop } from '@/components/ui/PhotoBackdrop'
@@ -58,7 +58,7 @@ export default function DashboardPage() {
             <ButtonLink to="/opportunities" variant="inverse">
               {t('dashboard.exploreNow')}
             </ButtonLink>
-            <ButtonLink to="/assistant" variant="outlineInverse" icon={<Bot size={18} aria-hidden />}>
+            <ButtonLink to="/assistant" variant="outlineInverse" icon={<Sparkles size={18} aria-hidden />}>
               {t('dashboard.askAssistant')}
             </ButtonLink>
           </div>

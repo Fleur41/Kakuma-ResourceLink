@@ -42,7 +42,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -50,18 +53,26 @@ import com.kakuma.resourcelink.core.designsystem.KakumaTheme
 import com.kakuma.resourcelink.core.ui.LocalSnackbarHostState
 import com.kakuma.resourcelink.core.ui.ObserveAsEvents
 import com.kakuma.resourcelink.core.ui.UiEvent
+import com.kakuma.resourcelink.feature.notifications.data.NotificationPoller
 import com.kakuma.resourcelink.navigation.AppNavHost
 import com.kakuma.resourcelink.navigation.Routes
 import com.kakuma.resourcelink.navigation.navigateToTab
 import com.kakuma.resourcelink.navigation.openTarget
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     /** Latest notification-tap intent (launch or onNewIntent with singleTop). */
     private val pendingIntent = MutableStateFlow<Intent?>(null)
+
+    /** Checks for new notifications while the app is on screen (no FCM; the background job only runs every 6 hours). */
+    @Inject lateinit var notificationPoller: NotificationPoller
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splash = installSplashScreen()
@@ -70,12 +81,29 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         // Only handle the launch intent once (not again after rotation/process recreation).
         if (savedInstanceState == null) pendingIntent.value = intent
+        pollNotificationsWhileVisible()
 
         setContent {
             val theme by viewModel.themeMode.collectAsStateWithLifecycle()
             KakumaTheme(theme) {
                 val start by produceState<String?>(null) { value = viewModel.awaitStart() }
                 start?.let { KakumaAppUi(it) }
+            }
+        }
+    }
+
+    /**
+     * Checks right away whenever the app comes to the foreground, then every minute until it is backgrounded,
+     * so new notifications (and the bell's unread count) show up within a minute instead of hours.
+     * Signed-out users are skipped inside the poller; failures just wait for the next round.
+     */
+    private fun pollNotificationsWhileVisible() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                while (isActive) {
+                    runCatching { notificationPoller.run() }
+                    delay(FOREGROUND_POLL_MS)
+                }
             }
         }
     }
@@ -151,6 +179,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_NOTIFICATION_ID = "notification_id"
         const val EXTRA_NOTIFICATION_TYPE = "notification_type"
+        private const val FOREGROUND_POLL_MS = 60_000L
     }
 }
 

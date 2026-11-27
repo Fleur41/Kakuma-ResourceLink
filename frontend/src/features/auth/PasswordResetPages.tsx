@@ -1,96 +1,92 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate, useSearchParams } from 'react-router'
-import { MailCheck } from 'lucide-react'
+import { Link, useNavigate } from 'react-router'
 import { ApiError } from '@/api/client'
 import { authApi } from '@/api/endpoints'
-import { Button, ButtonLink } from '@/components/ui/Button'
+import { Button } from '@/components/ui/Button'
 import { useErrorMessage } from '@/components/ui/feedback'
 import { PasswordField, TextField } from '@/components/ui/Field'
 import { useToast } from '@/components/ui/toast-context'
 import { AuthCard } from './AuthCard'
 import { EMAIL_RE, validatePassword } from './validation'
 
+/** Seconds before another code can be requested (matches PASSWORD_RESET_RESEND_SECONDS on the server). */
+const RESEND_SECONDS = 60
+const CODE_RE = /^\d{6}$/
+
+type Step = 'email' | 'code' | 'password'
+
+/**
+ * Password reset by emailed 6-digit code: email → code → new password.
+ * The server answers the same whether or not the account exists, so the flow never reveals who has an account.
+ */
 export function ForgotPasswordPage() {
   const { t } = useTranslation()
+  const toast = useToast()
+  const navigate = useNavigate()
   const errorMessage = useErrorMessage()
+  const [step, setStep] = useState<Step>('email')
   const [email, setEmail] = useState('')
-  const [error, setError] = useState<string>()
-  const [sent, setSent] = useState(false)
+  const [code, setCode] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
+  const [errors, setErrors] = useState<{ email?: string; code?: string; password?: string; confirm?: string; form?: string }>({})
   const [loading, setLoading] = useState(false)
+  const [resendIn, setResendIn] = useState(0)
 
-  async function onSubmit(e: FormEvent) {
+  useEffect(() => {
+    if (resendIn <= 0) return
+    const id = window.setTimeout(() => setResendIn((s) => s - 1), 1000)
+    return () => window.clearTimeout(id)
+  }, [resendIn])
+
+  async function sendCode() {
+    await authApi.requestPasswordReset(email.trim().toLowerCase())
+    setResendIn(RESEND_SECONDS)
+  }
+
+  async function onEmail(e: FormEvent) {
     e.preventDefault()
-    if (!EMAIL_RE.test(email.trim())) {
-      setError(t('validation.email'))
-      return
-    }
-    setError(undefined)
+    if (!EMAIL_RE.test(email.trim())) return setErrors({ email: t('validation.email') })
+    setErrors({})
     setLoading(true)
     try {
-      await authApi.requestPasswordReset(email.trim().toLowerCase())
-      setSent(true) // same message whether or not the account exists (no enumeration)
+      await sendCode()
+      setStep('code')
     } catch (err) {
-      setError(errorMessage(err))
+      setErrors({ email: errorMessage(err) })
     } finally {
       setLoading(false)
     }
   }
 
-  if (sent)
-    return (
-      <AuthCard title={t('auth.checkEmailTitle')}>
-        <div className="flex flex-col items-center gap-4 text-center">
-          <MailCheck size={48} className="text-accent" aria-hidden />
-          <p className="text-muted">{t('auth.checkEmailBody', { email })}</p>
-          <ButtonLink to="/login" variant="secondary">
-            {t('auth.backToSignIn')}
-          </ButtonLink>
-        </div>
-      </AuthCard>
-    )
+  async function onResend() {
+    setErrors({})
+    try {
+      await sendCode()
+      setCode('')
+      toast.success(t('auth.codeResent'))
+    } catch (err) {
+      setErrors({ form: errorMessage(err) })
+    }
+  }
 
-  return (
-    <AuthCard
-      title={t('auth.forgotTitle')}
-      subtitle={t('auth.forgotSubtitle')}
-      footer={
-        <Link to="/login" className="font-semibold text-primary hover:underline">
-          {t('auth.backToSignIn')}
-        </Link>
-      }
-    >
-      <form noValidate onSubmit={onSubmit} className="space-y-5">
-        <TextField label={t('auth.email')} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={error} required />
-        <Button type="submit" size="lg" className="w-full" loading={loading}>
-          {t('auth.sendResetLink')}
-        </Button>
-      </form>
-    </AuthCard>
-  )
-}
+  async function onCode(e: FormEvent) {
+    e.preventDefault()
+    if (!CODE_RE.test(code)) return setErrors({ code: t('auth.codeRequired') })
+    setErrors({})
+    setLoading(true)
+    try {
+      await authApi.verifyPasswordReset({ email: email.trim().toLowerCase(), code })
+      setStep('password')
+    } catch (err) {
+      setErrors(err instanceof ApiError && err.field('code') ? { code: err.field('code') } : { form: errorMessage(err) })
+    } finally {
+      setLoading(false)
+    }
+  }
 
-export function ResetPasswordPage() {
-  const { t } = useTranslation()
-  const toast = useToast()
-  const navigate = useNavigate()
-  const errorMessage = useErrorMessage()
-  const [params] = useSearchParams()
-  const uid = params.get('uid') ?? ''
-  const token = params.get('token') ?? ''
-  const [password, setPassword] = useState('')
-  const [confirm, setConfirm] = useState('')
-  const [errors, setErrors] = useState<{ password?: string; confirm?: string; form?: string }>({})
-  const [loading, setLoading] = useState(false)
-
-  if (!uid || !token)
-    return (
-      <AuthCard title={t('auth.resetInvalidTitle')} subtitle={t('auth.resetInvalidBody')}>
-        <ButtonLink to="/forgot-password">{t('auth.sendResetLink')}</ButtonLink>
-      </AuthCard>
-    )
-
-  async function onSubmit(e: FormEvent) {
+  async function onPassword(e: FormEvent) {
     e.preventDefault()
     const pw = validatePassword(password)
     const next = { password: pw && t(pw), confirm: confirm !== password ? t('validation.passwordMatch') : undefined }
@@ -98,30 +94,100 @@ export function ResetPasswordPage() {
     if (next.password || next.confirm) return
     setLoading(true)
     try {
-      await authApi.confirmPasswordReset({ uid, token, new_password: password })
+      await authApi.confirmPasswordReset({ email: email.trim().toLowerCase(), code, new_password: password })
       toast.success(t('auth.passwordUpdated'))
       navigate('/login', { replace: true })
     } catch (err) {
-      if (err instanceof ApiError && err.code === 'validation_error' && err.field('new_password')) setErrors({ password: err.field('new_password') })
-      else if (err instanceof ApiError && err.status === 400) setErrors({ form: t('auth.resetInvalidBody') })
-      else setErrors({ form: errorMessage(err) })
+      if (err instanceof ApiError && err.field('new_password')) setErrors({ password: err.field('new_password') })
+      else if (err instanceof ApiError && err.field('code')) {
+        // The code expired (or was replaced) while the person was typing: back to the code step.
+        setStep('code')
+        setErrors({ code: err.field('code') })
+      } else setErrors({ form: errorMessage(err) })
     } finally {
       setLoading(false)
     }
   }
 
-  return (
-    <AuthCard title={t('auth.resetTitle')}>
-      <form noValidate onSubmit={onSubmit} className="space-y-5">
-        {errors.form && (
-          <div role="alert" className="rounded-md border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
-            {errors.form}
+  const backToSignIn = (
+    <Link to="/login" className="font-semibold text-primary hover:underline">
+      {t('auth.backToSignIn')}
+    </Link>
+  )
+  const formError = errors.form && (
+    <div role="alert" className="rounded-md border border-error/30 bg-error/10 px-4 py-3 text-sm text-error">
+      {errors.form}
+    </div>
+  )
+
+  if (step === 'code')
+    return (
+      <AuthCard title={t('auth.codeTitle')} subtitle={t('auth.codeSubtitle', { email: email.trim() })} footer={backToSignIn}>
+        <form noValidate onSubmit={onCode} className="space-y-5">
+          {formError}
+          <TextField
+            label={t('auth.codeLabel')}
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            autoFocus
+            maxLength={6}
+            placeholder="000000"
+            className="text-center font-mono text-2xl tracking-[0.5em]"
+            error={errors.code}
+            hint={t('auth.checkSpam')}
+            required
+          />
+          <Button type="submit" size="lg" className="w-full" loading={loading}>
+            {t('auth.verifyCode')}
+          </Button>
+          <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+            <button
+              type="button"
+              onClick={() => {
+                setStep('email')
+                setCode('')
+                setErrors({})
+              }}
+              className="font-semibold text-primary hover:underline"
+            >
+              {t('auth.changeEmail')}
+            </button>
+            {resendIn > 0 ? (
+              <span className="text-muted" aria-live="polite">
+                {t('auth.resendIn', { seconds: resendIn })}
+              </span>
+            ) : (
+              <button type="button" onClick={onResend} className="font-semibold text-primary hover:underline">
+                {t('auth.resendCode')}
+              </button>
+            )}
           </div>
-        )}
-        <PasswordField label={t('auth.newPassword')} autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} error={errors.password} hint={t('auth.passwordHint')} required />
-        <PasswordField label={t('auth.confirmPassword')} autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} error={errors.confirm} required />
+        </form>
+      </AuthCard>
+    )
+
+  if (step === 'password')
+    return (
+      <AuthCard title={t('auth.resetTitle')} footer={backToSignIn}>
+        <form noValidate onSubmit={onPassword} className="space-y-5">
+          {formError}
+          <PasswordField label={t('auth.newPassword')} autoComplete="new-password" autoFocus value={password} onChange={(e) => setPassword(e.target.value)} error={errors.password} hint={t('auth.passwordHint')} required />
+          <PasswordField label={t('auth.confirmPassword')} autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} error={errors.confirm} required />
+          <Button type="submit" size="lg" className="w-full" loading={loading}>
+            {t('auth.updatePassword')}
+          </Button>
+        </form>
+      </AuthCard>
+    )
+
+  return (
+    <AuthCard title={t('auth.forgotTitle')} subtitle={t('auth.forgotSubtitle')} footer={backToSignIn}>
+      <form noValidate onSubmit={onEmail} className="space-y-5">
+        <TextField label={t('auth.email')} type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={errors.email} required />
         <Button type="submit" size="lg" className="w-full" loading={loading}>
-          {t('auth.updatePassword')}
+          {t('auth.sendCode')}
         </Button>
       </form>
     </AuthCard>

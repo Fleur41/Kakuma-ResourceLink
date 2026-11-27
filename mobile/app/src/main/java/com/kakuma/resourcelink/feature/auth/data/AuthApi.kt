@@ -39,4 +39,12 @@ interface AuthApi {
     @Headers(AuthInterceptor.NO_AUTH)
     @POST("auth/password-reset/")
     suspend fun requestPasswordReset(@Body body: EmailRequest)
+
+    @Headers(AuthInterceptor.NO_AUTH)
+    @POST("auth/password-reset/verify/")
+    suspend fun verifyPasswordReset(@Body body: ResetCodeRequest)
+
+    @Headers(AuthInterceptor.NO_AUTH)
+    @POST("auth/password-reset/confirm/")
+    suspend fun confirmPasswordReset(@Body body: ResetPasswordRequest)
 }

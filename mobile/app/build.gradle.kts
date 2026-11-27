@@ -150,6 +150,7 @@ dependencies {
     implementation(libs.androidx.work.runtime)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.richtext.editor)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

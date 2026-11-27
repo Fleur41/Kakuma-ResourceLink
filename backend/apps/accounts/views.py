@@ -19,6 +19,7 @@ from .serializers import (
     LoginSerializer,
     LogoutSerializer,
     PasswordResetConfirmSerializer,
+    PasswordResetVerifySerializer,
     PasswordResetRequestSerializer,
     RegisterSerializer,
     UserSerializer,
@@ -123,9 +124,18 @@ class PasswordResetRequestView(PublicAuthView):
         serializer.is_valid(raise_exception=True)
         services.send_password_reset(serializer.validated_data["email"])
         return Response(
-            {"detail": _("If an account exists for this email, a reset link has been sent.")},
+            {"detail": _("If an account exists for this email, a reset code has been sent.")},
             status=status.HTTP_202_ACCEPTED,
         )
+
+
+class PasswordResetVerifyView(PublicAuthView):
+    """Checks a reset code before the person types a new password (wrong codes count towards the limit)."""
+
+    @extend_schema(request=PasswordResetVerifySerializer, responses={204: None}, tags=["auth"])
+    def post(self, request):
+        PasswordResetVerifySerializer(data=request.data).is_valid(raise_exception=True)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class PasswordResetConfirmView(PublicAuthView):
@@ -133,7 +143,7 @@ class PasswordResetConfirmView(PublicAuthView):
     def post(self, request):
         serializer = PasswordResetConfirmSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        services.set_new_password(serializer.validated_data["user"], serializer.validated_data["new_password"])
+        services.reset_password_with_code(serializer.validated_data["record"], serializer.validated_data["new_password"])
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

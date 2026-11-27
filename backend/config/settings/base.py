@@ -184,27 +184,47 @@ CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="no-reply@kakuma-resourcelink.local")
-# Link sent in password-reset emails; clients handle `{uid}` and `{token}`.
-PASSWORD_RESET_URL = env(
-    "PASSWORD_RESET_URL", default="http://localhost:5173/reset-password?uid={uid}&token={token}"
-)
+# SMTP (used when EMAIL_BACKEND is django.core.mail.backends.smtp.EmailBackend), e.g. Gmail with an app password.
+EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=15)
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER or "no-reply@kakuma-resourcelink.local")
+# Password reset by emailed 6-digit code.
+PASSWORD_RESET_CODE_MINUTES = env.int("PASSWORD_RESET_CODE_MINUTES", default=15)
+PASSWORD_RESET_CODE_ATTEMPTS = env.int("PASSWORD_RESET_CODE_ATTEMPTS", default=5)
+PASSWORD_RESET_RESEND_SECONDS = env.int("PASSWORD_RESET_RESEND_SECONDS", default=60)
 
 # Stories are reviewed by moderators before publication unless disabled.
 STORIES_REQUIRE_REVIEW = env.bool("STORIES_REQUIRE_REVIEW", default=True)
 PROJECTS_REQUIRE_REVIEW = env.bool("PROJECTS_REQUIRE_REVIEW", default=True)
 
-# Claude AI — key is only ever read on the server.
+# AI assistant — API keys are only ever read on the server.
+# openai (ChatGPT models, Responses API) | anthropic (Claude) | ollama (local models, no key)
+AI_PROVIDER = env("AI_PROVIDER", default="openai")
+OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
 ANTHROPIC_API_KEY = env("ANTHROPIC_API_KEY", default="")
-AI_MODEL = env("AI_MODEL", default="claude-opus-5-5")
-# low | medium | high — chat assistance does well at low/medium effort.
+OLLAMA_BASE_URL = env("OLLAMA_BASE_URL", default="http://localhost:11434/v1")
+# Off by default: thinking makes local models several times slower to reply.
+OLLAMA_THINK = env.bool("OLLAMA_THINK", default=False)
+# How long Ollama keeps the model in memory after a reply (Ollama's own default is 5m).
+OLLAMA_KEEP_ALIVE = env("OLLAMA_KEEP_ALIVE", default="2h")
+# Chat answers are short; the cap stops a local model that starts repeating itself.
+OLLAMA_MAX_OUTPUT_TOKENS = env.int("OLLAMA_MAX_OUTPUT_TOKENS", default=1024)
+_DEFAULT_MODELS = {"openai": "gpt-6.2-sol", "anthropic": "claude-opus-5-5", "ollama": "gemma3:12b"}
+AI_MODEL = env("AI_MODEL", default=_DEFAULT_MODELS.get(AI_PROVIDER, ""))
+# low | medium | high reasoning effort — chat assistance does well at low/medium effort.
 AI_EFFORT = env("AI_EFFORT", default="medium")
-# Server-side refusal fallback (Claude API only). Disable on Bedrock/Vertex/Foundry.
+# Server-side refusal fallback (anthropic provider only). Disable on Bedrock/Vertex/Foundry.
 AI_ENABLE_FALLBACKS = env.bool("AI_ENABLE_FALLBACKS", default=True)
-AI_MAX_OUTPUT_TOKENS = env.int("AI_MAX_OUTPUT_TOKENS", default=8000)  # includes adaptive thinking
+AI_MAX_OUTPUT_TOKENS = env.int("AI_MAX_OUTPUT_TOKENS", default=8000)  # includes reasoning tokens
 AI_HISTORY_MESSAGES = env.int("AI_HISTORY_MESSAGES", default=12)
 AI_MAX_INPUT_CHARS = env.int("AI_MAX_INPUT_CHARS", default=4000)
-AI_TIMEOUT_SECONDS = env.int("AI_TIMEOUT_SECONDS", default=60)
+# Local models are slower, and the first request also loads the model into memory.
+AI_TIMEOUT_SECONDS = env.int("AI_TIMEOUT_SECONDS", default=180 if AI_PROVIDER == "ollama" else 60)
 
 LOGGING = {
     "version": 1,

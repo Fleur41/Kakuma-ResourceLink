@@ -47,7 +47,17 @@
   },
   "footer": {
     "tagline": "Kakuma ResourceLink conecta a residentes actuales y antiguos de Kakuma con oportunidades, servicios, historias y mentoría.",
-    "sampleNotice": "Los anuncios marcados como «No verificado» son contenido de ejemplo. Confirma siempre los detalles con la organización."
+    "sampleNotice": "Los anuncios marcados como «No verificado» son contenido de ejemplo. Confirma siempre los detalles con la organización.",
+    "discover": "Descubrir",
+    "yourAccount": "Tu cuenta",
+    "getInvolved": "Participa",
+    "getInvolvedText": "Comparte tu trayectoria, orienta a quien empieza o apoya un proyecto comunitario.",
+    "shareStory": "Comparte tu historia",
+    "copyright": "© {{year}} Kakuma ResourceLink. Creado con y para la comunidad de Kakuma.",
+    "backToTop": "Volver arriba",
+    "privacy": "Privacidad",
+    "terms": "Términos de uso",
+    "legal": "Legal"
   },
   "roles": {
     "member": "Miembro de la comunidad",
@@ -172,14 +182,20 @@
     "sessionExpired": "La sesión expiró. Vuelve a iniciar sesión.",
     "signInToContinue": "Inicia sesión para continuar",
     "forgotTitle": "Restablece tu contraseña",
-    "forgotSubtitle": "Introduce tu correo y te enviaremos un enlace para elegir una nueva contraseña.",
-    "sendResetLink": "Enviar enlace",
-    "checkEmailTitle": "Revisa tu correo",
-    "checkEmailBody": "Si existe una cuenta para {{email}}, recibirás un enlace para restablecer tu contraseña.",
+    "forgotSubtitle": "Escribe tu correo y te enviaremos un código de 6 dígitos para elegir una contraseña nueva.",
+    "sendCode": "Enviar código",
+    "codeTitle": "Escribe tu código",
+    "codeSubtitle": "Si existe una cuenta para {{email}}, le hemos enviado un código de 6 dígitos. Sirve durante 15 minutos.",
+    "codeLabel": "Código de 6 dígitos",
+    "codeRequired": "Escribe el código de 6 dígitos del correo",
+    "checkSpam": "¿No encuentras el correo? Revisa la carpeta de spam.",
+    "verifyCode": "Continuar",
+    "resendCode": "Enviar un código nuevo",
+    "resendIn": "Código nuevo en {{seconds}} s",
+    "codeResent": "Te estamos enviando un código nuevo",
+    "changeEmail": "Usar otro correo",
     "backToSignIn": "Volver a iniciar sesión",
     "resetTitle": "Elige una nueva contraseña",
-    "resetInvalidTitle": "Este enlace no es válido o ha caducado",
-    "resetInvalidBody": "Solicita un nuevo enlace y úsalo en pocas horas.",
     "updatePassword": "Actualizar contraseña",
     "passwordUpdated": "Contraseña actualizada"
   },
@@ -357,13 +373,23 @@
       "coverPreview": "Vista previa de la portada",
       "category": "Tema",
       "language": "Idioma de la historia",
-      "bodyMode": "Modo del editor",
-      "write": "Escribir",
-      "preview": "Vista previa",
       "body": "Tu historia",
       "bodyPlaceholder": "Empieza a escribir tu historia…",
-      "markdownHint": "Usa **negrita**, *cursiva*, # títulos y - listas.",
-      "nothingToPreview": "Aún no hay nada que previsualizar.",
+      "format": {
+        "toolbar": "Formato",
+        "undo": "Deshacer",
+        "redo": "Rehacer",
+        "textStyle": "Estilo de texto",
+        "normal": "Texto normal",
+        "heading1": "Título 1",
+        "heading2": "Título 2",
+        "heading3": "Título 3",
+        "bold": "Negrita",
+        "italic": "Cursiva",
+        "bulletList": "Lista con viñetas",
+        "numberedList": "Lista numerada",
+        "clear": "Borrar formato"
+      },
       "wordCount_one": "{{count}} palabra",
       "wordCount_many": "{{count}} palabras",
       "wordCount_other": "{{count}} palabras",
@@ -657,5 +683,81 @@
     "reasonRequired": "Indica un motivo para el autor/a.",
     "approved": "Aprobado",
     "rejected": "Rechazado"
+  },
+  "legal": {
+    "lastUpdated": "Última actualización: {{date}}",
+    "seeAlso": "Consulta también:",
+    "privacy": {
+      "title": "Aviso de privacidad",
+      "intro": "Este aviso explica qué información recoge Kakuma ResourceLink, para qué la usamos y qué opciones tienes.",
+      "sections": {
+        "s1": {
+          "title": "Información que recogemos",
+          "body": "Cuando creas una cuenta guardamos tu nombre, tu correo electrónico, tu rol y tu idioma preferido. Puedes añadir una biografía, tu ubicación, un número de teléfono y una foto de perfil. También guardamos lo que publicas o envías a través de la plataforma, como historias, perfiles de exalumnos, proyectos comunitarios, solicitudes de mentoría, denuncias y conversaciones con el asistente de IA."
+        },
+        "s2": {
+          "title": "Cómo la usamos",
+          "body": "Usamos tu información para gestionar tu cuenta, mostrar lo que publicas, conectar a mentores y aprendices, enviarte notificaciones, proteger a la comunidad mediante la moderación y mejorar el servicio. No vendemos tu información ni la usamos para publicidad."
+        },
+        "s3": {
+          "title": "Qué pueden ver otras personas",
+          "body": "Lo que publicas, como historias, perfiles de exalumnos y proyectos comunitarios, puede verlo cualquier persona que visite el sitio. No incluyas en publicaciones públicas datos personales que no quieras que otros vean."
+        },
+        "s4": {
+          "title": "El asistente de IA",
+          "body": "Los mensajes que envías al asistente de IA los procesa un modelo de IA para redactar las respuestas. Según cómo esté configurada la plataforma, ese modelo puede gestionarlo el equipo de ResourceLink o un proveedor externo. No compartas datos sensibles, como números de identidad o de expediente, con el asistente."
+        },
+        "s5": {
+          "title": "Cómo protegemos tu información",
+          "body": "Conservamos tu información solo el tiempo necesario para estos fines y la protegemos con medidas técnicas razonables. Las contraseñas se guardan cifradas mediante hash, nunca como texto legible. Ningún sistema es totalmente seguro, así que usa una contraseña segura que no utilices en otros sitios."
+        },
+        "s6": {
+          "title": "Tus opciones",
+          "body": "Puedes ver y actualizar tu perfil y lo que has publicado en cualquier momento, y cambiar de idioma. Para pedir una copia de tu información o que se elimine tu cuenta, contacta con el equipo de ResourceLink."
+        },
+        "s7": {
+          "title": "Cambios en este aviso",
+          "body": "Podemos actualizar este aviso a medida que crece la plataforma. Si hacemos cambios importantes, lo comunicaremos a los miembros en la plataforma."
+        }
+      }
+    },
+    "terms": {
+      "title": "Términos de uso",
+      "intro": "Al crear una cuenta o usar Kakuma ResourceLink, aceptas estos términos. Léelos con atención.",
+      "sections": {
+        "s1": {
+          "title": "Quién puede usar ResourceLink",
+          "body": "ResourceLink está pensado para residentes actuales y antiguos de Kakuma y para las personas y organizaciones que los apoyan. Da información verdadera al registrarte y no compartas tu contraseña."
+        },
+        "s2": {
+          "title": "Normas de la comunidad",
+          "body": "Sé respetuoso. No publiques nada falso, de odio, acosador o sexualmente explícito, ni nada que ponga a alguien en peligro. No compartas datos personales de otras personas sin su permiso ni uses la plataforma para estafas, spam o pedir dinero."
+        },
+        "s3": {
+          "title": "Tu contenido",
+          "body": "Las historias y demás contenido que publicas siguen siendo tuyos. Al publicarlos, permites que ResourceLink los muestre y comparta en la plataforma. Eres responsable de lo que publicas y debes tener derecho a compartirlo."
+        },
+        "s4": {
+          "title": "Moderación",
+          "body": "El equipo de moderación revisa el contenido y puede editar, ocultar o eliminar lo que incumpla estos términos. Las cuentas que incumplan las normas de forma grave o reiterada pueden suspenderse o cerrarse. Puedes denunciar contenido que consideres dañino."
+        },
+        "s5": {
+          "title": "Oportunidades y servicios",
+          "body": "Los anuncios se comparten para ayudarte, pero no podemos garantizar que sean exactos, completos o que sigan abiertos. Los anuncios marcados como «No verificado» son contenido de ejemplo. Confirma siempre los detalles con la organización y nunca pagues a nadie por postularte a una oportunidad."
+        },
+        "s6": {
+          "title": "El asistente de IA",
+          "body": "El asistente de IA ofrece orientación general y puede equivocarse. No es asesoramiento legal, médico ni financiero. Comprueba la información importante con una persona cualificada o con la organización correspondiente."
+        },
+        "s7": {
+          "title": "Límites de nuestra responsabilidad",
+          "body": "ResourceLink se ofrece tal cual, sin garantías. En la medida en que lo permita la ley, no somos responsables de las pérdidas derivadas del uso de la plataforma o del contacto con otros usuarios u organizaciones."
+        },
+        "s8": {
+          "title": "Cambios en estos términos",
+          "body": "Podemos actualizar estos términos. Si sigues usando ResourceLink después de publicarse los cambios, aceptas los nuevos términos."
+        }
+      }
+    }
   }
 }

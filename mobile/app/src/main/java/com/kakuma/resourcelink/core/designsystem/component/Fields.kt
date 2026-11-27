@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
@@ -16,12 +17,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
@@ -123,6 +129,11 @@ fun KrPasswordField(
     )
 }
 
+/**
+ * Search box. The text lives in the field itself so typing never waits for the ViewModel
+ * (avoids dropped letters and cursor jumps); outside changes to [value] still update it.
+ * The keyboard's Search key closes the keyboard; the X clears the search.
+ */
 @Composable
 fun KrSearchField(
     value: String,
@@ -131,16 +142,33 @@ fun KrSearchField(
     modifier: Modifier = Modifier,
     onSearch: () -> Unit = {},
 ) {
+    var text by rememberSaveable { mutableStateOf(value) }
+    var focused by remember { mutableStateOf(false) }
+    // Only take outside changes while the person isn't typing, so a late ViewModel echo can't undo a keystroke.
+    LaunchedEffect(value, focused) { if (!focused && value != text) text = value }
+    val keyboard = LocalSoftwareKeyboardController.current
+    val focus = LocalFocusManager.current
     OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier.fillMaxWidth(),
+        value = text,
+        onValueChange = { text = it; onValueChange(it) },
+        modifier = modifier.fillMaxWidth().onFocusChanged { focused = it.isFocused },
         placeholder = { Text(placeholder, color = MaterialTheme.colorScheme.onSurfaceVariant) },
         leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null) },
+        trailingIcon = if (text.isNotEmpty()) {
+            {
+                IconButton(onClick = { text = ""; onValueChange("") }) {
+                    Icon(Icons.Outlined.Close, contentDescription = stringResource(R.string.cd_clear_search))
+                }
+            }
+        } else null,
         singleLine = true,
         shape = MaterialTheme.shapes.medium,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+        keyboardActions = KeyboardActions(onSearch = {
+            keyboard?.hide()
+            focus.clearFocus()
+            onSearch()
+        }),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surface,
             unfocusedContainerColor = MaterialTheme.colorScheme.surface,

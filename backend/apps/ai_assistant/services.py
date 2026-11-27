@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError
 
@@ -9,7 +10,7 @@ from apps.opportunities.models import Opportunity, OpportunityStatus
 from apps.stories.models import Story, StoryStatus
 
 from . import grounding
-from .claude_client import ClaudeClient
+from .llm import LLMClient, get_client
 from .models import AIConversation, AIMessage, MessageRole
 from .prompts import LANGUAGE_NAMES, SYSTEM_PROMPT, TASK_INSTRUCTIONS
 
@@ -48,14 +49,14 @@ def _user_turn(task: str, message: str, sources, language: str, target_language:
             f"<text_to_translate>\n{grounding.neutralize(message)}\n</text_to_translate>"
         )
     return (
-        f"{grounding.render(sources)}\n\nTask: {TASK_INSTRUCTIONS[task]}\n"
-        f"Reply in {lang_name}.\n<user_message>\n{message}\n</user_message>"
+        f"{grounding.render(sources)}\n\nToday's date: {timezone.localdate().isoformat()}\n"
+        f"Task: {TASK_INSTRUCTIONS[task]}\nReply in {lang_name}.\n<user_message>\n{message}\n</user_message>"
     )
 
 
 def chat(
     *, user, message: str, conversation_id=None, language: str | None = None, task: str = "chat",
-    target_id=None, target_language: str | None = None, client: ClaudeClient | None = None,
+    target_id=None, target_language: str | None = None, client: LLMClient | None = None,
 ) -> tuple[AIConversation, AIMessage]:
     conversation = (
         get_object_or_404(AIConversation, pk=conversation_id, user=user) if conversation_id else None
@@ -66,7 +67,7 @@ def chat(
     messages = _history(conversation) + [
         {"role": "user", "content": _user_turn(task, message, sources, language, target_language)}
     ]
-    client = client or ClaudeClient()
+    client = client or get_client()
     # Network call happens outside any DB transaction.
     completion = client.complete(system=SYSTEM_PROMPT, messages=messages)
 

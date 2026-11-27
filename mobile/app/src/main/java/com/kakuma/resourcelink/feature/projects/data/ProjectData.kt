@@ -60,6 +60,7 @@ data class ProjectDto(
     @Json(name = "funding_goal") val fundingGoal: String? = null,
     val currency: String = "USD",
     @Json(name = "contribution_summary") val summaryStats: SummaryDto = SummaryDto(),
+    @Json(name = "created_at") val createdAt: String? = null,
 )
 
 @JsonClass(generateAdapter = true)

@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import password_validation
-from django.contrib.auth.tokens import default_token_generator
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from .models import SELF_ASSIGNABLE_ROLES, Language, Profile, Role, User
-from .services import user_from_reset_uid
+from .services import check_reset_code
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -113,17 +113,30 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
-class PasswordResetConfirmSerializer(serializers.Serializer):
-    uid = serializers.CharField()
-    token = serializers.CharField()
+CODE_INVALID = _("That code is wrong or has expired. Check the latest email, or ask for a new code.")
+
+
+class PasswordResetVerifySerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.RegexField(r"^\d{6}$", error_messages={"invalid": CODE_INVALID})
+
+    def validate(self, attrs):
+        record = check_reset_code(attrs["email"], attrs["code"])
+        if not record:
+            raise serializers.ValidationError({"code": [CODE_INVALID]})
+        attrs["record"] = record
+        return attrs
+
+
+class PasswordResetConfirmSerializer(PasswordResetVerifySerializer):
     new_password = serializers.CharField(write_only=True, min_length=8, max_length=128)
 
     def validate(self, attrs):
-        user = user_from_reset_uid(attrs["uid"])
-        if not user or not default_token_generator.check_token(user, attrs["token"]):
-            raise serializers.ValidationError({"token": [_("This reset link is invalid or has expired.")]})
-        password_validation.validate_password(attrs["new_password"], user=user)
-        attrs["user"] = user
+        attrs = super().validate(attrs)
+        try:
+            password_validation.validate_password(attrs["new_password"], user=attrs["record"].user)
+        except DjangoValidationError as e:
+            raise serializers.ValidationError({"new_password": list(e.messages)}) from e
         return attrs
 
 

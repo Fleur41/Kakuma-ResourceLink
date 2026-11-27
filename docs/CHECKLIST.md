@@ -20,11 +20,11 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] diaspora alumni profiles (consent/visibility)
 - [x] mentorship requests (state machine, DB constraints)
 - [x] community projects + contributions (pledges, privacy of contributor list)
-- [x] Claude AI assistant (grounded, mocked tests, 503 without key)
+- [x] AI assistant (OpenAI by default, Claude or local Ollama optional; grounded, mocked tests, 503 without key)
 - [x] OpenAPI export to docs/api/openapi.yaml (0 warnings)
 - [x] Demo seed commands: `seed_demo` (small) and `seed_testdata` (18 accounts, every state; password Admin@123; DEBUG only)
 - [x] Docker image builds
-- [ ] Live Claude call verified with a real ANTHROPIC_API_KEY (needs key)
+- [ ] Live OpenAI call verified with a real OPENAI_API_KEY (needs key)
 - [x] Translation catalogues (.po/.mo) for sw/es/it/de server messages: emails, API errors, notifications (129 strings each)
 
 ## Phase 3 — Android  ✅ (61 unit + 6 instrumented tests passing, lint 0 errors)
@@ -35,7 +35,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] Localization EN/SW/ES/IT/DE (401 strings each, per-app language)
 - [x] Tests: use cases, ViewModels/Flows, DAO, repository, network, UI, navigation
 - [x] Smoke-tested on an API 37 emulator against the local backend (sign-in, all tabs, Kiswahili)
-- [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
+- [ ] Assistant answers verified end to end (needs OPENAI_API_KEY on the backend)
 - [x] Release signing config (keystore.properties or env vars) + R8 rules reviewed; minified signed build run on emulator
 
 ## Phase 4 — React  ✅ (48 tests passing, typecheck + build clean, lint 0 errors)
@@ -44,7 +44,7 @@ Legend: [x] done & verified · [~] in progress · [ ] not started
 - [x] Localization EN/SW/ES/IT/DE (578 strings each), light/dark theme, PWA app shell + persisted query cache
 - [x] Tests: API client, validation, cache, i18n parity, pages (login, opportunities, story, guards, language)
 - [x] Smoke-tested in Chrome against the local backend (sign-in, stories, like, Kiswahili)
-- [ ] Assistant answers verified end to end (needs ANTHROPIC_API_KEY on the backend)
+- [ ] Assistant answers verified end to end (needs OPENAI_API_KEY on the backend)
 
 ## Phase 6 — Wrap-up  ✅
 - [x] Security review — `docs/SECURITY.md` (deploy check, bandit, pip-audit, npm audit, manual authz review)

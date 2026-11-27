@@ -2,7 +2,7 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
-import { Bell, Bot, ChevronDown, LogOut, Menu, ShieldCheck, UserRound, X } from 'lucide-react'
+import { ArrowRight, ArrowUp, Bell, BookOpen, ChevronDown, LogOut, Menu, ShieldCheck, Sparkles, UserRound, X } from 'lucide-react'
 import { notificationsApi } from '@/api/endpoints'
 import { Avatar } from '@/components/ui/Avatar'
 import { OfflineBanner, PageLoader } from '@/components/ui/feedback'
@@ -85,7 +85,7 @@ function Wordmark() {
       <img src="/favicon.svg" alt="" width={24} height={24} />
       <span>
         <span className="font-semibold tracking-[0.02em]">KAKUMA</span>
-        <span className="ms-1.5 font-light text-white/75">ResourceLink</span>
+        <span className="ms-1.5 font-semibold">ResourceLink</span>
       </span>
     </Link>
   )
@@ -96,6 +96,7 @@ function TopBar() {
   const { user, isModerator } = useAuth()
   const [menuOpen, setMenuOpen] = useOpenOnPage()
   const signOut = useSignOut()
+  const { pathname } = useLocation()
 
   const unread = useQuery({
     queryKey: ['notifications', 'unread-count'],
@@ -141,27 +142,44 @@ function TopBar() {
           ))}
         </nav>
 
-        <div className="ms-auto flex items-center gap-1">
-          <div className="me-2 hidden md:block">
-            <LanguageSelect tone="dark" id="lang-top" />
+        <div className="ms-auto flex items-center gap-2">
+          <div className="hidden md:block">
+            <LanguageSelect tone="dark" compact id="lang-top" />
           </div>
           {user ? (
             <>
-              <Link
+              <NavLink
                 to="/assistant"
-                className="me-1 hidden h-9 items-center gap-2 rounded-[4px] border border-white/30 px-3 text-sm text-white transition-colors hover:bg-white hover:text-shell sm:inline-flex"
+                className={({ isActive }) =>
+                  cn(
+                    'group hidden h-9 items-center gap-2 rounded-full ps-3 pe-4 text-sm font-medium whitespace-nowrap ring-1 transition-colors sm:inline-flex',
+                    isActive
+                      ? 'bg-shell-accent text-[#161616] ring-shell-accent'
+                      : 'bg-shell-accent/10 text-white ring-shell-accent/40 hover:bg-shell-accent/20 hover:ring-shell-accent/70',
+                  )
+                }
               >
-                <Bot size={16} aria-hidden />
-                {t('nav.assistant')}
-              </Link>
+                {({ isActive }) => (
+                  <>
+                    <Sparkles size={15} aria-hidden className={cn('transition-transform group-hover:rotate-12', !isActive && 'text-shell-accent')} />
+                    {t('nav.assistant')}
+                  </>
+                )}
+              </NavLink>
               <Link
                 to="/notifications"
-                className="relative inline-flex size-10 items-center justify-center text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                className={cn(
+                  'relative inline-flex size-9 items-center justify-center rounded-full transition-colors',
+                  pathname.startsWith('/notifications') ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white',
+                )}
                 aria-label={unreadCount ? `${t('nav.notifications')} – ${t('notifications.unreadCount', { count: unreadCount })}` : t('nav.notifications')}
               >
                 <Bell size={18} aria-hidden />
                 {unreadCount > 0 && (
-                  <span aria-hidden className="absolute end-1 top-1.5 min-w-4 bg-gold px-1 text-center text-[10px] leading-4 font-semibold text-[#161616]">
+                  <span
+                    aria-hidden
+                    className="absolute -end-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-gold px-1 text-[10px] leading-none font-semibold text-[#161616] tabular-nums ring-2 ring-shell"
+                  >
                     {unreadCount > 99 ? '99+' : unreadCount}
                   </span>
                 )}
@@ -170,10 +188,10 @@ function TopBar() {
             </>
           ) : (
             <>
-              <Link to="/login" className="hidden h-9 items-center px-3 text-sm text-white/80 transition-colors hover:text-white sm:inline-flex">
+              <Link to="/login" className="hidden h-9 items-center rounded-full px-4 text-sm font-medium text-white/80 transition-colors hover:bg-white/10 hover:text-white sm:inline-flex">
                 {t('auth.signIn')}
               </Link>
-              <Link to="/register" className="inline-flex h-9 items-center rounded-[4px] bg-white px-4 text-sm font-medium text-[#161616] transition-colors hover:bg-[#e0e0e0]">
+              <Link to="/register" className="inline-flex h-9 items-center rounded-full bg-white px-4 text-sm font-medium whitespace-nowrap text-[#161616] transition-colors hover:bg-[#e0e0e0]">
                 {t('auth.joinUs')}
               </Link>
             </>
@@ -184,7 +202,7 @@ function TopBar() {
             aria-expanded={menuOpen}
             aria-controls="site-menu"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="ms-1 inline-flex size-10 items-center justify-center text-white/80 transition-colors hover:bg-white/10 hover:text-white xl:hidden"
+            className="inline-flex size-9 items-center justify-center rounded-full text-white/80 transition-colors hover:bg-white/10 hover:text-white xl:hidden"
           >
             {menuOpen ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
           </button>
@@ -253,7 +271,9 @@ function AccountMenu({ onSignOut }: { onSignOut: () => Promise<void> }) {
     }
   }, [open, setOpen])
 
-  const item = 'flex min-h-11 w-full items-center gap-3 px-4 text-sm text-white/85 transition-colors hover:bg-white/10 hover:text-white'
+  const item =
+    'flex min-h-10 w-full items-center gap-3 rounded-lg px-3 text-sm text-white/85 transition-colors hover:bg-white/10 hover:text-white focus-visible:bg-white/10 focus-visible:outline-none'
+  const icon = 'shrink-0 text-white/50'
 
   return (
     <div ref={ref} className="relative hidden sm:block">
@@ -263,30 +283,47 @@ function AccountMenu({ onSignOut }: { onSignOut: () => Promise<void> }) {
         aria-expanded={open}
         aria-controls="account-menu"
         onClick={() => setOpen(!open)}
-        className={cn('flex h-14 items-center gap-2 px-2 transition-colors hover:bg-white/10', open && 'bg-shell-raised')}
+        className={cn(
+          'flex h-9 items-center gap-1.5 rounded-full ps-0.5 pe-2 ring-1 transition-colors',
+          open ? 'bg-white/15 ring-white/25' : 'ring-white/15 hover:bg-white/10 hover:ring-white/25',
+        )}
       >
-        <Avatar name={user?.full_name} src={user?.profile?.avatar} size={30} />
-        <ChevronDown size={14} aria-hidden className={cn('text-white/60 transition-transform', open && 'rotate-180')} />
+        <Avatar name={user?.full_name} src={user?.profile?.avatar} size={32} />
+        <ChevronDown size={14} aria-hidden className={cn('text-white/70 transition-transform', open && 'rotate-180')} />
       </button>
       {open && (
-        <div id="account-menu" className="animate-in absolute end-0 top-full w-72 border border-white/10 bg-shell-raised text-white">
-          <div className="border-b border-white/10 px-4 py-4">
-            <p className="truncate font-medium">{user?.full_name}</p>
-            <p className="truncate text-xs text-white/60">{t(`roles.${user?.role ?? 'member'}`)}</p>
+        <div
+          id="account-menu"
+          className="animate-in absolute end-0 top-full z-40 mt-2 w-72 overflow-hidden rounded-xl border border-white/10 bg-shell-raised text-white shadow-2xl shadow-black/40"
+        >
+          <div className="flex items-center gap-3 border-b border-white/10 p-4">
+            <Avatar name={user?.full_name} src={user?.profile?.avatar} size={44} />
+            <div className="min-w-0">
+              <p className="truncate font-medium">{user?.full_name}</p>
+              <p className="mt-1 inline-flex rounded-full bg-shell-accent/15 px-2 py-0.5 text-[11px] font-medium text-shell-accent">
+                {t(`roles.${user?.role ?? 'member'}`)}
+              </p>
+            </div>
           </div>
-          <div className="py-1">
+          <div className="p-1.5">
             <Link to="/profile" className={item}>
-              <UserRound size={16} aria-hidden /> {t('nav.profile')}
+              <UserRound size={16} aria-hidden className={icon} /> {t('nav.profile')}
+            </Link>
+            <Link to="/my-stories" className={item}>
+              <BookOpen size={16} aria-hidden className={icon} /> {t('stories.myStories')}
+            </Link>
+            <Link to="/notifications" className={item}>
+              <Bell size={16} aria-hidden className={icon} /> {t('nav.notifications')}
             </Link>
             {isModerator && (
               <Link to="/moderation" className={item}>
-                <ShieldCheck size={16} aria-hidden /> {t('nav.moderation')}
+                <ShieldCheck size={16} aria-hidden className={icon} /> {t('nav.moderation')}
               </Link>
             )}
           </div>
-          <div className="border-t border-white/10 py-1">
-            <button type="button" onClick={() => void onSignOut()} className={item}>
-              <LogOut size={16} aria-hidden /> {t('auth.signOut')}
+          <div className="border-t border-white/10 p-1.5">
+            <button type="button" onClick={() => void onSignOut()} className={cn(item, 'hover:bg-red-500/15 hover:text-red-300')}>
+              <LogOut size={16} aria-hidden className={icon} /> {t('auth.signOut')}
             </button>
           </div>
         </div>
@@ -295,27 +332,105 @@ function AccountMenu({ onSignOut }: { onSignOut: () => Promise<void> }) {
   )
 }
 
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h2 className="mb-4 text-xs font-semibold tracking-[0.08em] text-white uppercase">{title}</h2>
+      <ul className="space-y-3">{children}</ul>
+    </div>
+  )
+}
+
+function FooterLink({ to, children }: { to: string; children: React.ReactNode }) {
+  return (
+    <li>
+      <Link to={to} className="text-white/65 transition-colors hover:text-white focus-visible:text-white">
+        {children}
+      </Link>
+    </li>
+  )
+}
+
+/** Dark footer: brand and mission, grouped links, then a legal bar with the copyright and back-to-top. */
 function Footer() {
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="bg-shell text-white/70">
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-4 py-14 text-sm sm:px-6 md:grid-cols-[1.2fr_1fr_1.2fr] lg:px-10">
-        <div className="space-y-4">
-          <Wordmark />
-          <p className="max-w-sm leading-relaxed">{t('brand.tagline')}</p>
-        </div>
-        <ul className="space-y-2.5">
-          {publicNav.map((item) => (
-            <li key={item.to}>
-              <Link to={item.to} className="transition-colors hover:text-white">
+    <footer className="relative bg-shell text-sm text-white/65">
+      <div aria-hidden className="h-[3px] bg-gradient-to-r from-shell-accent via-gold to-shell-accent" />
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+        <div className="grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-10">
+          <div className="space-y-5">
+            <Wordmark />
+            <p className="max-w-sm text-[15px] leading-relaxed text-white/80">{t('brand.tagline')}</p>
+            <p className="max-w-sm leading-relaxed">{t('footer.tagline')}</p>
+            <div className="max-w-60 pt-1">
+              <LanguageSelect tone="dark" id="lang-footer" />
+            </div>
+          </div>
+
+          <FooterColumn title={t('footer.discover')}>
+            {publicNav.map((item) => (
+              <FooterLink key={item.to} to={item.to}>
                 {t(item.labelKey)}
+              </FooterLink>
+            ))}
+          </FooterColumn>
+
+          {user ? (
+            <FooterColumn title={t('footer.yourAccount')}>
+              <FooterLink to="/">{t('nav.dashboard')}</FooterLink>
+              <FooterLink to="/mentorship">{t('nav.mentorship')}</FooterLink>
+              <FooterLink to="/assistant">{t('nav.assistant')}</FooterLink>
+              <FooterLink to="/notifications">{t('nav.notifications')}</FooterLink>
+              <FooterLink to="/profile">{t('nav.profile')}</FooterLink>
+            </FooterColumn>
+          ) : (
+            <FooterColumn title={t('footer.yourAccount')}>
+              <FooterLink to="/login">{t('auth.signIn')}</FooterLink>
+              <FooterLink to="/register">{t('auth.joinUs')}</FooterLink>
+            </FooterColumn>
+          )}
+
+          <div>
+            <h2 className="mb-4 text-xs font-semibold tracking-[0.08em] text-white uppercase">{t('footer.getInvolved')}</h2>
+            <p className="mb-5 leading-relaxed">{t('footer.getInvolvedText')}</p>
+            <Link
+              to={user ? '/stories/new' : '/register'}
+              className="group inline-flex h-10 items-center gap-2 rounded-[4px] bg-white px-4 font-medium text-[#161616] transition-colors hover:bg-[#e0e0e0]"
+            >
+              {user ? t('footer.shareStory') : t('auth.joinUs')}
+              <ArrowRight size={16} aria-hidden className="transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-t border-white/10 py-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1.5">
+            <p>{t('footer.copyright', { year })}</p>
+            <p>{t('footer.sampleNotice')}</p>
+          </div>
+          <div className="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3">
+            <nav aria-label={t('footer.legal')} className="flex gap-6">
+              <Link to="/privacy" className="text-white/65 transition-colors hover:text-white">
+                {t('footer.privacy')}
               </Link>
-            </li>
-          ))}
-        </ul>
-        <div className="space-y-3 leading-relaxed">
-          <p>{t('footer.tagline')}</p>
-          <p className="text-xs text-white/50">{t('footer.sampleNotice')}</p>
+              <Link to="/terms" className="text-white/65 transition-colors hover:text-white">
+                {t('footer.terms')}
+              </Link>
+            </nav>
+            <span aria-hidden className="hidden h-3 w-px bg-white/20 sm:block" />
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="inline-flex items-center gap-2 text-white/65 transition-colors hover:text-white"
+            >
+              {t('footer.backToTop')}
+              <ArrowUp size={14} aria-hidden />
+            </button>
+          </div>
         </div>
       </div>
     </footer>

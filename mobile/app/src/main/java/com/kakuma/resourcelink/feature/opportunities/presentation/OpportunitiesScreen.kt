@@ -75,6 +75,7 @@ fun OpportunitiesRoute(onOpen: (String) -> Unit, onBack: (() -> Unit)? = null, v
         }
 
         val refresh = items.loadState.refresh
+        val searchingInCategory = !state.bookmarkedOnly && state.category != null && state.query.isNotBlank()
         PullToRefreshBox(
             isRefreshing = refresh is LoadState.Loading && items.itemCount > 0,
             onRefresh = { items.refresh() },
@@ -89,6 +90,9 @@ fun OpportunitiesRoute(onOpen: (String) -> Unit, onBack: (() -> Unit)? = null, v
                     Icons.Outlined.SearchOff,
                     stringResource(if (state.bookmarkedOnly) R.string.opp_saved_empty_title else R.string.opp_empty_title),
                     stringResource(if (state.bookmarkedOnly) R.string.opp_saved_empty_body else R.string.opp_empty_body),
+                    // A search with a category chip on only looks in that category: offer to widen it.
+                    actionLabel = if (searchingInCategory) stringResource(R.string.opp_search_all) else null,
+                    onAction = if (searchingInCategory) ({ viewModel.onCategoryChange(null) }) else null,
                 )
                 else -> LazyColumn(
                     contentPadding = PaddingValues(start = Spacing.gutter, end = Spacing.gutter, bottom = Spacing.xl),

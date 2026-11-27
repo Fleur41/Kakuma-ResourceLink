@@ -10,14 +10,16 @@ import { StatusBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ConfirmDialog } from '@/components/ui/Dialog'
 import { ErrorState, PageLoader, useErrorMessage } from '@/components/ui/feedback'
-import { Checkbox, SelectField, TextArea, TextField } from '@/components/ui/Field'
+import { Checkbox, TextField } from '@/components/ui/Field'
+import { LanguageFlag } from '@/components/ui/LanguageFlag'
+import { ListboxField } from '@/components/ui/ListboxField'
 import { PageHeader } from '@/components/ui/Page'
 import { useToast } from '@/components/ui/toast-context'
 import { useAuth } from '@/features/auth/auth-context'
 import { currentLanguage, LANGUAGES } from '@/i18n'
-import { cn, wordCount } from '@/lib/format'
+import { wordCount } from '@/lib/format'
 import { STORY_CATEGORIES, useStory } from './hooks'
-import { Markdown } from './Markdown'
+import { RichTextEditor } from './RichTextEditor'
 import { validateImage, validateStory, type StoryErrors } from './storyValidation'
 
 const LOCAL_DRAFT_KEY = 'kk.story-draft.new'
@@ -81,7 +83,6 @@ function Editor({ existing }: { existing?: StoryDetail }) {
   const [cover, setCover] = useState<File | null>(null)
   const [coverError, setCoverError] = useState<string>()
   const [errors, setErrors] = useState<StoryErrors>({})
-  const [tab, setTab] = useState<'write' | 'preview'>('write')
   const [confirmSubmit, setConfirmSubmit] = useState(false)
   const fileInput = useRef<HTMLInputElement>(null)
   const skipBlock = useRef(false)
@@ -227,7 +228,7 @@ function Editor({ existing }: { existing?: StoryDetail }) {
             <p className="mb-1.5 text-sm font-medium">{t('stories.editor.cover')}</p>
             {coverPreview ? (
               <div className="relative overflow-hidden rounded-lg">
-                <img src={coverPreview} alt={t('stories.editor.coverPreview')} className="aspect-[16/7] w-full object-cover" />
+                <img src={coverPreview} alt={t('stories.editor.coverPreview')} className="block h-auto max-h-[28rem] w-full bg-surface object-contain" />
                 <div className="absolute end-3 top-3 flex gap-2">
                   <Button size="sm" variant="inverse" onClick={() => fileInput.current?.click()}>
                     {t('stories.editor.changeCover')}
@@ -255,39 +256,29 @@ function Editor({ existing }: { existing?: StoryDetail }) {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <SelectField label={t('stories.editor.category')} value={form.category} onChange={(e) => set('category', e.target.value as StoryCategory)} options={STORY_CATEGORIES.map((c) => ({ value: c, label: t(`categories.story.${c}`) }))} />
-            <SelectField label={t('stories.editor.language')} value={form.language} onChange={(e) => set('language', e.target.value as Language)} options={LANGUAGES.map((l) => ({ value: l.code, label: l.label }))} />
+            <ListboxField
+              label={t('stories.editor.category')}
+              value={form.category}
+              onChange={(v) => set('category', v)}
+              options={STORY_CATEGORIES.map((c) => ({ value: c, label: t(`categories.story.${c}`) }))}
+            />
+            <ListboxField
+              label={t('stories.editor.language')}
+              value={form.language}
+              onChange={(v) => set('language', v)}
+              options={LANGUAGES.map((l) => ({ value: l.code, label: l.label, lang: l.code, icon: <LanguageFlag code={l.code} /> }))}
+            />
           </div>
 
           <div>
-            <div role="tablist" aria-label={t('stories.editor.bodyMode')} className="mb-2 flex gap-1">
-              {(['write', 'preview'] as const).map((m) => (
-                <button
-                  key={m}
-                  type="button"
-                  role="tab"
-                  aria-selected={tab === m}
-                  onClick={() => setTab(m)}
-                  className={cn('min-h-10 rounded-md px-4 text-sm font-semibold', tab === m ? 'bg-primary-container text-primary' : 'text-muted hover:text-primary')}
-                >
-                  {t(`stories.editor.${m}`)}
-                </button>
-              ))}
-            </div>
-            {tab === 'write' ? (
-              <TextArea
-                label={t('stories.editor.body')}
-                placeholder={t('stories.editor.bodyPlaceholder')}
-                value={form.body}
-                onChange={(e) => set('body', e.target.value)}
-                error={errors.body}
-                hint={t('stories.editor.markdownHint')}
-                rows={16}
-                required
-              />
-            ) : (
-              <div className="min-h-64 rounded-md border border-border p-5">{form.body.trim() ? <Markdown>{form.body}</Markdown> : <p className="text-muted">{t('stories.editor.nothingToPreview')}</p>}</div>
-            )}
+            <RichTextEditor
+              label={t('stories.editor.body')}
+              placeholder={t('stories.editor.bodyPlaceholder')}
+              value={form.body}
+              onChange={(md) => set('body', md)}
+              error={errors.body}
+              required
+            />
             <p className="mt-1 text-end text-sm text-muted" aria-live="polite">
               {t('stories.editor.wordCount', { count: words })}
             </p>

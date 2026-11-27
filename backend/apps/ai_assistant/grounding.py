@@ -1,4 +1,4 @@
-"""Retrieve verified platform records relevant to a question so Claude answers from real data only."""
+"""Retrieve verified platform records relevant to a question so the assistant answers from real data only."""
 import re
 from dataclasses import dataclass
 from functools import reduce
@@ -34,11 +34,26 @@ CATEGORY_HINTS = {
     "job": OpportunityCategory.JOB, "work": OpportunityCategory.JOB, "employ": OpportunityCategory.JOB,
     "intern": OpportunityCategory.INTERNSHIP, "business": OpportunityCategory.ENTREPRENEURSHIP,
     "entrepreneur": OpportunityCategory.ENTREPRENEURSHIP,
+    # Kiswahili
+    "ufadhili": OpportunityCategory.SCHOLARSHIP, "udhamini": OpportunityCategory.SCHOLARSHIP,
+    "chuo": OpportunityCategory.EDUCATION, "shule": OpportunityCategory.EDUCATION, "elimu": OpportunityCategory.EDUCATION,
+    "mafunzo": OpportunityCategory.VOCATIONAL, "ufundi": OpportunityCategory.VOCATIONAL,
+    "kazi": OpportunityCategory.JOB, "ajira": OpportunityCategory.JOB, "biashara": OpportunityCategory.ENTREPRENEURSHIP,
 }
 SERVICE_HINTS = {
     "health": ServiceCategory.HEALTHCARE, "clinic": ServiceCategory.HEALTHCARE, "hospital": ServiceCategory.HEALTHCARE,
-    "doctor": ServiceCategory.HEALTHCARE, "legal": ServiceCategory.LEGAL, "lawyer": ServiceCategory.LEGAL,
-    "protect": ServiceCategory.PROTECTION, "food": ServiceCategory.HUMANITARIAN, "shelter": ServiceCategory.HUMANITARIAN,
+    "doctor": ServiceCategory.HEALTHCARE, "medic": ServiceCategory.HEALTHCARE, "sick": ServiceCategory.HEALTHCARE,
+    "nurse": ServiceCategory.HEALTHCARE, "pregnan": ServiceCategory.HEALTHCARE,
+    "counsel": ServiceCategory.HEALTHCARE,
+    "legal": ServiceCategory.LEGAL, "lawyer": ServiceCategory.LEGAL,
+    "protect": ServiceCategory.PROTECTION, "safe": ServiceCategory.PROTECTION, "abuse": ServiceCategory.PROTECTION,
+    "violen": ServiceCategory.PROTECTION,
+    "food": ServiceCategory.HUMANITARIAN, "shelter": ServiceCategory.HUMANITARIAN,
+    # Kiswahili
+    "afya": ServiceCategory.HEALTHCARE, "hospitali": ServiceCategory.HEALTHCARE, "kliniki": ServiceCategory.HEALTHCARE,
+    "daktari": ServiceCategory.HEALTHCARE, "mgonjwa": ServiceCategory.HEALTHCARE, "dawa": ServiceCategory.HEALTHCARE,
+    "sheria": ServiceCategory.LEGAL, "wakili": ServiceCategory.LEGAL, "ulinzi": ServiceCategory.PROTECTION,
+    "chakula": ServiceCategory.HUMANITARIAN, "makazi": ServiceCategory.HUMANITARIAN,
 }
 
 

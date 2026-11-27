@@ -42,7 +42,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -50,6 +49,7 @@ import com.kakuma.resourcelink.R
 import com.kakuma.resourcelink.core.designsystem.Spacing
 import com.kakuma.resourcelink.core.designsystem.component.ConfirmDialog
 import com.kakuma.resourcelink.core.designsystem.component.CoverImage
+import com.kakuma.resourcelink.core.designsystem.component.FullCoverImage
 import com.kakuma.resourcelink.core.designsystem.component.FullScreenLoading
 import com.kakuma.resourcelink.core.designsystem.component.KrFilterChips
 import com.kakuma.resourcelink.core.designsystem.component.KrOutlinedButton
@@ -95,14 +95,17 @@ fun StoryEditorRoute(
                 stringResource(R.string.editor_offline_hint),
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            // Cover image
-            Box(Modifier.fillMaxWidth().height(170.dp).clip(MaterialTheme.shapes.large)) {
-                if (state.coverPath != null) {
-                    CoverImage(File(state.coverPath!!).toURI().toString(), Modifier.fillMaxSize())
+            // Preview shows the whole photo, exactly as readers will see it.
+            val coverPath = state.coverPath
+            if (coverPath != null) {
+                Box(Modifier.fillMaxWidth()) {
+                    FullCoverImage(File(coverPath).toURI().toString(), maxHeight = 360.dp)
                     FilledTonalIconButton(onClick = viewModel::removeCover, modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)) {
                         Icon(Icons.Outlined.Close, contentDescription = stringResource(R.string.action_remove_cover))
                     }
-                } else {
+                }
+            } else {
+                Box(Modifier.fillMaxWidth().height(170.dp).clip(MaterialTheme.shapes.large)) {
                     CoverImage(null, Modifier.fillMaxSize())
                     Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
                         if (state.isImporting) CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
@@ -126,11 +129,11 @@ fun StoryEditorRoute(
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
                 )
             }
-            LanguageDropdown(AppLanguage.fromTag(state.language)) { viewModel.onLanguageChange(it.tag) }
-            KrTextField(
-                state.body, viewModel::onBodyChange, stringResource(R.string.field_story_body),
+            LanguageDropdown(AppLanguage.fromTag(state.language), label = stringResource(R.string.field_story_language)) { viewModel.onLanguageChange(it.tag) }
+            StoryBodyEditor(
+                markdown = state.body, onMarkdownChange = viewModel::onBodyChange,
+                label = stringResource(R.string.field_story_body),
                 placeholder = stringResource(R.string.placeholder_story_body), error = state.errors["body"]?.asString(),
-                singleLine = false, minLines = 8, imeAction = ImeAction.Default,
             )
             Text(
                 pluralStringResource(R.plurals.editor_word_count, state.wordCount, state.wordCount),

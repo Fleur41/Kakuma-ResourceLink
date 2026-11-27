@@ -88,7 +88,7 @@ fun AssistantRoute(
     }
     Scaffold(topBar = {
         KrTopBar(stringResource(R.string.assistant_title), onBack = onBack, actions = {
-            IconButton(onClick = viewModel::newConversation) { Icon(Icons.Outlined.AddComment, stringResource(R.string.cd_new_chat)) }
+            IconButton(onClick = viewModel::newConversation, enabled = state.messages.isNotEmpty() || state.isThinking) { Icon(Icons.Outlined.AddComment, stringResource(R.string.cd_new_chat)) }
             IconButton(onClick = onHistory) { Icon(Icons.Outlined.History, stringResource(R.string.assistant_history)) }
         })
     }) { padding ->

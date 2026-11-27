@@ -50,36 +50,13 @@ msgstr "Ya existe una cuenta con este correo."
 msgid "Incorrect email or password."
 msgstr "Correo o contraseña incorrectos."
 
-#: apps/accounts/serializers.py:124
-msgid "This reset link is invalid or has expired."
-msgstr "Este enlace no es válido o ha caducado."
-
 #: apps/accounts/serializers.py:136
 msgid "Current password is incorrect."
 msgstr "La contraseña actual es incorrecta."
 
-#: apps/accounts/services.py:46
-msgid "Reset your Kakuma ResourceLink password"
-msgstr "Restablece tu contraseña de Kakuma ResourceLink"
-
-#: apps/accounts/services.py:47
-#, python-format
-msgid ""
-"Use this link to choose a new password: %(link)s\n"
-"If you did not request this, ignore this email."
-msgstr ""
-"Usa este enlace para elegir una nueva contraseña: %(link)s\n"
-"Si no lo solicitaste, ignora este correo."
-
 #: apps/accounts/views.py:77 apps/accounts/views.py:79
 msgid "Invalid or expired refresh token."
 msgstr "Token de actualización no válido o caducado."
-
-#: apps/accounts/views.py:116
-msgid "If an account exists for this email, a reset link has been sent."
-msgstr ""
-"Si existe una cuenta con este correo, hemos enviado un enlace para "
-"restablecerla."
 
 #: apps/ai_assistant/claude_client.py:51
 msgid "The assistant is busy right now. Please try again in a minute."
@@ -549,3 +526,30 @@ msgstr "Italiano"
 #: config/settings/base.py:97
 msgid "German"
 msgstr "Alemán"
+
+msgid "Your Kakuma ResourceLink password reset code"
+msgstr "Tu código para restablecer la contraseña de Kakuma ResourceLink"
+
+#, python-format
+msgid ""
+"Hello %(name)s,\n"
+"\n"
+"Your password reset code is: %(code)s\n"
+"\n"
+"Enter this code in the Kakuma ResourceLink app or website within %(minutes)d minutes to choose a new password.\n"
+"\n"
+"If you didn't ask to reset your password, you can ignore this email. Your password won't change."
+msgstr ""
+"Hola %(name)s:\n"
+"\n"
+"Tu código para restablecer la contraseña es: %(code)s\n"
+"\n"
+"Escribe este código en la aplicación o el sitio web de Kakuma ResourceLink en los próximos %(minutes)d minutos para elegir una contraseña nueva.\n"
+"\n"
+"Si no pediste restablecer tu contraseña, puedes ignorar este correo. Tu contraseña no cambiará."
+
+msgid "That code is wrong or has expired. Check the latest email, or ask for a new code."
+msgstr "Ese código es incorrecto o ha caducado. Revisa el correo más reciente o pide un código nuevo."
+
+msgid "If an account exists for this email, a reset code has been sent."
+msgstr "Si existe una cuenta con este correo, se ha enviado un código de restablecimiento."

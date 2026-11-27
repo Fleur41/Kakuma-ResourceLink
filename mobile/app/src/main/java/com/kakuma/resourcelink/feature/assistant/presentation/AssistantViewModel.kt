@@ -15,6 +15,7 @@ import com.kakuma.resourcelink.feature.assistant.domain.AssistantTask
 import com.kakuma.resourcelink.feature.assistant.domain.ChatMessage
 import com.kakuma.resourcelink.feature.assistant.domain.Conversation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -52,6 +53,8 @@ class AssistantViewModel @Inject constructor(
         get() = savedState["conversationId"]
         set(value) { savedState["conversationId"] = value }
     private var lastRequest: (suspend () -> Unit)? = null
+    /** The reply or conversation load in progress; cancelled when the user switches chats so it can't land in the new one. */
+    private var inFlight: Job? = null
 
     init {
         val task = AssistantTask.from(savedState["task"])
@@ -100,20 +103,28 @@ class AssistantViewModel @Inject constructor(
                 }
             }
         }
-        viewModelScope.launch { lastRequest?.invoke() }
+        lastRequest?.let(::launchExclusive)
     }
 
-    fun retry() { lastRequest?.let { viewModelScope.launch { it() } } }
+    fun retry() { lastRequest?.let { launchExclusive(it) } }
+
+    private fun launchExclusive(block: suspend () -> Unit) {
+        inFlight?.cancel()
+        inFlight = viewModelScope.launch { block() }
+    }
 
     fun newConversation() {
+        inFlight?.cancel()
+        lastRequest = null
         conversationId = null
         _state.value = AssistantUiState()
     }
 
     fun loadConversation(id: String) {
         conversationId = id
-        _state.update { it.copy(isLoadingConversation = true, messages = emptyList(), error = null) }
-        viewModelScope.launch {
+        lastRequest = null
+        _state.update { it.copy(isLoadingConversation = true, isThinking = false, messages = emptyList(), error = null) }
+        launchExclusive {
             when (val r = repository.conversation(id)) {
                 is AppResult.Success -> _state.update { it.copy(isLoadingConversation = false, messages = r.data) }
                 is AppResult.Failure -> _state.update { it.copy(isLoadingConversation = false, error = r.error.toUiText()) }

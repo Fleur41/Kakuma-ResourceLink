@@ -9,7 +9,7 @@ import javax.inject.Singleton
 /** The five platform languages. Native names are shown as-is in every locale. */
 enum class AppLanguage(val tag: String, val nativeName: String, val flag: String) {
     ENGLISH("en", "English", "🇬🇧"),
-    SWAHILI("sw", "Kiswahili", "🇹🇿"),
+    SWAHILI("sw", "Kiswahili", "🇰🇪"), // Kenya: Kakuma is in Kenya (matches the website)
     SPANISH("es", "Español", "🇪🇸"),
     ITALIAN("it", "Italiano", "🇮🇹"),
     GERMAN("de", "Deutsch", "🇩🇪");

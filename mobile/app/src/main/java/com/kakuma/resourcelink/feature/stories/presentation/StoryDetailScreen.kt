@@ -50,6 +50,7 @@ import com.kakuma.resourcelink.core.designsystem.component.BadgeTone
 import com.kakuma.resourcelink.core.designsystem.component.CategoryPill
 import com.kakuma.resourcelink.core.designsystem.component.ConfirmDialog
 import com.kakuma.resourcelink.core.designsystem.component.CoverImage
+import com.kakuma.resourcelink.core.designsystem.component.FullCoverImage
 import com.kakuma.resourcelink.core.designsystem.component.ErrorState
 import com.kakuma.resourcelink.core.designsystem.component.FullScreenLoading
 import com.kakuma.resourcelink.core.designsystem.component.InitialAvatar
@@ -103,7 +104,10 @@ fun StoryDetailRoute(
                 verticalArrangement = Arrangement.spacedBy(Spacing.sm),
             ) {
                 val story = detail.story
-                CoverImage(story.coverImage, Modifier.fillMaxWidth().height(200.dp).clip(MaterialTheme.shapes.large), Icons.Outlined.AutoStories)
+                // The whole photo as uploaded; only stories without a photo get the decorative banner.
+                val cover = story.coverImage
+                if (!cover.isNullOrBlank()) FullCoverImage(cover)
+                else CoverImage(null, Modifier.fillMaxWidth().height(200.dp).clip(MaterialTheme.shapes.large), Icons.Outlined.AutoStories)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     CategoryPill(story.category.label())
                     if (story.status != StoryStatus.PUBLISHED) StoryStatusBadge(story.status)
