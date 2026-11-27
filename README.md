@@ -9,7 +9,7 @@
 One platform for opportunities, services, stories, alumni mentorship and community projects,<br>
 in **5 languages**, on the **web** and in an **offline-first Android app**, with **one account**.
 
-[**▶ Pitch slides**](https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d) · [Demo script](docs/DEMO_SCRIPT.md) · [Architecture](docs/architecture/ARCHITECTURE.md) · [API](docs/api/API_CONTRACT.md) · [Security](docs/SECURITY.md)
+[**▶ Video walkthrough**](#video-walkthrough) · [**▶ Pitch slides**](https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d) · [Demo script](docs/DEMO_SCRIPT.md) · [Architecture](docs/architecture/ARCHITECTURE.md) · [API](docs/api/API_CONTRACT.md) · [Security](docs/SECURITY.md)
 
 ![Django](https://img.shields.io/badge/Django-5.2-0C4B33?logo=django&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)
@@ -21,6 +21,43 @@ in **5 languages**, on the **web** and in an **offline-first Android app**, with
 <img src="docs/screenshots/web-home.jpg" alt="Kakuma ResourceLink home page" width="900">
 
 </div>
+
+## Video walkthrough
+
+A 3-minute tour of the website, the Android app and the backend. Pick the version you prefer: both show the same thing.
+
+<table>
+  <tr>
+    <td width="50%"><a href="docs/videos/walkthrough-narrated.mp4"><img src="docs/videos/video-narrated.jpg" alt="Play the narrated walkthrough video"></a><br><sub><b>▶ <a href="docs/videos/walkthrough-narrated.mp4">With narration</a></b>: a voice explains each step</sub></td>
+    <td width="50%"><a href="docs/videos/walkthrough-silent.mp4"><img src="docs/videos/video-silent.jpg" alt="Play the silent walkthrough video with captions"></a><br><sub><b>▶ <a href="docs/videos/walkthrough-silent.mp4">Without sound</a></b>: on-screen captions explain each step</sub></td>
+  </tr>
+</table>
+
+<details>
+<summary><b>What the video covers</b></summary>
+
+| Time | Part | What you see |
+|---|---|---|
+| 0:00 | Pitch | The problem in Kakuma and the solution |
+| 0:32 | **Website** | Browsing as a guest |
+| 0:40 | | Amina filters and searches opportunities |
+| 0:49 | | Explain with AI answers from published listings, with sources |
+| 1:01 | | Stories, with automatic drafts and a privacy tip |
+| 1:09 | | The alumni network and mentors |
+| 1:17 | | Community projects and pledges |
+| 1:25 | | A moderator reviews a story |
+| 1:33 | | The whole site in Kiswahili |
+| 1:41 | **Android app** | The same account on the phone |
+| 1:48 | | Search and category filters |
+| 1:54 | | Opportunity details |
+| 2:01 | | Airplane mode: saved content still opens |
+| 2:08 | | Stories and the alumni network |
+| 2:19 | | The AI assistant on the phone |
+| 2:27 | **Backend** | Architecture: Django REST, PostgreSQL, local AI with Ollama |
+| 2:37 | | The documented API and its security |
+| 2:47 | Close | Tests, what's next, and thanks |
+
+</details>
 
 ## Pitch deck
 
