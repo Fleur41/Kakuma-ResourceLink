@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type RefObject } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
@@ -25,6 +25,33 @@ interface ChatMessage {
 
 const SUGGESTIONS = ['scholarships', 'health', 'cv', 'mentor'] as const
 const SOURCE_PATHS: Record<string, string> = { opportunity: '/opportunities', service: '/services', story: '/stories' }
+/** Space left under the chat so it doesn't touch the bottom edge of the screen. */
+const CHAT_BOTTOM_GAP = 24
+const CHAT_MIN_HEIGHT = 420
+
+/**
+ * Sizes the chat to end at the bottom of the screen when the page is scrolled to the top, so the
+ * message box is visible without scrolling. Re-measures when the window or the content above changes.
+ */
+function useFillViewport(ref: RefObject<HTMLElement | null>) {
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const fit = () => {
+      const top = el.getBoundingClientRect().top + window.scrollY
+      el.style.height = `${Math.max(CHAT_MIN_HEIGHT, window.innerHeight - top - CHAT_BOTTOM_GAP)}px`
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    // Not every test environment has ResizeObserver; resize still covers real browsers without it.
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(fit)
+    observer?.observe(document.body)
+    return () => {
+      window.removeEventListener('resize', fit)
+      observer?.disconnect()
+    }
+  }, [ref])
+}
 
 export default function AssistantPage() {
   const { t } = useTranslation()
@@ -35,6 +62,14 @@ export default function AssistantPage() {
   const errorMessage = useErrorMessage()
   const [historyOpen, setHistoryOpen] = useState(false)
   const [toDelete, setToDelete] = useState<string | null>(null)
+  // Bumped by "New chat" so the panel resets even when the URL is already /assistant.
+  const [chatSession, setChatSession] = useState(0)
+
+  function startNewChat() {
+    setChatSession((s) => s + 1)
+    setHistoryOpen(false)
+    navigate('/assistant')
+  }
 
   const conversations = useQuery({ queryKey: ['assistant', 'conversations'], queryFn: assistantApi.conversations })
 
@@ -51,7 +86,7 @@ export default function AssistantPage() {
 
   const history = (
     <div className="space-y-2">
-      <Button variant="tonal" className="w-full" icon={<MessageSquarePlus size={18} aria-hidden />} onClick={() => navigate('/assistant')}>
+      <Button variant="tonal" className="w-full" icon={<MessageSquarePlus size={18} aria-hidden />} onClick={startNewChat}>
         {t('assistant.newChat')}
       </Button>
       {conversations.isError ? (
@@ -86,12 +121,12 @@ export default function AssistantPage() {
         }
       />
       <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-        <aside className={cn('card h-fit p-3', historyOpen ? 'block' : 'hidden lg:block')} aria-label={t('assistant.history')}>
+        <aside className={cn('card h-fit overflow-y-auto p-3 lg:h-0 lg:min-h-full', historyOpen ? 'block' : 'hidden lg:block')} aria-label={t('assistant.history')}>
           {history}
         </aside>
 
         {/* key: a different conversation starts from a clean panel */}
-        <ChatPanel key={conversationId ?? 'new'} conversationId={conversationId} />
+        <ChatPanel key={conversationId ?? `new-${chatSession}`} conversationId={conversationId} />
       </div>
       <ConfirmDialog
         open={toDelete !== null}
@@ -118,9 +153,19 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
   const [pending, setPending] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [unavailable, setUnavailable] = useState(false)
-  const endRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const autoTaskSent = useRef(false)
+  // False once the user has left this chat (new chat or another conversation): a reply that arrives
+  // afterwards is still saved to history, but must not pull the user back or show a toast here.
+  const isCurrent = useRef(true)
+  useEffect(() => {
+    isCurrent.current = true
+    return () => {
+      isCurrent.current = false
+    }
+  }, [])
 
   const detailKey = ['assistant', 'conversation', conversationId]
   const detail = useQuery({
@@ -130,10 +175,6 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
   })
   const saved: ChatMessage[] = (detail.data?.messages ?? []).map((m) => ({ id: m.id, role: m.role, content: m.content, sources: m.sources }))
   const messages = [...saved, ...pending]
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'end' })
-  }, [messages.length])
 
   const send = useMutation({
     mutationFn: (vars: { message: string; task: ChatTask; target_id?: string }) =>
@@ -155,14 +196,23 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
       }))
       setPending([])
       void qc.invalidateQueries({ queryKey: ['assistant', 'conversations'] })
-      if (!conversationId) navigate(`/assistant/${res.conversation_id}`, { replace: true })
+      if (!conversationId && isCurrent.current) navigate(`/assistant/${res.conversation_id}`, { replace: true })
     },
     onError: (err) => {
+      if (!isCurrent.current) return
       if (err instanceof ApiError && err.code === 'ai_unavailable') setUnavailable(true)
       setPending((p) => p.map((m) => ({ ...m, failed: true })))
       toast.error(errorMessage(err))
     },
   })
+
+  useFillViewport(panelRef)
+
+  // Scroll the message list only, never the page, so the input stays where it is.
+  useEffect(() => {
+    const list = scrollRef.current
+    list?.scrollTo?.({ top: list.scrollHeight, behavior: 'smooth' })
+  }, [messages.length, send.isPending])
 
   // Deep links from opportunity/story pages: "Explain with AI" / "Summarise with AI".
   useEffect(() => {
@@ -193,8 +243,8 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
   }
 
   return (
-    <section className="card flex min-h-[60vh] flex-col" aria-label={t('assistant.chat')}>
-          <div className="flex-1 space-y-4 overflow-y-auto p-4 sm:p-6" aria-live="polite" aria-busy={send.isPending}>
+    <section ref={panelRef} className="card flex flex-col overflow-hidden" aria-label={t('assistant.chat')}>
+          <div ref={scrollRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain p-4 sm:p-6" aria-live="polite" aria-busy={send.isPending}>
             {conversationId && detail.isPending && messages.length === 0 ? (
               <div className="flex justify-center py-10 text-primary">
                 <Spinner size={28} />
@@ -202,7 +252,7 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
             ) : conversationId && detail.isError ? (
               <ErrorState error={detail.error} onRetry={() => void detail.refetch()} />
             ) : messages.length === 0 ? (
-              <div className="flex flex-col items-center gap-4 py-8 text-center">
+              <div className="m-auto flex flex-col items-center gap-4 py-6 text-center">
                 <div className="flex size-14 items-center justify-center rounded-full bg-primary-container text-primary">
                   <Bot aria-hidden />
                 </div>
@@ -262,11 +312,10 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
                 <Spinner size={16} /> {t('assistant.thinking')}
               </div>
             )}
-            <div ref={endRef} />
           </div>
 
-          {unavailable && <p className="mx-4 mb-2 rounded-md bg-gold-container p-3 text-sm text-gold-text">{t('assistant.unavailable')}</p>}
-          <form onSubmit={onSubmit} className="flex items-end gap-2 border-t border-border p-3 sm:p-4">
+          {unavailable && <p className="mx-4 mb-2 shrink-0 rounded-md bg-gold-container p-3 text-sm text-gold-text">{t('assistant.unavailable')}</p>}
+          <form onSubmit={onSubmit} className="flex shrink-0 items-end gap-2 border-t border-border p-3 sm:p-4">
             <label htmlFor="chat-input" className="sr-only">
               {t('assistant.placeholder')}
             </label>
@@ -295,7 +344,7 @@ function ChatPanel({ conversationId }: { conversationId?: string }) {
               <SendHorizontal size={20} aria-hidden />
             </button>
           </form>
-          <p className="px-4 pb-3 text-xs text-muted">{t('assistant.disclaimer')}</p>
+          <p className="shrink-0 px-4 pb-3 text-xs text-muted">{t('assistant.disclaimer')}</p>
     </section>
   )
 }
