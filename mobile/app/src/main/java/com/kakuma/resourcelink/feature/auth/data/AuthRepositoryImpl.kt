@@ -94,6 +94,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun requestPasswordReset(email: String): AppResult<Unit> =
         safeApiCall(moshi) { api.requestPasswordReset(EmailRequest(email.trim().lowercase())) }
 
+    override suspend fun verifyPasswordReset(email: String, code: String): AppResult<Unit> =
+        safeApiCall(moshi) { api.verifyPasswordReset(ResetCodeRequest(email.trim().lowercase(), code)) }
+
+    override suspend fun confirmPasswordReset(email: String, code: String, newPassword: String): AppResult<Unit> =
+        safeApiCall(moshi) { api.confirmPasswordReset(ResetPasswordRequest(email.trim().lowercase(), code, newPassword)) }
+
     override suspend fun logout() {
         tokenStore.tokens()?.refresh?.let { refresh -> safeApiCall(moshi) { api.logout(LogoutRequest(refresh)) } }
         tokenStore.clear()

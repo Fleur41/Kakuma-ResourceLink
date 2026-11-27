@@ -29,6 +29,18 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.draw.rotate
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -109,7 +121,7 @@ fun RegisterRoute(onBack: () -> Unit, onSignIn: () -> Unit, onRegistered: () -> 
                     }
                 }
             }
-            LanguageDropdown(state.language, viewModel::onLanguageChange)
+            LanguageDropdown(state.language, onSelect = viewModel::onLanguageChange)
             KrPrimaryButton(
                 stringResource(R.string.action_create_account),
                 onClick = viewModel::submit,
@@ -126,24 +138,57 @@ fun RegisterRoute(onBack: () -> Unit, onSignIn: () -> Unit, onRegistered: () -> 
 }
 
 @Composable
-fun LanguageDropdown(selected: AppLanguage, onSelect: (AppLanguage) -> Unit) {
+fun LanguageDropdown(
+    selected: AppLanguage,
+    label: String = stringResource(R.string.field_preferred_language),
+    onSelect: (AppLanguage) -> Unit,
+) {
     var expanded by rememberSaveable { mutableStateOf(false) }
+    var fieldWidth by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
     Column {
-        Text(stringResource(R.string.field_preferred_language), style = MaterialTheme.typography.labelLarge)
+        Text(label, style = MaterialTheme.typography.labelLarge)
         Box(Modifier.padding(top = 6.dp)) {
             OutlinedButton(
                 onClick = { expanded = true },
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
+                contentPadding = PaddingValues(start = 16.dp, end = 12.dp),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).onSizeChanged { fieldWidth = it.width },
             ) {
-                Text("${selected.flag}  ${selected.nativeName}", modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
-                Icon(Icons.Outlined.ArrowDropDown, contentDescription = null)
+                Text(selected.flag, style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.width(12.dp))
+                Text(selected.nativeName, modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
+                Icon(
+                    Icons.Outlined.KeyboardArrowDown, contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.rotate(if (expanded) 180f else 0f),
+                )
             }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                shape = MaterialTheme.shapes.large,
+                containerColor = MaterialTheme.colorScheme.surface,
+                modifier = Modifier.width(with(density) { fieldWidth.toDp() }),
+            ) {
                 AppLanguage.entries.forEach { language ->
+                    val isSelected = language == selected
                     DropdownMenuItem(
-                        text = { Text("${language.flag}  ${language.nativeName}") },
+                        leadingIcon = { Text(language.flag, style = MaterialTheme.typography.titleMedium) },
+                        text = {
+                            Text(
+                                language.nativeName,
+                                fontWeight = if (isSelected) FontWeight.SemiBold else null,
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                            )
+                        },
+                        trailingIcon = if (isSelected) {
+                            { Icon(Icons.Outlined.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary) }
+                        } else {
+                            null
+                        },
                         onClick = { onSelect(language); expanded = false },
+                        modifier = Modifier.semantics { this.selected = isSelected },
                     )
                 }
             }

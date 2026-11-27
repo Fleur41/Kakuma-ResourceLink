@@ -23,7 +23,11 @@ interface AuthRepository {
     suspend fun uploadAvatar(bytes: ByteArray, mimeType: String): AppResult<User>
     /** Removes the profile photo; the person's initial is shown instead. */
     suspend fun removeAvatar(): AppResult<User>
+    /** Emails a 6-digit reset code (the server answers the same whether or not the account exists). */
     suspend fun requestPasswordReset(email: String): AppResult<Unit>
+    /** Checks the emailed code before asking for a new password. Wrong codes count towards the server's limit. */
+    suspend fun verifyPasswordReset(email: String, code: String): AppResult<Unit>
+    suspend fun confirmPasswordReset(email: String, code: String, newPassword: String): AppResult<Unit>
     /** Ends the session on the server (best effort) and wipes personal data from the device. */
     suspend fun logout()
 }

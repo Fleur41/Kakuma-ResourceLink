@@ -40,6 +40,12 @@ data class LogoutRequest(val refresh: String)
 data class EmailRequest(val email: String)
 
 @JsonClass(generateAdapter = true)
+data class ResetCodeRequest(val email: String, val code: String)
+
+@JsonClass(generateAdapter = true)
+data class ResetPasswordRequest(val email: String, val code: String, @Json(name = "new_password") val newPassword: String)
+
+@JsonClass(generateAdapter = true)
 data class ProfilePatch(val bio: String? = null, val location: String? = null)
 
 /** PATCH body: null fields are omitted by Moshi, so only changed values are sent. */
