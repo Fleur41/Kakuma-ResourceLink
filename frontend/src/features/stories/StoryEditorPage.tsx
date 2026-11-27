@@ -10,7 +10,9 @@ import { StatusBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ConfirmDialog } from '@/components/ui/Dialog'
 import { ErrorState, PageLoader, useErrorMessage } from '@/components/ui/feedback'
-import { Checkbox, SelectField, TextField } from '@/components/ui/Field'
+import { Checkbox, TextField } from '@/components/ui/Field'
+import { LanguageFlag } from '@/components/ui/LanguageFlag'
+import { ListboxField } from '@/components/ui/ListboxField'
 import { PageHeader } from '@/components/ui/Page'
 import { useToast } from '@/components/ui/toast-context'
 import { useAuth } from '@/features/auth/auth-context'
@@ -254,8 +256,18 @@ function Editor({ existing }: { existing?: StoryDetail }) {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <SelectField label={t('stories.editor.category')} value={form.category} onChange={(e) => set('category', e.target.value as StoryCategory)} options={STORY_CATEGORIES.map((c) => ({ value: c, label: t(`categories.story.${c}`) }))} />
-            <SelectField label={t('stories.editor.language')} value={form.language} onChange={(e) => set('language', e.target.value as Language)} options={LANGUAGES.map((l) => ({ value: l.code, label: l.label }))} />
+            <ListboxField
+              label={t('stories.editor.category')}
+              value={form.category}
+              onChange={(v) => set('category', v)}
+              options={STORY_CATEGORIES.map((c) => ({ value: c, label: t(`categories.story.${c}`) }))}
+            />
+            <ListboxField
+              label={t('stories.editor.language')}
+              value={form.language}
+              onChange={(v) => set('language', v)}
+              options={LANGUAGES.map((l) => ({ value: l.code, label: l.label, lang: l.code, icon: <LanguageFlag code={l.code} /> }))}
+            />
           </div>
 
           <div>

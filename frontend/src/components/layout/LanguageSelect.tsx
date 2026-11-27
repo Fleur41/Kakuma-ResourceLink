@@ -1,19 +1,11 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, ChevronDown } from 'lucide-react'
-import { DE, ES, GB, IT, KE, type FlagComponent } from 'country-flag-icons/react/3x2'
 import type { Language } from '@/api/types'
+import { LanguageFlag as Flag } from '@/components/ui/LanguageFlag'
 import { useAuth } from '@/features/auth/auth-context'
 import { currentLanguage, LANGUAGES } from '@/i18n'
 import { cn } from '@/lib/format'
-
-/** Kiswahili uses Kenya's flag: Kakuma is in Kenya. SVG flags, because emoji flags show as letters on Windows. */
-const FLAGS: Record<Language, FlagComponent> = { en: GB, sw: KE, es: ES, it: IT, de: DE }
-
-function Flag({ code }: { code: Language }) {
-  const F = FLAGS[code]
-  return <F aria-hidden className="h-4 w-6 shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgba(0,0,0,0.15)]" />
-}
 
 /** `compact` shows the flag and language code in a pill sized to match the top bar's other controls. */
 export function LanguageSelect({ tone = 'light', compact = false, id = 'lang-select' }: { tone?: 'light' | 'dark'; compact?: boolean; id?: string }) {
