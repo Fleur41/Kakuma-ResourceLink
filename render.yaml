@@ -1,6 +1,10 @@
-# Render Blueprint: the Django API, its uploads disk and a PostgreSQL database.
+# Render Blueprint (free plan): the Django API and a PostgreSQL database.
 # Deploy: Render dashboard -> New -> Blueprint -> pick this repository.
 # Values marked "sync: false" are asked for once in the dashboard (secrets never live in git).
+#
+# Free-plan limits: the API sleeps after ~15 min idle (first request then takes ~1 min),
+# its disk is wiped on every restart (so uploads go to object storage below), there is no
+# Shell, outbound SMTP is blocked, and the free database expires after 30 days.
 
 databases:
   - name: kakuma-db
@@ -13,19 +17,14 @@ services:
   - type: web
     name: kakuma-resourcelink-api
     runtime: python
-    plan: starter
+    plan: free
     region: frankfurt
     rootDir: backend
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    # Migrations run at start (not pre-deploy) because only the running service can see the disk.
     startCommand: >-
       python manage.py migrate --noinput &&
       python manage.py createcachetable &&
       exec gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 90
-    disk:
-      name: media
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.11
@@ -39,8 +38,7 @@ services:
           property: connectionString
       - key: DJANGO_ALLOWED_HOSTS
         value: .onrender.com
-      - key: MEDIA_ROOT
-        value: /var/data/media
+      # Fallback only: without a bucket, uploads live on the instance and vanish when it sleeps.
       - key: SERVE_MEDIA
         value: "true"
       # The website's address once it is deployed, e.g. https://kakuma.example.org
@@ -57,10 +55,19 @@ services:
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
-      # Password-reset email through Gmail SMTP (use a Gmail app password)
+      # Uploaded images: any S3-compatible bucket (Supabase Storage is free with no card)
+      - key: AWS_STORAGE_BUCKET_NAME
+        sync: false
+      - key: AWS_S3_ENDPOINT_URL
+        sync: false
+      - key: AWS_S3_REGION_NAME
+        sync: false
+      - key: AWS_S3_CUSTOM_DOMAIN
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      # SMTP is blocked on the free plan, so emails (password-reset codes) are printed in the Logs tab.
       - key: EMAIL_BACKEND
-        value: django.core.mail.backends.smtp.EmailBackend
-      - key: EMAIL_HOST_USER
-        sync: false
-      - key: EMAIL_HOST_PASSWORD
-        sync: false
+        value: django.core.mail.backends.console.EmailBackend
