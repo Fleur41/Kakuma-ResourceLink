@@ -207,10 +207,14 @@ PROJECTS_REQUIRE_REVIEW = env.bool("PROJECTS_REQUIRE_REVIEW", default=True)
 
 # AI assistant — API keys are only ever read on the server.
 # openai (ChatGPT models, Responses API) | anthropic (Claude) | ollama (local models, no key)
+# | compatible (any OpenAI-compatible Chat Completions API, e.g. Google Gemini or Groq, via AI_BASE_URL + AI_API_KEY)
 AI_PROVIDER = env("AI_PROVIDER", default="openai")
 OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
 ANTHROPIC_API_KEY = env("ANTHROPIC_API_KEY", default="")
 OLLAMA_BASE_URL = env("OLLAMA_BASE_URL", default="http://localhost:11434/v1")
+# Only for AI_PROVIDER=compatible, e.g. https://generativelanguage.googleapis.com/v1beta/openai/
+AI_BASE_URL = env("AI_BASE_URL", default="")
+AI_API_KEY = env("AI_API_KEY", default="")
 # Off by default: thinking makes local models several times slower to reply.
 OLLAMA_THINK = env.bool("OLLAMA_THINK", default=False)
 # How long Ollama keeps the model in memory after a reply (Ollama's own default is 5m).
@@ -218,7 +222,8 @@ OLLAMA_KEEP_ALIVE = env("OLLAMA_KEEP_ALIVE", default="2h")
 # Chat answers are short; the cap stops a local model that starts repeating itself.
 OLLAMA_MAX_OUTPUT_TOKENS = env.int("OLLAMA_MAX_OUTPUT_TOKENS", default=1024)
 _DEFAULT_MODELS = {"openai": "gpt-6.2-sol", "anthropic": "claude-opus-5-5", "ollama": "gemma3:12b"}
-AI_MODEL = env("AI_MODEL", default=_DEFAULT_MODELS.get(AI_PROVIDER, ""))
+# An empty AI_MODEL (e.g. a blank hosting-dashboard field) also falls back to the provider default.
+AI_MODEL = env("AI_MODEL", default="") or _DEFAULT_MODELS.get(AI_PROVIDER, "")
 # low | medium | high reasoning effort — chat assistance does well at low/medium effort.
 AI_EFFORT = env("AI_EFFORT", default="medium")
 # Server-side refusal fallback (anthropic provider only). Disable on Bedrock/Vertex/Foundry.

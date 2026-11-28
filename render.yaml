@@ -46,10 +46,16 @@ services:
         sync: false
       - key: CSRF_TRUSTED_ORIGINS
         sync: false
-      # AI assistant: openai or anthropic (Ollama only runs on your own machine)
+      # AI assistant: compatible (free Google Gemini API), openai or anthropic.
+      # Ollama only runs on your own machine. For Gemini: AI_PROVIDER=compatible,
+      # AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/, AI_MODEL=gemini-2.5-flash
       - key: AI_PROVIDER
         sync: false
       - key: AI_MODEL
+        sync: false
+      - key: AI_BASE_URL
+        sync: false
+      - key: AI_API_KEY
         sync: false
       - key: OPENAI_API_KEY
         sync: false

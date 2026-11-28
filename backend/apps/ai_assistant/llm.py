@@ -1,7 +1,7 @@
 """Provider-neutral pieces of the assistant: the completion result and the client factory.
 
 The rest of the app only calls ``get_client().complete(system=..., messages=...)``; which AI provider
-answers is decided by ``AI_PROVIDER`` (``openai``, ``anthropic`` or ``ollama``).
+answers is decided by ``AI_PROVIDER`` (``openai``, ``anthropic``, ``ollama`` or ``compatible``).
 """
 from dataclasses import dataclass
 from typing import Protocol
@@ -37,4 +37,10 @@ def get_client() -> LLMClient:
         from .ollama_client import OllamaClient
 
         return OllamaClient()
-    raise ImproperlyConfigured(f"Unknown AI_PROVIDER {provider!r}; use 'openai', 'anthropic' or 'ollama'.")
+    if provider == "compatible":
+        from .ollama_client import CompatibleClient
+
+        return CompatibleClient()
+    raise ImproperlyConfigured(
+        f"Unknown AI_PROVIDER {provider!r}; use 'openai', 'anthropic', 'ollama' or 'compatible'."
+    )
