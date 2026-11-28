@@ -74,7 +74,10 @@ data class HomeActions(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeRoute(actions: HomeActions, viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeRoute(
+    actions: HomeActions,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     UiEventEffect(viewModel.events)
     PullToRefreshBox(isRefreshing = state.isRefreshing && !state.isEmpty, onRefresh = viewModel::refresh, modifier = Modifier.fillMaxSize()) {

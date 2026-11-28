@@ -201,7 +201,11 @@ private fun Thinking() {
 }
 
 @Composable
-fun AssistantHistoryRoute(onBack: () -> Unit, onOpen: (String) -> Unit, viewModel: AssistantHistoryViewModel = hiltViewModel()) {
+fun AssistantHistoryRoute(
+    onBack: () -> Unit,
+    onOpen: (String) -> Unit,
+    viewModel: AssistantHistoryViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var confirm by rememberSaveable { mutableStateOf<String?>(null) }
     UiEventEffect(viewModel.events)

@@ -1,5 +1,6 @@
 package com.kakuma.resourcelink.core.designsystem.component
 
+import android.util.Log.v
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -69,10 +70,11 @@ fun KrCard(
 @Composable
 fun CategoryPill(text: String, modifier: Modifier = Modifier) {
     val backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+    val shape = RoundedCornerShape(50)
     Text(
         text = text,
         modifier = modifier
-            .clip(RoundedCornerShape(50))
+            .clip(shape)
             .background(backgroundColor)
             .padding(horizontal = 10.dp, vertical = 3.dp),
         style = MaterialTheme.typography.labelSmall,
@@ -156,12 +158,14 @@ fun HeroBanner(
     photo: BrandPhoto? = null,
 ) {
     val showIcon = icon != null && photo == null
+    val brushColors = Brush.linearGradient(listOf(KrColors.Primary, KrColors.Accent))
+    val shape = MaterialTheme.shapes.extraLarge
     Box(
         modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.extraLarge)
+            .clip(shape)
             .then(
-                if (photo == null) Modifier.background(Brush.linearGradient(listOf(KrColors.Primary, KrColors.Accent)))
+                if (photo == null) Modifier.background(brushColors)
                 else Modifier.heightIn(min = 184.dp),
             ),
     ) {
@@ -199,9 +203,10 @@ fun HeroBanner(
 
 @Composable
 fun QuickAccessTile(icon: ImageVector, label: String, onClick: () -> Unit, modifier: Modifier = Modifier, tint: Color = KrColors.Primary) {
+    val shape = MaterialTheme.shapes.medium
     Column(
         modifier
-            .clip(MaterialTheme.shapes.medium)
+            .clip(shape)
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -218,8 +223,9 @@ fun QuickAccessTile(icon: ImageVector, label: String, onClick: () -> Unit, modif
 /** Avatar image, or the person's initial in a tinted circle (design: "D", "G", "P"). */
 @Composable
 fun InitialAvatar(name: String, imageUrl: String?, modifier: Modifier = Modifier, size: Dp = 44.dp) {
+    val backgroundColor = MaterialTheme.colorScheme.primaryContainer
     Box(
-        modifier.size(size).clip(CircleShape).background(MaterialTheme.colorScheme.primaryContainer),
+        modifier.size(size).clip(CircleShape).background(backgroundColor),
         contentAlignment = Alignment.Center,
     ) {
         if (!imageUrl.isNullOrBlank()) {
@@ -255,6 +261,8 @@ fun CoverImage(url: String?, modifier: Modifier = Modifier, icon: ImageVector? =
  */
 @Composable
 fun FullCoverImage(url: String, modifier: Modifier = Modifier, maxHeight: Dp = 480.dp) {
+    val shape = MaterialTheme.shapes.large
+    val backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh
     AsyncImage(
         model = url,
         contentDescription = null,
@@ -263,8 +271,8 @@ fun FullCoverImage(url: String, modifier: Modifier = Modifier, maxHeight: Dp = 4
             .fillMaxWidth()
             .defaultMinSize(minHeight = 120.dp)
             .heightIn(max = maxHeight)
-            .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+            .clip(shape)
+            .background(backgroundColor),
     )
 }
 

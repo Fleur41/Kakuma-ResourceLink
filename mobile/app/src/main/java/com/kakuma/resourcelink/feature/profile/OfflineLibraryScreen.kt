@@ -1,6 +1,8 @@
 package com.kakuma.resourcelink.feature.profile
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlexDirection.Companion.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,7 +55,11 @@ class OfflineLibraryViewModel @Inject constructor(private val stories: StoryRepo
 }
 
 @Composable
-fun OfflineLibraryRoute(onBack: () -> Unit, onOpen: (String) -> Unit, viewModel: OfflineLibraryViewModel = hiltViewModel()) {
+fun OfflineLibraryRoute(
+    onBack: () -> Unit,
+    onOpen: (String) -> Unit,
+    viewModel: OfflineLibraryViewModel = hiltViewModel()
+) {
     val articles by viewModel.articles.collectAsStateWithLifecycle()
     UiEventEffect(viewModel.events)
     Scaffold(topBar = { KrTopBar(stringResource(R.string.settings_offline_library), onBack = onBack) }) { padding ->
@@ -68,7 +74,7 @@ fun OfflineLibraryRoute(onBack: () -> Unit, onOpen: (String) -> Unit, viewModel:
                 items(list, key = { it.id }) { s ->
                     KrCard(onClick = { onOpen(s.id) }) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            androidx.compose.foundation.layout.Column(Modifier.weight(1f)) {
+                            Column(Modifier.weight(1f)) {
                                 Text(s.title, style = MaterialTheme.typography.titleSmall)
                                 Text("${s.category.label()} · ${s.author.name}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }

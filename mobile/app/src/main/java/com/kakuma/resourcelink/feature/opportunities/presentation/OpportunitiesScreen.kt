@@ -49,7 +49,11 @@ fun Throwable.toPagingMessage(): UiText =
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OpportunitiesRoute(onOpen: (String) -> Unit, onBack: (() -> Unit)? = null, viewModel: OpportunitiesViewModel = hiltViewModel()) {
+fun OpportunitiesRoute(
+    onOpen: (String) -> Unit,
+    onBack: (() -> Unit)? = null,
+    viewModel: OpportunitiesViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val online by viewModel.isOnline.collectAsStateWithLifecycle()
     val items = viewModel.opportunities.collectAsLazyPagingItems()

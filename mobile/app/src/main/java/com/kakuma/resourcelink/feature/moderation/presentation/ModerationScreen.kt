@@ -70,7 +70,10 @@ import java.time.OffsetDateTime
 /** Review queue for moderators and admins: approve or send back pending stories and community projects. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModerationRoute(onBack: () -> Unit, viewModel: ModerationViewModel = hiltViewModel()) {
+fun ModerationRoute(
+    onBack: () -> Unit,
+    viewModel: ModerationViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     UiEventEffect(viewModel.events)
 

@@ -88,7 +88,11 @@ class AlumniDetailViewModel @Inject constructor(
 }
 
 @Composable
-fun AlumniDetailRoute(onBack: () -> Unit, onRequestMentorship: (profileId: String, name: String) -> Unit, viewModel: AlumniDetailViewModel = hiltViewModel()) {
+fun AlumniDetailRoute(
+    onBack: () -> Unit,
+    onRequestMentorship: (profileId: String, name: String) -> Unit,
+    viewModel: AlumniDetailViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     Scaffold(topBar = { KrTopBar(stringResource(R.string.alumni_profile_title), onBack = onBack) }) { padding ->

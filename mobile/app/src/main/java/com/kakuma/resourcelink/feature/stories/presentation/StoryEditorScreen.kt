@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,6 +69,7 @@ fun StoryEditorRoute(
     onSubmitted: () -> Unit = onClose,
     viewModel: StoryEditorViewModel = hiltViewModel(),
 ) {
+    val scrollState = rememberScrollState()
     val state by viewModel.state.collectAsStateWithLifecycle()
     var confirmDiscard by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)
@@ -85,9 +87,15 @@ fun StoryEditorRoute(
             }
         })
     }) { padding ->
-        if (state.isLoading) { FullScreenLoading(Modifier.padding(padding)); return@Scaffold }
+        if (state.isLoading) { FullScreenLoading(Modifier.padding(padding));
+            return@Scaffold
+        }
         Column(
-            Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState())
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .imePadding()
+                .verticalScroll(scrollState)
                 .padding(horizontal = Spacing.gutter).navigationBarsPadding(),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
@@ -126,7 +134,7 @@ fun StoryEditorRoute(
                 Spacer(Modifier.height(6.dp))
                 KrFilterChips(
                     StoryCategory.entries.map { it to it.label() }, state.category, viewModel::onCategoryChange,
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp),
+                    contentPadding = PaddingValues(0.dp),
                 )
             }
             LanguageDropdown(AppLanguage.fromTag(state.language), label = stringResource(R.string.field_story_language)) { viewModel.onLanguageChange(it.tag) }

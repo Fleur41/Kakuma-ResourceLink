@@ -69,9 +69,14 @@ fun LoginScreen(
     onRegister: () -> Unit,
     onForgotPassword: () -> Unit,
 ) {
+    val scrollState = rememberScrollState()
     Scaffold(topBar = { KrTopBar("", onBack = onBack) }) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState())
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .imePadding()
+                .verticalScroll(scrollState)
                 .padding(horizontal = Spacing.gutter),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {

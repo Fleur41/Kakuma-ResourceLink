@@ -77,13 +77,23 @@ fun roleLabel(role: UserRole): String = stringResource(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterRoute(onBack: () -> Unit, onSignIn: () -> Unit, onRegistered: () -> Unit, viewModel: RegisterViewModel = hiltViewModel()) {
+fun RegisterRoute(
+    onBack: () -> Unit,
+    onSignIn: () -> Unit,
+    onRegistered: () -> Unit,
+    viewModel: RegisterViewModel = hiltViewModel()
+) {
+    val scrollState = rememberScrollState()
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(state.completed) { if (state.completed) onRegistered() }
     UiEventEffect(viewModel.events)
     Scaffold(topBar = { KrTopBar("", onBack = onBack) }) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState())
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .imePadding()
+                .verticalScroll(scrollState)
                 .padding(horizontal = Spacing.gutter),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {

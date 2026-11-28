@@ -105,6 +105,7 @@ data class ProfileActions(
 fun ProfileRoute(actions: ProfileActions, viewModel: ProfileViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
     var confirmLogout by rememberSaveable { mutableStateOf(false) }
     var themeDialog by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)
@@ -112,7 +113,7 @@ fun ProfileRoute(actions: ProfileActions, viewModel: ProfileViewModel = hiltView
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { viewModel.onAvatarPicked(it) }
     val notificationPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = Spacing.gutter, vertical = Spacing.sm)) {
+    Column(Modifier.fillMaxSize().verticalScroll(scrollState).padding(horizontal = Spacing.gutter, vertical = Spacing.sm)) {
         Text(stringResource(R.string.profile_title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.semantics { heading() })
         Spacer(Modifier.height(Spacing.sm))
         val user = state.user
@@ -256,12 +257,22 @@ private fun SettingRow(icon: ImageVector, label: String, value: String? = null, 
 }
 
 @Composable
-fun EditProfileRoute(onBack: () -> Unit, viewModel: EditProfileViewModel = hiltViewModel()) {
+fun EditProfileRoute(
+    onBack: () -> Unit,
+    viewModel: EditProfileViewModel = hiltViewModel()
+) {
+    val scrollState = rememberScrollState()
     val state by viewModel.state.collectAsStateWithLifecycle()
     UiEventEffect(viewModel.events)
     Scaffold(topBar = { KrTopBar(stringResource(R.string.profile_edit), onBack = onBack) }) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState()).padding(horizontal = Spacing.gutter).navigationBarsPadding(),
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .imePadding()
+                .verticalScroll(scrollState)
+                .padding(horizontal = Spacing.gutter)
+                .navigationBarsPadding(),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
             KrTextField(state.fullName, viewModel::onName, stringResource(R.string.field_full_name), error = state.errors["full_name"]?.asString())

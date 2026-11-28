@@ -122,7 +122,11 @@ fun MentorshipStatusBadge(status: MentorshipStatus) {
 }
 
 @Composable
-fun MentorshipRequestsRoute(onBack: () -> Unit, onFindMentor: () -> Unit, viewModel: MentorshipRequestsViewModel = hiltViewModel()) {
+fun MentorshipRequestsRoute(
+    onBack: () -> Unit,
+    onFindMentor: () -> Unit,
+    viewModel: MentorshipRequestsViewModel = hiltViewModel()
+) {
     val boxValue by viewModel.box.collectAsStateWithLifecycle()
     val busyId by viewModel.busyId.collectAsStateWithLifecycle()
     val items = viewModel.requests.collectAsLazyPagingItems()

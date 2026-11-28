@@ -37,7 +37,11 @@ import com.kakuma.resourcelink.core.designsystem.component.KrTopBar
 import com.kakuma.resourcelink.core.locale.AppLanguage
 
 @Composable
-fun LanguageScreen(onBack: (() -> Unit)?, onContinue: () -> Unit, viewModel: LanguageViewModel = hiltViewModel()) {
+fun LanguageScreen(
+    onBack: (() -> Unit)?,
+    onContinue: () -> Unit,
+    viewModel: LanguageViewModel = hiltViewModel()
+) {
     val selected by viewModel.selected.collectAsStateWithLifecycle()
     Scaffold(topBar = { KrTopBar("", onBack = onBack) }) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).padding(horizontal = Spacing.gutter).navigationBarsPadding()) {
@@ -62,7 +66,8 @@ fun LanguageScreen(onBack: (() -> Unit)?, onContinue: () -> Unit, viewModel: Lan
                         shape = MaterialTheme.shapes.medium,
                         color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
                         border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .selectable(selected = isSelected, role = Role.RadioButton, onClick = { viewModel.select(language) }),
                     ) {
                         Row(Modifier.padding(horizontal = Spacing.md, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {

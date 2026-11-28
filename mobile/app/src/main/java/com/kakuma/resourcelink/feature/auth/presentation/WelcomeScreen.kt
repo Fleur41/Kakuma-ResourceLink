@@ -85,7 +85,11 @@ private fun LightStatusBarIcons() {
 }
 
 @Composable
-fun WelcomeScreen(onGetStarted: () -> Unit, onSignIn: () -> Unit, onBrowseAsGuest: () -> Unit) {
+fun WelcomeScreen(
+    onGetStarted: () -> Unit,
+    onSignIn: () -> Unit,
+    onBrowseAsGuest: () -> Unit
+) {
     val pager = rememberPagerState { slides.size }
     LightStatusBarIcons()
     Column(
