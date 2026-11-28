@@ -119,6 +119,8 @@ fun FullScreenLoading(modifier: Modifier = Modifier) {
 @Composable
 fun SkeletonBlock(modifier: Modifier = Modifier, height: Dp = 16.dp) {
     val transition = rememberInfiniteTransition(label = "skeleton")
+    val shape = RoundedCornerShape(8.dp)
+    val backgroundColor = MaterialTheme.colorScheme.outline
     val alpha by transition.animateFloat(
         initialValue = 0.35f, targetValue = 0.8f,
         animationSpec = infiniteRepeatable(tween(800, easing = LinearEasing), RepeatMode.Reverse),
@@ -127,9 +129,9 @@ fun SkeletonBlock(modifier: Modifier = Modifier, height: Dp = 16.dp) {
     Box(
         modifier
             .height(height)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(shape)
             .alpha(alpha)
-            .background(MaterialTheme.colorScheme.outline),
+            .background(backgroundColor),
     )
 }
 
