@@ -10,7 +10,7 @@ import pytest
 from apps.ai_assistant import grounding
 from apps.ai_assistant.claude_client import ClaudeClient
 from apps.ai_assistant.llm import Completion, get_client
-from apps.ai_assistant.ollama_client import OllamaClient
+from apps.ai_assistant.ollama_client import CompatibleClient, OllamaClient
 from apps.ai_assistant.openai_client import OpenAIClient
 from apps.ai_assistant.exceptions import AIUnavailable
 from apps.ai_assistant.models import AIConversation, AIMessage
@@ -164,6 +164,8 @@ def test_provider_setting_picks_the_client(settings):
     assert isinstance(get_client(), ClaudeClient)
     settings.AI_PROVIDER = "ollama"
     assert isinstance(get_client(), OllamaClient)
+    settings.AI_PROVIDER, settings.AI_BASE_URL, settings.AI_API_KEY = "compatible", "https://ai.test/v1/", "key"
+    assert isinstance(get_client(), CompatibleClient)
 
 
 def _openai_response(parts=None, status="completed"):
@@ -282,3 +284,33 @@ def test_ollama_replies_are_capped(settings):
     with mock.patch.object(client._client.chat.completions, "create", return_value=_chat_response("ok")) as create:
         client.complete(system="S", messages=[{"role": "user", "content": "x"}])
     assert create.call_args.kwargs["max_tokens"] == 1024
+
+
+def test_compatible_provider_needs_url_and_key(settings):
+    settings.AI_BASE_URL, settings.AI_API_KEY = "https://ai.test/v1/", ""
+    with pytest.raises(AIUnavailable):
+        CompatibleClient()
+
+
+def test_compatible_provider_skips_ollama_only_options(settings):
+    settings.AI_MODEL, settings.AI_BASE_URL, settings.AI_API_KEY = "gemini-test", "https://ai.test/v1/", "secret"
+    client = CompatibleClient()
+    assert client._client.api_key == "secret"
+    with mock.patch.object(client._client.chat.completions, "create", return_value=_chat_response("Jibu")) as create:
+        result = client.complete(system="SYS", messages=[{"role": "user", "content": "hi"}])
+    assert result.text == "Jibu"
+    kw = create.call_args.kwargs
+    assert kw["messages"][0] == {"role": "system", "content": "SYS"}
+    assert "reasoning_effort" not in kw and "extra_body" not in kw
+
+
+def test_compatible_provider_bad_key_or_quota_is_unavailable(settings):
+    settings.AI_BASE_URL, settings.AI_API_KEY = "https://ai.test/v1/", "wrong"
+    client = CompatibleClient()
+    req = httpx.Request("POST", "https://ai.test/v1/chat/completions")
+    denied = openai.AuthenticationError("bad key", response=httpx.Response(401, request=req), body=None)
+    limited = openai.RateLimitError("quota", response=httpx.Response(429, request=req), body=None)
+    for err in (denied, limited):
+        with mock.patch.object(client._client.chat.completions, "create", side_effect=err):
+            with pytest.raises(AIUnavailable):
+                client.complete(system="S", messages=[{"role": "user", "content": "x"}])

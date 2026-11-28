@@ -16,12 +16,28 @@ _THINK = re.compile(r"<think>.*?</think>", re.DOTALL | re.IGNORECASE)
 
 
 class OllamaClient:
-    def __init__(self, base_url: str | None = None):
+    """Also serves ``AI_PROVIDER=compatible``: any hosted OpenAI-compatible Chat Completions API (see below)."""
+
+    _name = "Ollama"
+    _ollama_options = True
+
+    def __init__(self, base_url: str | None = None, api_key: str = "ollama"):
         # Ollama ignores the key, but the SDK requires a non-empty one.
+        self._base_url = base_url or settings.OLLAMA_BASE_URL
         self._client = openai.OpenAI(
-            base_url=base_url or settings.OLLAMA_BASE_URL, api_key="ollama",
+            base_url=self._base_url, api_key=api_key,
             timeout=settings.AI_TIMEOUT_SECONDS, max_retries=1,
         )
+
+    def _extra_options(self) -> dict:
+        if not self._ollama_options:
+            return {}
+        return {
+            # Thinking makes qwen3-style models 3-5x slower to answer, which chat users feel most on phones.
+            **({} if settings.OLLAMA_THINK else {"reasoning_effort": "none"}),
+            # Keep the model in memory between messages so a reply doesn't wait for it to reload.
+            "extra_body": {"keep_alive": settings.OLLAMA_KEEP_ALIVE},
+        }
 
     def complete(self, *, system: str, messages: list[dict]) -> Completion:
         try:
@@ -30,20 +46,22 @@ class OllamaClient:
                 messages=[{"role": "system", "content": system}, *messages],
                 # A small local model can get stuck repeating itself; the cap stops that within seconds, not minutes.
                 max_tokens=settings.OLLAMA_MAX_OUTPUT_TOKENS,
-                # Thinking makes qwen3-style models 3-5x slower to answer, which chat users feel most on phones.
-                **({} if settings.OLLAMA_THINK else {"reasoning_effort": "none"}),
-                # Keep the model in memory between messages so a reply doesn't wait for it to reload.
-                extra_body={"keep_alive": settings.OLLAMA_KEEP_ALIVE},
+                **self._extra_options(),
             )
         except openai.APIConnectionError:
-            # Includes timeouts: the model may still be loading, or Ollama isn't running.
-            logger.warning("Could not reach Ollama at %s — is `ollama serve` running?", settings.OLLAMA_BASE_URL)
+            # Includes timeouts: the model may still be loading, or the server isn't running.
+            logger.warning("Could not reach %s at %s", self._name, self._base_url)
             raise AIUnavailable()
         except openai.NotFoundError:
-            logger.error("Ollama has no model %r — run `ollama pull %s`", settings.AI_MODEL, settings.AI_MODEL)
+            logger.error("%s has no model %r", self._name, settings.AI_MODEL)
             raise AIUnavailable()
+        except (openai.AuthenticationError, openai.PermissionDeniedError) as exc:
+            logger.error("%s rejected the API key (%s): %s", self._name, exc.status_code, exc.message)
+            raise AIUnavailable()
+        except openai.RateLimitError:
+            raise AIUnavailable(_("The assistant is busy right now. Please try again in a minute."))
         except openai.APIStatusError as exc:
-            logger.error("Ollama error %s: %s", exc.status_code, exc.message)
+            logger.error("%s error %s: %s", self._name, exc.status_code, exc.message)
             raise AIUnavailable() if exc.status_code >= 500 else AIError()
 
         choice = response.choices[0] if response.choices else None
@@ -59,3 +77,15 @@ class OllamaClient:
             input_tokens=(usage.prompt_tokens if usage else 0) or 0,
             output_tokens=(usage.completion_tokens if usage else 0) or 0,
         )
+
+
+class CompatibleClient(OllamaClient):
+    """A hosted OpenAI-compatible Chat Completions API (Google Gemini, Groq, OpenRouter…), for servers without Ollama."""
+
+    _name = "AI provider"
+    _ollama_options = False
+
+    def __init__(self):
+        if not (settings.AI_BASE_URL and settings.AI_API_KEY):
+            raise AIUnavailable()
+        super().__init__(base_url=settings.AI_BASE_URL, api_key=settings.AI_API_KEY)

@@ -18,7 +18,7 @@ in **5 languages**, on the **web** and in an **offline-first Android app**, with
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-Jetpack%20Compose-7F52FF?logo=kotlin&logoColor=white)
 ![React](https://img.shields.io/badge/React-19%20%2B%20TypeScript-149ECA?logo=react&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-265%20passing-12A681)
+![Tests](https://img.shields.io/badge/tests-268%20passing-12A681)
 ![Languages](https://img.shields.io/badge/languages-EN%20%C2%B7%20SW%20%C2%B7%20ES%20%C2%B7%20IT%20%C2%B7%20DE-F5A623)
 
 <img src="docs/screenshots/web-home.jpg" alt="Kakuma ResourceLink home page" width="900">
@@ -260,6 +260,7 @@ Or run the backend and a production web build together in Docker: `docker compos
 | **Ollama** (local, no key) | `AI_PROVIDER=ollama`, `AI_MODEL=gemma3:12b` | `brew install ollama && ollama pull gemma3:12b`. Nothing leaves the server; handles Kiswahili well |
 | OpenAI (default) | `AI_PROVIDER=openai`, `OPENAI_API_KEY` | Conversations are stored only in our database (`store=False`) |
 | Claude | `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY`, `AI_MODEL` | Server-side refusal fallback with `AI_ENABLE_FALLBACKS` |
+| Google Gemini or any OpenAI-compatible API | `AI_PROVIDER=compatible`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL` | Free tier, used by the live demo. Gemini: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`, `AI_MODEL=gemini-3.5-flash-lite` |
 
 Without a working provider the endpoint returns `503 ai_unavailable`; it never makes up an answer. Restart `runserver` after editing `.env`.
 
@@ -303,7 +304,7 @@ On Render's free plan outgoing email is blocked, so password-reset codes appear 
 
 | Part | Command | Tests |
 |---|---|---|
-| Backend | `cd backend && pytest` | 126 (PostgreSQL; the AI provider is always mocked) |
+| Backend | `cd backend && pytest` | 129 (PostgreSQL; the AI provider is always mocked) |
 | Android | `cd mobile && ./gradlew testDebugUnitTest` (+ `connectedDebugAndroidTest`) | 80 unit + 6 instrumented |
 | Web | `cd frontend && npm test` | 53 |
 
