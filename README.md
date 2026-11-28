@@ -264,10 +264,10 @@ People who forget their password get a 6-digit code by email (valid 15 minutes, 
 
 ## Team
 
-| Name | GitHub |
-|---|---|
-| Simon Muriithi | [@Fleur41](https://github.com/Fleur41) |
-| Halkano Malise | [@malise5](https://github.com/malise5) |
+| Name | Role | GitHub |
+|---|---|---|
+| Simon Muriithi | Lead developer: backend API and database, Android app, web app, AI assistant, translations, tests and docs | [@Fleur41](https://github.com/Fleur41) |
+| Halkano Malise | Frontend and visual design, research, user testing and the pitch | [@malise5](https://github.com/malise5) |
 
 ## Content policy
 
