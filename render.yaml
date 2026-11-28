@@ -48,7 +48,7 @@ services:
         sync: false
       # AI assistant: compatible (free Google Gemini API), openai or anthropic.
       # Ollama only runs on your own machine. For Gemini: AI_PROVIDER=compatible,
-      # AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/, AI_MODEL=gemini-2.5-flash
+      # AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/, AI_MODEL=gemini-3.5-flash-lite
       - key: AI_PROVIDER
         sync: false
       - key: AI_MODEL

@@ -260,7 +260,7 @@ Or run the backend and a production web build together in Docker: `docker compos
 | **Ollama** (local, no key) | `AI_PROVIDER=ollama`, `AI_MODEL=gemma3:12b` | `brew install ollama && ollama pull gemma3:12b`. Nothing leaves the server; handles Kiswahili well |
 | OpenAI (default) | `AI_PROVIDER=openai`, `OPENAI_API_KEY` | Conversations are stored only in our database (`store=False`) |
 | Claude | `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY`, `AI_MODEL` | Server-side refusal fallback with `AI_ENABLE_FALLBACKS` |
-| Google Gemini or any OpenAI-compatible API | `AI_PROVIDER=compatible`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL` | Free tier, used by the live demo. Gemini: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`, `AI_MODEL=gemini-2.5-flash` |
+| Google Gemini or any OpenAI-compatible API | `AI_PROVIDER=compatible`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL` | Free tier, used by the live demo. Gemini: `AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/`, `AI_MODEL=gemini-3.5-flash-lite` |
 
 Without a working provider the endpoint returns `503 ai_unavailable`; it never makes up an answer. Restart `runserver` after editing `.env`.
 
