@@ -9,7 +9,10 @@
 One platform for opportunities, services, stories, alumni mentorship and community projects,<br>
 in **5 languages**, on the **web** and in an **offline-first Android app**, with **one account**.
 
-[**▶ Video walkthrough**](#video-walkthrough) · [**▶ Pitch slides**](https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d) · [Demo script](docs/DEMO_SCRIPT.md) · [Architecture](docs/architecture/ARCHITECTURE.md) · [API](docs/api/API_CONTRACT.md) · [Security](docs/SECURITY.md)
+<a href="https://kakuma-resource-link.vercel.app"><img src="https://img.shields.io/badge/Open%20the%20web%20app-kakuma--resource--link.vercel.app-075B4B?style=for-the-badge&logo=vercel&logoColor=white" alt="Open the web app"></a>
+<a href="https://github.com/Fleur41/Kakuma-ResourceLink/releases/latest/download/Kakuma-ResourceLink.apk"><img src="https://img.shields.io/badge/Download%20the%20Android%20app-APK-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download the Android APK"></a>
+
+[**Try it live**](#try-it-live) · [**▶ Video walkthrough**](#video-walkthrough) · [**▶ Pitch slides**](https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d) · [Demo script](docs/DEMO_SCRIPT.md) · [Architecture](docs/architecture/ARCHITECTURE.md) · [API](docs/api/API_CONTRACT.md) · [Security](docs/SECURITY.md)
 
 ![Django](https://img.shields.io/badge/Django-5.2-0C4B33?logo=django&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)
@@ -21,6 +24,31 @@ in **5 languages**, on the **web** and in an **offline-first Android app**, with
 <img src="docs/screenshots/web-home.jpg" alt="Kakuma ResourceLink home page" width="900">
 
 </div>
+
+## Try it live
+
+| | Link | Notes |
+|---|---|---|
+| 🌐 **Web app** | [kakuma-resource-link.vercel.app](https://kakuma-resource-link.vercel.app) | Works in any modern browser, on desktop and mobile |
+| 📱 **Android app** | [Download the APK](https://github.com/Fleur41/Kakuma-ResourceLink/releases/latest/download/Kakuma-ResourceLink.apk) (v1.0.0, 3.7 MB) | Android 8.0 or newer · [all releases](https://github.com/Fleur41/Kakuma-ResourceLink/releases) |
+| ⚙️ **API** | [kakuma-resourcelink-api.onrender.com/api/v1](https://kakuma-resourcelink-api.onrender.com/api/v1/opportunities/) | Interactive docs: [Swagger UI](https://kakuma-resourcelink-api.onrender.com/api/v1/docs/) · Status: [health check](https://kakuma-resourcelink-api.onrender.com/health/) |
+
+The web app and the Android app share the same live backend, so **one account works on both**. Browsing opportunities, services, stories and the alumni network needs no account. Sign-in details for the demo accounts are shared with judges alongside our submission.
+
+> [!NOTE]
+> The demo runs on free hosting. After about 15 minutes without visitors the API goes to sleep, so the **first request can take up to a minute**. Opening the [health check](https://kakuma-resourcelink-api.onrender.com/health/) wakes it up.
+
+<details>
+<summary><b>Installing the Android app</b></summary>
+<br>
+
+1. On your Android phone, open the [APK download link](https://github.com/Fleur41/Kakuma-ResourceLink/releases/latest/download/Kakuma-ResourceLink.apk).
+2. Open the downloaded file. If Android asks, allow your browser or file manager to **install unknown apps**.
+3. Tap **Install**, then open **Kakuma ResourceLink**.
+
+The APK is a demo build signed for direct installation; it is not distributed through Google Play yet. Saved opportunities and stories stay readable offline once they have been opened.
+
+</details>
 
 ## Video walkthrough
 
@@ -187,7 +215,7 @@ Both clients share one backend, one database and one sign-in (JWT with rotating 
 
 ## Run it locally
 
-Requirements: Python 3.11+, Docker, Node 20+, and Android Studio for the app.
+Requirements: Python 3.11+, Docker, Node 22+, and Android Studio for the app.
 
 ```bash
 # 1. Backend + database
@@ -239,6 +267,38 @@ Without a working provider the endpoint returns `503 ai_unavailable`; it never m
 
 People who forget their password get a 6-digit code by email (valid 15 minutes, 5 tries, one new code a minute) on both web and Android. Set `EMAIL_BACKEND`, `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` in `backend/.env` (for Gmail, use an app password). Without them, emails print to the `runserver` console.
 
+## Deployment
+
+The live demo runs entirely on free tiers:
+
+| Part | Host | Config |
+|---|---|---|
+| Backend API | [Render](https://render.com) web service (Python, Frankfurt) | [`render.yaml`](render.yaml) Blueprint |
+| Database | Render PostgreSQL | Created by the same Blueprint |
+| Uploaded images | [Supabase Storage](https://supabase.com/docs/guides/storage) (S3-compatible, public bucket) | `AWS_*` variables on Render |
+| Web app | [Vercel](https://vercel.com) | [`frontend/vercel.json`](frontend/vercel.json) |
+| Android app | APK on [GitHub Releases](https://github.com/Fleur41/Kakuma-ResourceLink/releases) | Release builds call the Render API |
+
+<details>
+<summary><b>Deploy your own copy</b></summary>
+<br>
+
+1. **Backend.** In Render, choose **New → Blueprint** and pick this repository. Render creates the API and the database from `render.yaml`, generates the Django secret key, and asks for the remaining secrets: the AI provider and key, and the storage bucket. Migrations run automatically on every start.
+2. **Images.** Create a public bucket (for example `media` in Supabase Storage) and an S3 access key, then set `AWS_STORAGE_BUCKET_NAME`, `AWS_S3_ENDPOINT_URL`, `AWS_S3_REGION_NAME`, `AWS_S3_CUSTOM_DOMAIN`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. Any S3-compatible service works (Cloudflare R2, Backblaze B2, AWS S3).
+3. **Demo data (optional).** From your machine, using the database's external URL:
+   ```bash
+   cd backend
+   DATABASE_URL='<external database URL>' DJANGO_SETTINGS_MODULE=config.settings.development \
+     python manage.py seed_testdata --password '<a strong password>'
+   ```
+4. **Website.** In Vercel, import the repository with **Root Directory** set to `frontend` and add `VITE_API_URL=https://<your-api>.onrender.com/api/v1` before the first build.
+5. **Connect them.** On Render, set `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS` to the Vercel address (no trailing slash).
+6. **Android.** Set the release API address with `-Pkakuma.apiUrl=https://<your-api>.onrender.com/api/v1/` (or change the default in `mobile/app/build.gradle.kts`) and run `./gradlew assembleRelease`.
+
+On Render's free plan outgoing email is blocked, so password-reset codes appear in the service logs instead of being emailed. A paid plan removes that limit and the cold starts.
+
+</details>
+
 ## Tests
 
 | Part | Command | Tests |
@@ -260,7 +320,7 @@ People who forget their password get a 6-digit code by email (valid 15 minutes, 
 
 - **Partner-verified listings**, checked with organisations working in Kakuma
 - **SMS access** for people with basic phones
-- **A real hosted deployment** so anyone in Kakuma can sign up
+- **Production hosting**: always-on servers, our own domain, and the Android app on Google Play
 
 ## Team
 
