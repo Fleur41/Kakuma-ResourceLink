@@ -65,7 +65,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField("String", "API_BASE_URL", "\"${propertyOr("kakuma.apiUrl", "https://api.kakuma-resourcelink.example/api/v1/")}\"")
+            buildConfigField("String", "API_BASE_URL", "\"${propertyOr("kakuma.apiUrl", "https://kakuma-resourcelink-api.onrender.com/api/v1/")}\"")
             buildConfigField("boolean", "HTTP_LOGGING", "false")
             // Real key when configured; otherwise the debug key so `assembleRelease` still works for demos.
             // A debug-signed APK cannot be uploaded to Google Play.
