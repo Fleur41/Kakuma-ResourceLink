@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -229,7 +230,7 @@ fun AppNavHost(
             val toOpen by entry.savedStateHandle.getStateFlow<String?>(Routes.RESULT_CONVERSATION, null).collectAsStateWithLifecycle()
             if (!isLoggedIn()) {
                 // The assistant is personal (history is saved), so it needs an account.
-                androidx.compose.runtime.LaunchedEffect(Unit) { navController.popBackStack(); requireLogin() }
+                LaunchedEffect(Unit) { navController.popBackStack(); requireLogin() }
             } else AssistantRoute(
                 onBack = back,
                 onOpenSource = { s ->

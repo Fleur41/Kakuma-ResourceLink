@@ -26,7 +26,9 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -125,7 +127,11 @@ class ProjectsViewModel @Inject constructor(repository: ProjectRepository, priva
 }
 
 @Composable
-fun ProjectsRoute(onBack: (() -> Unit)?, onOpen: (String) -> Unit, viewModel: ProjectsViewModel = hiltViewModel()) {
+fun ProjectsRoute(
+    onBack: (() -> Unit)?,
+    onOpen: (String) -> Unit,
+    viewModel: ProjectsViewModel = hiltViewModel()
+) {
     val category by viewModel.category.collectAsStateWithLifecycle()
     val items = viewModel.projects.collectAsLazyPagingItems()
     Column(Modifier.fillMaxSize()) {
@@ -154,8 +160,9 @@ fun ProjectsRoute(onBack: (() -> Unit)?, onOpen: (String) -> Unit, viewModel: Pr
 
 @Composable
 private fun ProjectCard(project: CommunityProject, onClick: () -> Unit) {
+    val shape = MaterialTheme.shapes.large
     KrCard(onClick = onClick, contentPadding = PaddingValues(0.dp)) {
-        CoverImage(project.coverImage, Modifier.fillMaxWidth().height(120.dp).clip(MaterialTheme.shapes.large), Icons.Outlined.Groups)
+        CoverImage(project.coverImage, Modifier.fillMaxWidth().height(120.dp).clip(shape), Icons.Outlined.Groups)
         Column(Modifier.padding(Spacing.md), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             CategoryPill(project.category.label())
             Text(project.title, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -167,8 +174,9 @@ private fun ProjectCard(project: CommunityProject, onClick: () -> Unit) {
 
 @Composable
 private fun ProgressBlock(project: CommunityProject) {
+    val shape = MaterialTheme.shapes.small
     project.pledgeProgress?.let { progress ->
-        LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth().clip(MaterialTheme.shapes.small), color = MaterialTheme.colorScheme.secondary)
+        LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth().clip(shape), color = MaterialTheme.colorScheme.secondary)
         Text(
             stringResource(
                 R.string.project_pledged_of_goal,
@@ -261,7 +269,11 @@ class ProjectDetailViewModel @Inject constructor(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProjectDetailRoute(onBack: () -> Unit, onRequireLogin: () -> Unit, viewModel: ProjectDetailViewModel = hiltViewModel()) {
+fun ProjectDetailRoute(
+    onBack: () -> Unit,
+    onRequireLogin: () -> Unit,
+    viewModel: ProjectDetailViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     UiEventEffect(viewModel.events)
     Scaffold(topBar = { KrTopBar(stringResource(R.string.project_detail_title), onBack = onBack) }) { padding ->

@@ -53,11 +53,17 @@ import com.kakuma.resourcelink.core.designsystem.component.KrPrimaryButton
 import com.kakuma.resourcelink.core.designsystem.component.KrTopBar
 import com.kakuma.resourcelink.core.designsystem.component.StatusBadge
 import com.kakuma.resourcelink.core.ui.UiEventEffect
+import androidx.core.net.toUri
 
 @Composable
-fun OpportunityDetailRoute(onBack: () -> Unit, onAskAssistant: (String) -> Unit, viewModel: OpportunityDetailViewModel = hiltViewModel()) {
+fun OpportunityDetailRoute(
+    onBack: () -> Unit,
+    onAskAssistant: (String) -> Unit,
+    viewModel: OpportunityDetailViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
     UiEventEffect(viewModel.events)
     val opp = state.opportunity
     Scaffold(topBar = {
@@ -76,7 +82,7 @@ fun OpportunityDetailRoute(onBack: () -> Unit, onAskAssistant: (String) -> Unit,
             opp == null && state.isLoading -> FullScreenLoading(Modifier.padding(padding))
             opp == null -> ErrorState(state.error?.asString() ?: "", viewModel::refresh, Modifier.padding(padding))
             else -> Column(
-                Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())
+                Modifier.fillMaxSize().padding(padding).verticalScroll(scrollState)
                     .padding(horizontal = Spacing.gutter).navigationBarsPadding(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.sm),
             ) {
@@ -117,7 +123,8 @@ fun OpportunityDetailRoute(onBack: () -> Unit, onAskAssistant: (String) -> Unit,
                         stringResource(R.string.action_apply_now),
                         onClick = {
                             try {
-                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(opp.applicationUrl)))
+                                context.startActivity(Intent(Intent.ACTION_VIEW,
+                                    opp.applicationUrl.toUri()))
                             } catch (_: ActivityNotFoundException) { /* no browser installed */ }
                         },
                         icon = Icons.AutoMirrored.Outlined.OpenInNew,

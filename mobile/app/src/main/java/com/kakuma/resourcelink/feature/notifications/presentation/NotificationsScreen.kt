@@ -96,7 +96,11 @@ class NotificationsViewModel @Inject constructor(private val repository: Notific
 }
 
 @Composable
-fun NotificationsRoute(onBack: () -> Unit, onNavigate: (NotificationTarget) -> Unit, viewModel: NotificationsViewModel = hiltViewModel()) {
+fun NotificationsRoute(
+    onBack: () -> Unit,
+    onNavigate: (NotificationTarget) -> Unit,
+    viewModel: NotificationsViewModel = hiltViewModel()
+) {
     val items = viewModel.notifications.collectAsLazyPagingItems()
     UiEventEffect(viewModel.events)
     Column(Modifier.fillMaxSize()) {

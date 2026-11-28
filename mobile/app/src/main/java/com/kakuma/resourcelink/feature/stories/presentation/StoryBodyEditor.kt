@@ -120,12 +120,13 @@ fun StoryBodyEditor(
         }
     }
 
+    val clipShape = MaterialTheme.shapes.medium
     val colors = MaterialTheme.colorScheme
     Column(modifier) {
         Text(label, style = MaterialTheme.typography.labelLarge, color = colors.onSurface)
         Column(
             Modifier.fillMaxWidth().padding(top = 6.dp)
-                .clip(MaterialTheme.shapes.medium)
+                .clip(clipShape)
                 .border(1.dp, if (error != null) colors.error else colors.outline, MaterialTheme.shapes.medium)
                 .background(colors.surface, MaterialTheme.shapes.medium),
         ) {
@@ -159,10 +160,12 @@ fun StoryBodyEditor(
 @Composable
 private fun FormatToolbar(state: RichTextState) {
     val span = state.currentSpanStyle
+    val backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+    val scrollState = rememberScrollState()
     Row(
         Modifier.fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-            .horizontalScroll(rememberScrollState())
+            .background(backgroundColor)
+            .horizontalScroll(scrollState)
             .padding(horizontal = 4.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

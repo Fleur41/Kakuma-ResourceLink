@@ -41,7 +41,10 @@ import com.kakuma.resourcelink.core.ui.UiEventEffect
 
 /** Forgot password: email → 6-digit code from the email → new password, then back to sign in. */
 @Composable
-fun ForgotPasswordRoute(onBack: () -> Unit, viewModel: ForgotPasswordViewModel = hiltViewModel()) {
+fun ForgotPasswordRoute(
+    onBack: () -> Unit,
+    viewModel: ForgotPasswordViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     UiEventEffect(viewModel.events)
     val context = LocalContext.current

@@ -71,6 +71,7 @@ fun StoryDetailRoute(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val comments by viewModel.comments.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val scrollState = rememberScrollState()
     var confirmDelete by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)
     val detail = state.detail
@@ -99,8 +100,13 @@ fun StoryDetailRoute(
             detail == null && state.isLoading -> FullScreenLoading(Modifier.padding(padding))
             detail == null -> ErrorState(state.error?.asString().orEmpty(), viewModel::refresh, Modifier.padding(padding))
             else -> Column(
-                Modifier.fillMaxSize().padding(padding).imePadding().verticalScroll(rememberScrollState())
-                    .padding(horizontal = Spacing.gutter).navigationBarsPadding(),
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .imePadding()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = Spacing.gutter)
+                    .navigationBarsPadding(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.sm),
             ) {
                 val story = detail.story
@@ -186,7 +192,8 @@ private fun CommentsSection(
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
         Text(
             stringResource(R.string.comments_title, state.comments.size),
-            style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { heading() },
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.semantics { heading() },
         )
         when {
             state.isLoading -> CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))

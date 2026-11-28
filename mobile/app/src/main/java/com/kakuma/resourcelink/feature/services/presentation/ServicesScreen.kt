@@ -62,6 +62,7 @@ import com.kakuma.resourcelink.core.designsystem.component.StatusBadge
 import com.kakuma.resourcelink.core.designsystem.component.KrTopBar
 import com.kakuma.resourcelink.feature.services.domain.EssentialService
 import com.kakuma.resourcelink.feature.services.domain.ServiceCategory
+import androidx.core.net.toUri
 
 fun ServiceCategory.icon(): ImageVector = when (this) {
     ServiceCategory.HEALTHCARE -> Icons.Outlined.LocalHospital
@@ -143,22 +144,24 @@ private fun ServiceCard(service: EssentialService) {
         }
         FlowRow(Modifier.padding(top = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             if (service.phone.isNotBlank()) AssistChip(
-                onClick = { context.open(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${service.phone}"))) },
+                onClick = { context.open(Intent(Intent.ACTION_DIAL, "tel:${service.phone}".toUri())) },
                 label = { Text(stringResource(R.string.action_call)) },
                 leadingIcon = { Icon(Icons.Outlined.Call, null) },
             )
             if (service.email.isNotBlank()) AssistChip(
-                onClick = { context.open(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:${service.email}"))) },
+                onClick = { context.open(Intent(Intent.ACTION_SENDTO,
+                    "mailto:${service.email}".toUri())) },
                 label = { Text(stringResource(R.string.action_email)) },
                 leadingIcon = { Icon(Icons.Outlined.Email, null) },
             )
             if (service.website.isNotBlank()) AssistChip(
-                onClick = { context.open(Intent(Intent.ACTION_VIEW, Uri.parse(service.website))) },
+                onClick = { context.open(Intent(Intent.ACTION_VIEW, service.website.toUri())) },
                 label = { Text(stringResource(R.string.action_website)) },
                 leadingIcon = { Icon(Icons.Outlined.Language, null) },
             )
             if (service.address.isNotBlank()) AssistChip(
-                onClick = { context.open(Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(service.address)))) },
+                onClick = { context.open(Intent(Intent.ACTION_VIEW,
+                    ("geo:0,0?q=" + Uri.encode(service.address)).toUri())) },
                 label = { Text(stringResource(R.string.action_map)) },
                 leadingIcon = { Icon(Icons.Outlined.Map, null) },
             )

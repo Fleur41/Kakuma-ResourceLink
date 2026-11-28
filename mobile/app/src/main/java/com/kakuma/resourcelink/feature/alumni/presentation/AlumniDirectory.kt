@@ -80,7 +80,12 @@ class AlumniDirectoryViewModel @Inject constructor(
 }
 
 @Composable
-fun AlumniDirectoryRoute(onBack: (() -> Unit)?, onOpen: (String) -> Unit, onEditMyProfile: () -> Unit, viewModel: AlumniDirectoryViewModel = hiltViewModel()) {
+fun AlumniDirectoryRoute(
+    onBack: (() -> Unit)?,
+    onOpen: (String) -> Unit,
+    onEditMyProfile: () -> Unit,
+    viewModel: AlumniDirectoryViewModel = hiltViewModel()
+) {
     val search by viewModel.search.collectAsStateWithLifecycle()
     val mentorsOnly by viewModel.mentorsOnly.collectAsStateWithLifecycle()
     val items = viewModel.alumni.collectAsLazyPagingItems()

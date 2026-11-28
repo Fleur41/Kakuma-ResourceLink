@@ -152,7 +152,10 @@ class MyAlumniProfileViewModel @Inject constructor(
 }
 
 @Composable
-fun MyAlumniProfileRoute(onBack: () -> Unit, viewModel: MyAlumniProfileViewModel = hiltViewModel()) {
+fun MyAlumniProfileRoute(
+    onBack: () -> Unit,
+    viewModel: MyAlumniProfileViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var confirmDelete by rememberSaveable { mutableStateOf(false) }
     UiEventEffect(viewModel.events)

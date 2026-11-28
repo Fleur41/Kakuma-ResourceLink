@@ -75,11 +75,12 @@ fun StoryCard(
     modifier: Modifier = Modifier,
     showStatus: Boolean = false,
 ) {
+    val shape = MaterialTheme.shapes.large
     KrCard(modifier = modifier, onClick = onClick, contentPadding = PaddingValues(0.dp)) {
         // The whole photo as uploaded (no cropping); stories without a photo keep the short banner.
         val cover = story.coverImage
         if (!cover.isNullOrBlank()) FullCoverImage(cover, maxHeight = 360.dp)
-        else CoverImage(null, Modifier.fillMaxWidth().height(150.dp).clip(MaterialTheme.shapes.large), icon = Icons.Outlined.AutoStories)
+        else CoverImage(null, Modifier.fillMaxWidth().height(150.dp).clip(shape), icon = Icons.Outlined.AutoStories)
         Column(Modifier.padding(Spacing.md)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 CategoryPill(story.category.label())
