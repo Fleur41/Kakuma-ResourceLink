@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kakuma ResourceLink Demo Guide</title>
+<style>
+  :root {
+    --bg: #F6F7F4; --surface: #FFFFFF; --text: #1B2420; --muted: #5C6B64; --line: #DDE3DF;
+    --brand: #075B4B; --brand-soft: #E3F1EC; --accent: #F5A623; --accent-soft: #FFF4DF;
+    --warn: #B4471B; --warn-soft: #FCEBE3; --code: #EEF2EF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1513; --surface: #17201D; --text: #E6ECE9; --muted: #9AA9A2; --line: #2A3632;
+      --brand: #4FC3A1; --brand-soft: #16302A; --accent: #F5B94A; --accent-soft: #2E2615;
+      --warn: #F08A62; --warn-soft: #33201A; --code: #1F2A26;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F1513; --surface: #17201D; --text: #E6ECE9; --muted: #9AA9A2; --line: #2A3632;
+    --brand: #4FC3A1; --brand-soft: #16302A; --accent: #F5B94A; --accent-soft: #2E2615;
+    --warn: #F08A62; --warn-soft: #33201A; --code: #1F2A26;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 28px; }
+  header .eyebrow { color: var(--brand); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 13px; }
+  h1 { font-size: clamp(28px, 5vw, 38px); line-height: 1.15; margin: 6px 0 10px; }
+  h2 { font-size: 22px; margin: 40px 0 14px; }
+  h3 { font-size: 18px; margin: 0; }
+  p { margin: 8px 0; }
+  a { color: var(--brand); }
+  code { background: var(--code); padding: 1px 6px; border-radius: 5px; font-size: .92em; word-break: break-word; }
+  pre { background: var(--code); padding: 12px 14px; border-radius: 10px; overflow-x: auto; font-size: 14px; margin: 10px 0; }
+  .lede { color: var(--muted); font-size: 18px; max-width: 70ch; }
+  .story { background: var(--brand-soft); border-left: 4px solid var(--brand); padding: 14px 18px; border-radius: 10px; margin: 18px 0 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .links a {
+    display: inline-block; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--surface); text-decoration: none; font-size: 14px; font-weight: 500;
+  }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 12px 0; }
+  .note { background: var(--accent-soft); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+  .warn { background: var(--warn-soft); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+  .warn strong { color: var(--warn); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .03em; }
+  .table-scroll { overflow-x: auto; }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist input { width: 20px; height: 20px; margin-top: 3px; flex: none; accent-color: var(--brand); }
+  .checklist label { cursor: pointer; }
+  .checklist input:checked + label { color: var(--muted); text-decoration: line-through; }
+  .when { font-weight: 600; color: var(--brand); margin: 18px 0 4px; }
+
+  /* Timeline */
+  .timeline { display: flex; height: 12px; border-radius: 999px; overflow: hidden; margin: 10px 0 6px; }
+  .timeline span { display: block; height: 100%; border-right: 2px solid var(--bg); }
+  .timeline span:last-child { border-right: 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+  .c-web { background: var(--brand); } .c-phone { background: var(--accent); } .c-talk { background: var(--muted); }
+
+  /* Steps */
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 14px; }
+  .num {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--brand); color: #fff; font-weight: 700;
+  }
+  :root[data-theme="dark"] .num { color: #0F1513; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .num { color: #0F1513; } }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--code); color: var(--muted); }
+  .tag.web { background: var(--brand-soft); color: var(--brand); }
+  .tag.phone { background: var(--accent-soft); color: var(--text); }
+  .step ul { margin: 6px 0; padding-left: 20px; }
+  .step li { margin: 4px 0; }
+  .say { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; margin: 10px 0 2px; font-style: italic; color: var(--text); }
+  .say::before { content: "Say: "; font-style: normal; font-weight: 600; color: var(--muted); }
+
+  .opening { border-left: 3px solid var(--accent); padding: 2px 0 2px 16px; margin: 10px 0; font-size: 17px; }
+  .opening p { margin: 10px 0; }
+  .cue {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    background: var(--accent-soft); color: var(--muted); padding: 1px 7px; border-radius: 999px; margin-left: 4px;
+  }
+  details { margin: 10px 0 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--brand); }
+  .toolbar { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 8px; }
+  .toolbar button {
+    font: inherit; font-size: 14px; padding: 6px 12px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  }
+  footer { color: var(--muted); font-size: 14px; margin-top: 48px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+  @media (max-width: 560px) {
+    .step { grid-template-columns: 1fr; }
+    .num { width: 34px; height: 34px; }
+  }
+  @media print {
+    body { background: #fff; color: #000; font-size: 12.5px; }
+    .toolbar, .links { display: none; }
+    .card { break-inside: avoid; border-color: #ccc; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="toolbar">
+    <button type="button" id="reset">Clear checklist</button>
+    <button type="button" onclick="window.print()">Print</button>
+  </div>
+
+  <header>
+    <div class="eyebrow">Hackathon demo guide · about 7 minutes</div>
+    <h1>Demoing Kakuma ResourceLink</h1>
+    <p class="lede">A step-by-step plan for the live demo: what to prepare, what to click, what to say, and what to do if something goes wrong.</p>
+    <div class="story">
+      <strong>One story to tell:</strong> Amina, a young woman in Kakuma, finds an opportunity, gets a mentor and shares her own story, on the web and on her phone, in her own language, with one account.
+    </div>
+    <div class="links">
+      <a href="https://kakuma-resource-link.vercel.app" target="_blank" rel="noopener">Web app</a>
+      <a href="https://kakuma-resourcelink-api.onrender.com/health/" target="_blank" rel="noopener">Wake the server</a>
+      <a href="https://github.com/Fleur41/Kakuma-ResourceLink/releases/latest/download/Kakuma-ResourceLink.apk">Android APK</a>
+      <a href="https://kakuma-resourcelink-api.onrender.com/api/v1/docs/" target="_blank" rel="noopener">API docs</a>
+      <a href="https://claude.ai/artifact/SreioSxkyP9CdeBQNBWm1d" target="_blank" rel="noopener">Pitch slides</a>
+      <a href="https://github.com/Fleur41/Kakuma-ResourceLink" target="_blank" rel="noopener">GitHub repo</a>
+    </div>
+  </header>
+
+  <h2>Accounts</h2>
+  <div class="card table-scroll">
+    <table>
+      <thead><tr><th>Account</th><th>Role</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>amina@demo.kakuma.test</code></td><td>Community member</td><td>The main persona, on web and phone</td></tr>
+        <tr><td><code>daniel@demo.kakuma.test</code></td><td>Alumni mentor (Germany)</td><td>Accepts Amina's mentorship request</td></tr>
+        <tr><td><code>moderator@demo.kakuma.test</code></td><td>Moderator</td><td>Approves Amina's story</td></tr>
+        <tr><td><code>deng.majok@kakuma.test</code></td><td>Community member</td><td>Rehearsals, so Amina stays fresh</td></tr>
+      </tbody>
+    </table>
+    <p>All accounts use the demo password you chose when seeding the live database. It is deliberately not written here because this file is in a public repository.</p>
+  </div>
+
+  <h2>Before you present</h2>
+  <div class="card">
+    <p class="when">The day before (or at least an hour before)</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="p1"><label for="p1"><strong>Rehearse once with <code>deng.majok</code>, not Amina.</strong> Mentorship requests, pledges and stories stay in the live database, so rehearsing as Amina would leave her with "already requested" buttons during the real demo.</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2"><strong>Add cover photos to two or three stories</strong> (sign in as the story author or a moderator). The live stories have no photos yet, and pictures make the Stories page look much better on screen. This also confirms that image uploads to Supabase work.</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3"><strong>Install the APK on the device you will show.</strong> For the emulator: <code>adb install -r ~/Desktop/Kakuma-ResourceLink.apk</code>. This build talks to the live server, so no laptop backend is needed.</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4"><strong>Don't over-test the AI as Amina.</strong> Each account gets 20 AI questions per hour. Use another account when practising "Explain with AI".</label></li>
+    </ul>
+
+    <p class="when">10 minutes before</p>
+    <ul class="checklist">
+      <li><input type="checkbox" id="q1"><label for="q1"><strong>Wake the server:</strong> open <a href="https://kakuma-resourcelink-api.onrender.com/health/" target="_blank" rel="noopener">the health check</a> and wait for <code>{"status": "ok"}</code>. The free server sleeps after 15 quiet minutes, and the first request can take up to a minute.</label></li>
+      <li><input type="checkbox" id="q2"><label for="q2"><strong>Window A</strong> (normal browser): open the <a href="https://kakuma-resource-link.vercel.app" target="_blank" rel="noopener">web app</a>, signed out, on the home page.</label></li>
+      <li><input type="checkbox" id="q3"><label for="q3"><strong>Window B</strong> (private window): open the web app, signed out. You will use it for Daniel, then the moderator.</label></li>
+      <li><input type="checkbox" id="q4"><label for="q4"><strong>Phone or emulator:</strong> open the app on the sign-in screen, set to English. To show a real phone on the projector, mirror it with <code>scrcpy</code> (<code>brew install scrcpy</code>, then plug in with USB debugging on).</label></li>
+      <li><input type="checkbox" id="q5"><label for="q5"><strong>Close distractions:</strong> notifications off, other tabs closed, zoom the browser to 110–125% so the room can read it.</label></li>
+      <li><input type="checkbox" id="q6"><label for="q6"><strong>Keep the slides open</strong> in another tab for the opening and closing.</label></li>
+    </ul>
+  </div>
+
+  <h2>The demo</h2>
+  <div class="timeline" aria-hidden="true">
+    <span class="c-talk" style="width:10%"></span>
+    <span class="c-web" style="width:7%"></span>
+    <span class="c-web" style="width:14%"></span>
+    <span class="c-phone" style="width:14%"></span>
+    <span class="c-web" style="width:14%"></span>
+    <span class="c-phone" style="width:14%"></span>
+    <span class="c-web" style="width:11%"></span>
+    <span class="c-web" style="width:11%"></span>
+    <span class="c-talk" style="width:8%"></span>
+  </div>
+  <div class="legend"><span><i class="c-talk"></i>Talking / slides</span><span><i class="c-web"></i>Web app</span><span><i class="c-phone"></i>Android app</span></div>
+
+  <div class="card step">
+    <div class="num">1</div>
+    <div>
+      <h3>Opening story: "The notice board"</h3>
+      <div class="meta"><span class="tag">45 seconds</span><span class="tag">Slides or no screen</span></div>
+      <div class="opening">
+        <p>Meet Amina. She's 19 and lives in Kakuma, in northwest Kenya. She finished secondary school with good grades, and she dreams of studying engineering.</p>
+        <p>One morning, a friend forwards her a WhatsApp message: a scholarship for students just like her. She's excited, until she reads the date. The deadline was <strong>last week</strong>. <span class="cue">pause</span></p>
+        <p>The information existed. It was pinned on a notice board on the other side of the camp, posted in a group she wasn't in, written in a language she reads slowly.</p>
+        <p>And somewhere in Germany, Daniel, who grew up in Kakuma and is now a software engineer, wants to help someone like Amina. He just has no way to find her.</p>
+        <p>Amina didn't miss that opportunity because she wasn't good enough. She missed it because <strong>the information never reached her</strong>. <span class="cue">slow down</span></p>
+        <p>That's why we built <strong>Kakuma ResourceLink</strong>: one place where opportunities, services, stories and mentors find the people who need them, in their own language, even on a weak connection.</p>
+        <p>Let me show you Amina's journey, the way it <em>should</em> have gone.</p>
+      </div>
+      <details>
+        <summary>Short version (20 seconds, if time is tight)</summary>
+        <p class="say">Amina is 19, lives in Kakuma, and dreams of studying engineering. Last year she missed a scholarship because she heard about it a week after the deadline. It was on a notice board across the camp and in a WhatsApp group she wasn't in. Meanwhile Daniel, a Kakuma alumnus in Germany, wanted to mentor someone like her but couldn't find her. Kakuma ResourceLink connects them. Let me show you how.</p>
+      </details>
+      <details>
+        <summary>Tips for telling it</summary>
+        <ul>
+          <li>Learn the beats, not the words: <em>Amina's dream → the missed deadline → why she missed it → Daniel who wants to help → the platform.</em></li>
+          <li>Pause after "The deadline was last week" and let it land.</li>
+          <li>Look at the judges, not the screen. This part needs no slides.</li>
+          <li>If asked whether Amina is real: "She's a composite, based on how information really moves in Kakuma."</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">2</div>
+    <div>
+      <h3>Browse as a guest</h3>
+      <div class="meta"><span class="tag">30 seconds</span><span class="tag web">Web · Window A</span></div>
+      <ul>
+        <li>Show the home page: the hero, the pillars, open opportunities and recent stories.</li>
+        <li>Point out the <strong>"Unverified" / sample</strong> labels on listings.</li>
+      </ul>
+      <p class="say">Anyone can browse without an account. And we never pass off unverified information as fact: every listing shows whether our team has checked it.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">3</div>
+    <div>
+      <h3>Find an opportunity, explained by AI</h3>
+      <div class="meta"><span class="tag">1 minute</span><span class="tag web">Web · Window A · Amina</span></div>
+      <ul>
+        <li>Sign in as Amina. Show the short <strong>"Welcome back"</strong> toast and her dashboard.</li>
+        <li><strong>Opportunities</strong> → filter by <em>Scholarship</em> → point at the deadline chip ("30 days left").</li>
+        <li>Bookmark one (toast: "Saved"), open it, click <strong>Explain with AI</strong>.</li>
+      </ul>
+      <p class="say">The assistant explains the listing in plain words, using only what is published on the platform. It shows its sources, and it never decides whether you're eligible: that stays with the organisation.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">4</div>
+    <div>
+      <h3>Same account on the phone, in Kiswahili, offline</h3>
+      <div class="meta"><span class="tag">1 minute</span><span class="tag phone">Android</span></div>
+      <ul>
+        <li>Sign in on the phone as Amina. Open saved opportunities: the bookmark from the web is already there.</li>
+        <li><strong>Profile → Language → Kiswahili</strong>: the whole app switches.</li>
+        <li>Turn on <strong>airplane mode</strong>: saved opportunities and stories still open, and the offline banner appears. Turn it off again.</li>
+      </ul>
+      <p class="say">One account, one backend, one database: what Amina saves on the web is on her phone. The app speaks five languages and keeps working when the connection drops, which in Kakuma is often.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">5</div>
+    <div>
+      <h3>Ask a mentor</h3>
+      <div class="meta"><span class="tag">1 minute</span><span class="tag web">Web · Windows A and B</span></div>
+      <ul>
+        <li>Window A (Amina): <strong>Alumni</strong> → <em>Daniel M.</em> (software engineer, Germany) → <strong>Request mentorship</strong>, pick "Career", add a short message. Toast: "Request sent".</li>
+        <li>Window B: sign in as Daniel → <strong>Mentorship → Received</strong> → <strong>Accept</strong>.</li>
+        <li>Back in Window A: the <strong>notification bell</strong> shows the update and links straight to the request.</li>
+      </ul>
+      <p class="say">Former residents around the world can mentor people in Kakuma. Alumni choose what to share, and can hide their profile at any time.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">6</div>
+    <div>
+      <h3>Share a story</h3>
+      <div class="meta"><span class="tag">1 minute</span><span class="tag phone">Android</span><span class="tag web">or Web</span></div>
+      <ul>
+        <li><strong>Write a story</strong>: a title, a few lines, a cover photo, and the consent box.</li>
+        <li>Point out the checklist and the <strong>privacy tip</strong> ("don't share case numbers").</li>
+        <li>Mention that drafts <strong>save automatically</strong>, so a dropped connection doesn't lose the work.</li>
+        <li><strong>Submit for review</strong>: the status becomes <em>In review</em>.</li>
+      </ul>
+      <p class="say">Stories inspire the next generation, but they can also expose people. So every story is reviewed before it goes public, and the editor warns against sharing case numbers or other identifying details.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">7</div>
+    <div>
+      <h3>Moderation</h3>
+      <div class="meta"><span class="tag">45 seconds</span><span class="tag web">Web · Window B · Moderator</span></div>
+      <ul>
+        <li>Window B: sign out of Daniel, sign in as the moderator.</li>
+        <li><strong>Moderation → Stories</strong> → open Amina's story → <strong>Approve</strong>. It's now public, and Amina is notified in her own language.</li>
+      </ul>
+      <p class="say">Rejecting a story requires a kind, specific reason, and only the author sees it. Every moderator action is recorded in an audit log.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">8</div>
+    <div>
+      <h3>Give back</h3>
+      <div class="meta"><span class="tag">45 seconds</span><span class="tag web">Web · Window A · Amina</span></div>
+      <ul>
+        <li><strong>Community → Solar study lamps</strong> → <strong>Pledge support</strong> → <em>Volunteering</em>.</li>
+        <li>The confirmation says <strong>"Pledged (not a payment)"</strong>.</li>
+      </ul>
+      <p class="say">People can pledge time, skills or support to community projects. No money moves through the platform: a pledge is a commitment, and the project owner follows up directly.</p>
+    </div>
+  </div>
+
+  <div class="card step">
+    <div class="num">9</div>
+    <div>
+      <h3>Close</h3>
+      <div class="meta"><span class="tag">30 seconds</span><span class="tag">Slides</span></div>
+      <p class="say">This time, Amina found the scholarship before the deadline, got a mentor in Germany, and shared her own story to inspire the next student. Five languages, offline-first, the same account on web and Android, and AI that only speaks from what's published on the platform. It's live today: the web app is on Vercel, the API on Render, and anyone can download the Android app from our GitHub. Built with Django and PostgreSQL, Kotlin and Jetpack Compose, and React and TypeScript, with 268 automated tests. Next: partner-verified listings, SMS for basic phones, and the app on Google Play. Thank you.</p>
+    </div>
+  </div>
+
+  <h2>If something goes wrong</h2>
+  <div class="card table-scroll">
+    <table>
+      <thead><tr><th>What you see</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>Pages load slowly or the app says "No connection"</td><td>The free server is waking up. Say "it's on free hosting, it's waking up", wait 30–60 seconds, and refresh. Next time, open the health check first.</td></tr>
+        <tr><td>"The assistant is busy" or "not available"</td><td>Gemini is briefly overloaded, or the account hit 20 AI questions this hour. Try again in a moment or switch to another account. Explain that the assistant refuses rather than making things up.</td></tr>
+        <tr><td>"Request mentorship" is greyed out or says already requested</td><td>Amina was used in a rehearsal. Request a different mentor, or sign in as another member.</td></tr>
+        <tr><td>The notification bell hasn't updated</td><td>Notifications are checked every minute. Refresh the page; on the phone, reopen the app.</td></tr>
+        <tr><td>"Session expired" on the web</td><td>Sign in again. Sign-in tokens rotate for security, so an old tab may hold one that was already used.</td></tr>
+        <tr><td>A photo won't upload</td><td>Skip the photo and continue; the story works without one. Check Render's Logs afterwards.</td></tr>
+        <tr><td>The internet at the venue fails completely</td><td>Play the <a href="https://github.com/Fleur41/Kakuma-ResourceLink#video-walkthrough" target="_blank" rel="noopener">recorded walkthrough</a> (download it beforehand), or run everything locally on your laptop as described in the README.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Likely judge questions</h2>
+  <div class="card table-scroll">
+    <table>
+      <tbody>
+        <tr><td><strong>How do you stop the AI making things up?</strong></td><td>For each question we retrieve matching published listings and give only those to the model, with strict instructions. It cites its sources, never judges eligibility or refugee status, and says it doesn't know rather than guessing.</td></tr>
+        <tr><td><strong>What about privacy?</strong></td><td>Stories are reviewed before publishing, the editor warns against case numbers, alumni profiles are opt-in and can be hidden, and the AI can run entirely on our own server with Ollama so chats never leave it. The live demo uses Gemini's free tier for convenience.</td></tr>
+        <tr><td><strong>How does it work on weak connections?</strong></td><td>The Android app stores opportunities and stories in a local database, queues bookmarks until it reconnects, and saves story drafts automatically. The web app caches data and works as an installable app.</td></tr>
+        <tr><td><strong>Is the information real?</strong></td><td>The demo data is fictional and labelled as samples. Before a real launch, listings would be verified with organisations working in Kakuma.</td></tr>
+        <tr><td><strong>Why not just a WhatsApp group?</strong></td><td>Messages get buried, nothing is searchable or filterable, there's no moderation, no deadlines, no language switching and no link to alumni mentors.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    Kakuma ResourceLink · Simon Muriithi and Halkano Malise · All demo data is fictional sample content.
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var KEY = 'kakuma-demo-checklist';
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
+    var boxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+    boxes.forEach(function (box) {
+      box.checked = !!saved[box.id];
+      box.addEventListener('change', function () {
+        saved[box.id] = box.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      });
+    });
+    document.getElementById('reset').addEventListener('click', function () {
+      boxes.forEach(function (box) { box.checked = false; });
+      saved = {};
+      try { localStorage.removeItem(KEY); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
