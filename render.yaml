@@ -1,0 +1,66 @@
+# Render Blueprint: the Django API, its uploads disk and a PostgreSQL database.
+# Deploy: Render dashboard -> New -> Blueprint -> pick this repository.
+# Values marked "sync: false" are asked for once in the dashboard (secrets never live in git).
+
+databases:
+  - name: kakuma-db
+    plan: free
+    region: frankfurt
+    databaseName: kakuma_resourcelink
+    user: kakuma
+
+services:
+  - type: web
+    name: kakuma-resourcelink-api
+    runtime: python
+    plan: starter
+    region: frankfurt
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    # Migrations run at start (not pre-deploy) because only the running service can see the disk.
+    startCommand: >-
+      python manage.py migrate --noinput &&
+      python manage.py createcachetable &&
+      exec gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 90
+    disk:
+      name: media
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: kakuma-db
+          property: connectionString
+      - key: DJANGO_ALLOWED_HOSTS
+        value: .onrender.com
+      - key: MEDIA_ROOT
+        value: /var/data/media
+      - key: SERVE_MEDIA
+        value: "true"
+      # The website's address once it is deployed, e.g. https://kakuma.example.org
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false
+      # AI assistant: openai or anthropic (Ollama only runs on your own machine)
+      - key: AI_PROVIDER
+        sync: false
+      - key: AI_MODEL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # Password-reset email through Gmail SMTP (use a Gmail app password)
+      - key: EMAIL_BACKEND
+        value: django.core.mail.backends.smtp.EmailBackend
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
